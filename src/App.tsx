@@ -354,41 +354,6 @@ export default function App() {
 
   return (
     <>
-      <div id="cur" ref={curRef} />
-      <div id="curR" ref={curRRef} />
-
-      <nav id="topnav" style={{ boxShadow: navShadow ? '0 2px 20px rgba(13,9,5,.06)' : 'none' }}>
-        <a href="#" className="nav-logo">
-          <div className="ldot" />
-          CCT
-        </a>
-        <div className="nav-pill-row">
-          <a className="npl on" href="#events">
-            Events
-          </a>
-          <a className="npl" href="#works">
-            Good Works
-          </a>
-          <a className="npl" href="#leaderboard">
-            Leaderboard
-          </a>
-          <a className="npl" href="#campaigns">
-            Donate
-          </a>
-          <a className="npl" href="#about">
-            About
-          </a>
-        </div>
-        <div className="nav-r">
-          <a href="#/register" className="npb npb-g" style={{ textDecoration: 'none' }}>
-            Donate Blood
-          </a>
-          <button type="button" className="npb npb-s" onClick={() => scrollTo(campaignsRef.current)}>
-            Contribute →
-          </button>
-        </div>
-      </nav>
-
       <div className="ticker-wrap">
         <div className="ticker-track">
           {TICKER_ITEMS.map((t) => (
@@ -406,7 +371,10 @@ export default function App() {
 
       <div className="hero">
         <div className="hero-red">
-          <div className="hero-kicker">Chiranjeevi Charitable Trust · Est. 1997</div>
+          <div className="hero-kicker">
+            <span className="hero-kicker-name">Chiranjeevi Charitable Trust</span>
+            <span className="hero-kicker-est">Est. 1997</span>
+          </div>
           <div className="hbig">
             DROP
             <br />
@@ -449,31 +417,11 @@ export default function App() {
               Charitable Trust turns love into action — across blood donation, community giving, and a legacy of care
             </p>
             <div className="hc-btns">
-              <button type="button" className="btn-ink" onClick={() => scrollTo(campaignsRef.current)}>
+              <a href="#/donate" className="btn-ink" style={{ textDecoration: 'none' }}>
                 Support a Cause
-              </button>
+              </a>
               <button type="button" className="btn-brd" onClick={() => scrollTo(worksRef.current)}>
                 See Good Works
-              </button>
-            </div>
-          </div>
-          <div className="hcc">
-            <div className="hcc-lbl">⚡ Live — Featured Campaign</div>
-            <div className="hcc-title">Thalassemia Children&apos;s Treatment Fund</div>
-            <p className="hcc-desc">24 children in HYD &amp; VJA need monthly transfusions. Every ₹500 = one session</p>
-            <div className="hcc-bar-meta">
-              <span>₹8,40,000 raised</span>
-              <span>Goal: ₹12,00,000</span>
-            </div>
-            <div className="hcc-bar">
-              <div className="hcc-fill" style={{ width: '70%' }} />
-            </div>
-            <div className="hcc-foot">
-              <div className="hcc-donors">
-                🤝 <strong>1,240</strong> donors · <strong>142</strong> days left
-              </div>
-              <button type="button" className="hcc-btn">
-                Donate Now
               </button>
             </div>
           </div>
@@ -934,7 +882,7 @@ export default function App() {
                   </div>
                   <div className={`fst ${e.s === 'open' ? 'fst-open' : e.s === 'few' ? 'fst-few' : 'fst-full'}`}>{e.sl}</div>
                   <div className="fact">
-                    <a href="#">Details →</a>
+                    <a href="#/events">Details →</a>
                   </div>
                 </div>
               ))}
@@ -1083,12 +1031,12 @@ export default function App() {
               <div className="no-trk">No tracking · No binding · No account needed</div>
             </div>
             <div className="sbtns">
-              <button type="button" className="sbtn sbtn-w">
+              <a href="#/good-works" className="sbtn sbtn-w" style={{ textDecoration: 'none' }}>
                 Share Your Story →
-              </button>
-              <button type="button" className="sbtn sbtn-gh">
+              </a>
+              <a href="#/good-works" className="sbtn sbtn-gh" style={{ textDecoration: 'none' }}>
                 Browse All Stories
-              </button>
+              </a>
             </div>
           </div>
         </Reveal>
@@ -1276,9 +1224,9 @@ export default function App() {
                 <div className="cc-donors">
                   🤝 <strong>1,240</strong> donors
                 </div>
-                <button type="button" className="cc-cta">
+                <a href="#/donate" className="cc-cta" style={{ textDecoration: 'none' }}>
                   Donate ₹500+
-                </button>
+                </a>
               </div>
             </div>
             <div className="cc">
@@ -1296,9 +1244,9 @@ export default function App() {
                 <div className="cc-donors">
                   🤝 <strong>418</strong> donors
                 </div>
-                <button type="button" className="cc-cta">
+                <a href="#/donate" className="cc-cta" style={{ textDecoration: 'none' }}>
                   Donate Now
-                </button>
+                </a>
               </div>
             </div>
             <div className="cc">
@@ -1316,9 +1264,9 @@ export default function App() {
                 <div className="cc-donors">
                   🤝 <strong>2,108</strong> donors
                 </div>
-                <button type="button" className="cc-cta">
+                <a href="#/donate" className="cc-cta" style={{ textDecoration: 'none' }}>
                   Donate Now
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -1387,9 +1335,9 @@ export default function App() {
                   onChange={(e) => setDpAmt(e.target.value)}
                 />
               </div>
-              <button type="button" className="dp-btn">
+              <a href="#/donate" className="dp-btn" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
                 Donate Securely →
-              </button>
+              </a>
               <div className="trust-r">
                 <span className="trb">🔒 SSL Secured</span>
                 <span className="trb">📄 80G Cert</span>
@@ -1420,16 +1368,16 @@ export default function App() {
             <h5>Donate</h5>
             <ul>
               <li>
-                <a href="#campaigns">Campaigns</a>
+                <a href="#/campaigns">Campaigns</a>
               </li>
               <li>
-                <a href="#campaigns">General Fund</a>
+                <a href="#/donate">General Fund</a>
               </li>
               <li>
-                <a href="#">Blood Donation</a>
+                <a href="#/blood-inventory">Blood Inventory</a>
               </li>
               <li>
-                <a href="#">Eye Pledge</a>
+                <a href="#/register">Register as Donor</a>
               </li>
             </ul>
           </div>
@@ -1437,16 +1385,16 @@ export default function App() {
             <h5>Community</h5>
             <ul>
               <li>
-                <a href="#events">Events</a>
+                <a href="#/events">Events</a>
               </li>
               <li>
-                <a href="#works">Good Works</a>
+                <a href="#/good-works">Good Works</a>
               </li>
               <li>
-                <a href="#">Share Story</a>
+                <a href="#/good-works">Share Story</a>
               </li>
               <li>
-                <a href="#leaderboard">Leaderboard</a>
+                <a href="#/donors">Leaderboard</a>
               </li>
             </ul>
           </div>
@@ -1454,16 +1402,16 @@ export default function App() {
             <h5>Trust</h5>
             <ul>
               <li>
-                <a href="#about">About CCT</a>
+                <a href="#/about">About CCT</a>
               </li>
               <li>
-                <a href="#">Annual Reports</a>
+                <a href="#/impact">Our Impact</a>
               </li>
               <li>
-                <a href="#">80G Info</a>
+                <a href="#/donate">80G Info</a>
               </li>
               <li>
-                <a href="#">Contact</a>
+                <a href="#/about">Contact</a>
               </li>
             </ul>
           </div>
@@ -1482,9 +1430,9 @@ export default function App() {
             Donate Blood
           </a>
           <div className="fdock-div" />
-          <button type="button" className="fdock-btn fdock-money" onClick={() => scrollTo(campaignsRef.current)}>
+          <a href="#/donate" className="fdock-btn fdock-money" style={{ textDecoration: 'none' }}>
             💛 Contribute
-          </button>
+          </a>
           <div className="fdock-div" />
           <button type="button" className="fdock-close" onClick={() => setDockDismissed(true)}>
             ✕

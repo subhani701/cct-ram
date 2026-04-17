@@ -200,14 +200,7 @@ export default function DonorRegistration() {
 
   if (submitted) {
     return (
-      <div className="reg-page">
-        <nav className="reg-nav">
-          <a href="#/" className="nav-logo">
-            <div className="ldot" />
-            CCT
-          </a>
-          <a href="#/" className="reg-back-link">Back to Home</a>
-        </nav>
+      <div className="reg-page" style={{ paddingTop: 62 }}>
         <div className="reg-success">
           <div className="reg-success-icon">&#10003;</div>
           <h1 className="reg-success-title">
@@ -241,15 +234,7 @@ export default function DonorRegistration() {
   }
 
   return (
-    <div className="reg-page">
-      <nav className="reg-nav">
-        <a href="#/" className="nav-logo">
-          <div className="ldot" />
-          CCT
-        </a>
-        <a href="#/" className="reg-back-link">Back to Home</a>
-      </nav>
-
+    <div className="reg-page" style={{ paddingTop: 62 }}>
       {/* Progress Bar */}
       <div className="reg-progress">
         <div className="reg-progress-inner">
@@ -375,8 +360,15 @@ export default function DonorRegistration() {
                 <div className="reg-otp-section">
                   <div className="reg-otp-verified">
                     <span className="reg-otp-verified-icon">&#10003;</span>
-                    <span>Phone verified successfully</span>
+                    <span>Phone verified — +91 {form.phone}</span>
                   </div>
+                  <button
+                    type="button"
+                    className="reg-btn reg-btn-primary reg-btn-full"
+                    onClick={() => goStep(2)}
+                  >
+                    Continue →
+                  </button>
                 </div>
               )}
             </div>
