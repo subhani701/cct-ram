@@ -186,15 +186,6 @@ export default function Donate() {
 
             <div className="don-left-divider" />
 
-            {/* Trust signals */}
-            <div className="don-trust">
-              <div className="don-trust-item">🔒 256-bit SSL encrypted payment</div>
-              <div className="don-trust-item">📄 80G tax certificate within 48 hours</div>
-              <div className="don-trust-item">✓ 100% goes to the cause — zero admin fees</div>
-            </div>
-
-            <div className="don-left-divider" />
-
             {/* Recent donors */}
             <div className="don-recent">
               <div className="don-recent-title">Others who contributed</div>

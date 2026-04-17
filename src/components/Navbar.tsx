@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import cctLogo from '../assets/cct-logo.png'
 
 const NAV_LINKS = [
   { href: '#/', label: 'Home' },
@@ -6,9 +7,9 @@ const NAV_LINKS = [
   { href: '#/good-works', label: 'Good Works' },
   { href: '#/donors', label: 'Leaderboard' },
   { href: '#/campaigns', label: 'Campaigns' },
-  { href: '#/blood-inventory', label: 'Blood Bank' },
   { href: '#/impact', label: 'Our Impact' },
   { href: '#/about', label: 'About' },
+  { href: '#/contact', label: 'Contact Us' },
 ]
 
 export default function Navbar({ dark = false }: { dark?: boolean }) {
@@ -35,8 +36,11 @@ export default function Navbar({ dark = false }: { dark?: boolean }) {
       style={{ boxShadow: shadow ? (dark ? '0 2px 20px rgba(0,0,0,.3)' : '0 2px 20px rgba(13,9,5,.06)') : 'none' }}
     >
       <a href="#/" className="nav-logo">
-        <div className="ldot" />
-        CCT
+        <img src={cctLogo} alt="CCT Logo" className="nav-logo-img" />
+        <span className="nav-logo-text">
+          <span className="nav-logo-title">CCT</span>
+          <span className="nav-logo-subtitle">Chiranjeevi Charitable Trust</span>
+        </span>
       </a>
       <div className="nav-pill-row">
         {NAV_LINKS.map(link => (

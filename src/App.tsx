@@ -7,7 +7,6 @@ import {
   FAN_EVENTS,
   type EventFilter,
   type FedEmojiFilter,
-  LEADERBOARD,
   PAST_EVENTS,
   STORIES,
   TICKER_ITEMS,
@@ -240,7 +239,6 @@ export default function App() {
   const campaignsRef = useRef<HTMLElement>(null)
   const worksRef = useRef<HTMLElement>(null)
   const urgRef = useRef<HTMLElement>(null)
-  const lbRef = useRef<HTMLDivElement>(null)
 
   const [navShadow, setNavShadow] = useState(false)
   const [dockShow, setDockShow] = useState(false)
@@ -251,8 +249,6 @@ export default function App() {
   const [fedEmoji, setFedEmoji] = useState<FedEmojiFilter>('all')
   const [fedShow, setFedShow] = useState(12)
   const [urgBars, setUrgBars] = useState(false)
-  const [lbBars, setLbBars] = useState(false)
-  const [countdown, setCountdown] = useState('')
   const [dpAmt, setDpAmt] = useState('100')
   const [amtSel, setAmtSel] = useState<string>('100')
 
@@ -290,42 +286,12 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    const tick = () => {
-      const now = new Date()
-      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59)
-      const diff = end.getTime() - now.getTime()
-      const d = Math.floor(diff / 86400000)
-      const h = Math.floor((diff % 86400000) / 3600000)
-      setCountdown(`${d}d ${String(h).padStart(2, '0')}h`)
-    }
-    tick()
-    const id = window.setInterval(tick, 60000)
-    return () => clearInterval(id)
-  }, [])
-
-  useEffect(() => {
     const root = urgRef.current
     if (!root) return
     const ro = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
           setTimeout(() => setUrgBars(true), 200)
-          ro.disconnect()
-        }
-      },
-      { threshold: 0.2 },
-    )
-    ro.observe(root)
-    return () => ro.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const root = lbRef.current
-    if (!root) return
-    const ro = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setLbBars(true)
           ro.disconnect()
         }
       },
@@ -397,9 +363,6 @@ export default function App() {
                 <div className="l">Donors</div>
               </div>
             </div>
-            <button type="button" className="hrcta" onClick={() => scrollTo(eventsRef.current)}>
-              See Events →
-            </button>
           </div>
         </div>
         <div className="hero-cream">
@@ -1085,114 +1048,6 @@ export default function App() {
           </div>
         </div>
       </div>
-
-      <section className="leaderboard" id="leaderboard">
-        <Reveal>
-          <div className="s-hrow">
-            <div>
-              <div className="s-ey">This Month</div>
-              <h2 className="s-h">
-                City <span className="sr">Leaderboard</span>
-              </h2>
-              <p style={{ fontSize: 14, color: 'var(--muted)', marginTop: 10, maxWidth: 420, lineHeight: 1.75 }}>
-                Which city is doing the most in his name? Rankings reset every month. Is yours on the board?
-              </p>
-            </div>
-            <div
-              style={{
-                background: 'var(--red-pale)',
-                border: '1.5px solid rgba(204,0,51,.2)',
-                borderRadius: 14,
-                padding: '16px 20px',
-                textAlign: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--red)',
-                  marginBottom: 4,
-                }}
-              >
-                Month Ends In
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Bricolage Grotesque',sans-serif",
-                  fontSize: 28,
-                  fontWeight: 800,
-                  color: 'var(--red)',
-                }}
-                id="countdown"
-              >
-                {countdown}
-              </div>
-            </div>
-          </div>
-        </Reveal>
-        <div className="lb-grid rev up" id="lbGrid" ref={lbRef}>
-          <div className="lb-list">
-            {LEADERBOARD.map((r, i) => (
-              <div key={r.city} className={`lb-row${i === 0 ? ' lb-top' : ''}`}>
-                <div className="lb-rank">{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</div>
-                <div className="lb-city-info">
-                  <div className="lb-city-name">{r.city}</div>
-                  <div className="lb-bar-bg">
-                    <div className="lb-bar-f" style={{ width: lbBars ? `${r.pct}%` : '0%', transitionDelay: `${i * 80}ms` }} data-pct={r.pct} />
-                  </div>
-                </div>
-                <div className="lb-units">
-                  <span className="lu">Units This Month</span>
-                  {r.units.toLocaleString('en-IN')}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="lb-side">
-            <div className="lb-stat-card">
-              <span className="lb-month">April 2026</span>
-              <AnimatedCounter target={4230} className="n" />
-              <div className="l">Total Units — All Cities</div>
-            </div>
-            <div className="lb-stat-card">
-              <span className="lb-month">Fan Clubs Active</span>
-              <AnimatedCounter target={247} className="n" />
-              <div className="l">Clubs Participating This Month</div>
-            </div>
-            <div className="lb-stat-card" style={{ background: 'var(--ink)', borderColor: 'transparent' }}>
-              <span className="lb-month" style={{ color: 'rgba(255,255,255,.4)' }}>
-                Your City Not Listed?
-              </span>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,.45)', lineHeight: 1.7, marginBottom: 14 }}>
-                Register your fan club and start tracking your impact
-              </p>
-              <button
-                type="button"
-                style={{
-                  fontFamily: "'DM Sans',sans-serif",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  padding: '10px 20px',
-                  borderRadius: 18,
-                  background: 'var(--red)',
-                  color: '#fff',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.06em',
-                  transition: 'all .2s',
-                }}
-              >
-                Register Club →
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section className="campaigns-section" id="campaigns" ref={campaignsRef}>
         <Reveal>

@@ -13,9 +13,9 @@ import About from './pages/About.tsx'
 import Donate from './pages/Donate.tsx'
 import GoodWorks from './pages/GoodWorks.tsx'
 import Impact from './pages/Impact.tsx'
+import Contact from './pages/Contact.tsx'
 
 const NO_NAVBAR_ROUTES = ['#/donate']
-const DARK_NAVBAR_ROUTES = ['#/impact']
 
 function Router() {
   const [route, setRoute] = useState(window.location.hash || '#/')
@@ -27,7 +27,6 @@ function Router() {
   }, [])
 
   const showNavbar = !NO_NAVBAR_ROUTES.includes(route)
-  const darkNavbar = DARK_NAVBAR_ROUTES.includes(route)
 
   let Page
   switch (route) {
@@ -40,13 +39,14 @@ function Router() {
     case '#/donate': Page = Donate; break
     case '#/good-works': Page = GoodWorks; break
     case '#/impact': Page = Impact; break
+    case '#/contact': Page = Contact; break
     default: Page = App
   }
 
   return (
     <>
       <CustomCursor />
-      {showNavbar && <Navbar dark={darkNavbar} />}
+      {showNavbar && <Navbar />}
       <Page />
     </>
   )

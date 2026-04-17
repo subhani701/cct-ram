@@ -10,10 +10,12 @@ export function AnimatedCounter({
   target,
   className,
   style,
+  formatter,
 }: {
   target: number
   className?: string
   style?: CSSProperties
+  formatter?: (value: number) => string
 }) {
   const [v, setV] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
@@ -50,7 +52,7 @@ export function AnimatedCounter({
 
   return (
     <div ref={ref} className={className} style={style}>
-      {formatN(v)}
+      {formatter ? formatter(v) : formatN(v)}
     </div>
   )
 }

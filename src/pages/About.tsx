@@ -32,11 +32,21 @@ const HOSPITALS = [
 ]
 
 const STATS = [
-  { target: 27, label: 'Years', suffix: '+' },
-  { target: 1200000, label: 'Units', suffix: '' },
-  { target: 4700, label: 'Lives', suffix: '' },
-  { target: 86, label: 'Hospitals', suffix: '' },
+  { target: 1200000, label: 'Blood Units Collected', icon: '🩸', suffix: '' },
+  { target: 4700, label: 'Lives Saved', icon: '♡', suffix: '+' },
+  { target: 28000, label: 'Active Donors', icon: '⚕', suffix: '+' },
+  { target: 23000000, label: 'Funds Raised', icon: '₹', suffix: '' },
 ]
+
+const formatIndian = (num: number) => {
+  const sign = num < 0 ? '-' : ''
+  const n = Math.abs(Math.round(num))
+  const s = String(n)
+  if (s.length <= 3) return `${sign}${s}`
+  const last3 = s.slice(-3)
+  const rest = s.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ',')
+  return `${sign}${rest},${last3}`
+}
 
 export default function About() {
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', message: '' })
@@ -91,8 +101,9 @@ export default function About() {
         <div className="abt-stats-row">
           {STATS.map(s => (
             <div className="abt-stat" key={s.label}>
+              <span className="abt-stat-icon" aria-hidden="true">{s.icon}</span>
               <div className="abt-stat-value-row">
-                <AnimatedCounter target={s.target} className="abt-stat-num" />
+                <AnimatedCounter target={s.target} className="abt-stat-num" formatter={formatIndian} />
                 {s.suffix && <span className="abt-stat-suffix">{s.suffix}</span>}
               </div>
               <span className="abt-stat-label">{s.label}</span>
