@@ -28,7 +28,7 @@ export function PaymentModal({ open, onClose, initialAmount, campaignName }: Pay
   const [cardNumber, setCardNumber] = useState('')
   const [cardExpiry, setCardExpiry] = useState('')
   const [cardCvv, setCardCvv] = useState('')
-  const [bank, setBank] = useState(BANKS[0])
+  const [bank, setBank] = useState<(typeof BANKS)[number]>(BANKS[0])
   const [paying, setPaying] = useState(false)
 
   // Step 3 state
@@ -334,7 +334,7 @@ export function PaymentModal({ open, onClose, initialAmount, campaignName }: Pay
                 <select
                   className="pm-select"
                   value={bank}
-                  onChange={(e) => setBank(e.target.value)}
+                  onChange={(e) => setBank(e.target.value as (typeof BANKS)[number])}
                 >
                   {BANKS.map((b) => (
                     <option key={b} value={b}>{b}</option>

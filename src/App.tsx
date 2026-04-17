@@ -234,13 +234,13 @@ function WorkCard({
 }
 
 export default function App() {
-  const { curRef, curRRef } = useCustomCursor()
+  useCustomCursor()
   const eventsRef = useRef<HTMLElement>(null)
   const campaignsRef = useRef<HTMLElement>(null)
   const worksRef = useRef<HTMLElement>(null)
   const urgRef = useRef<HTMLElement>(null)
 
-  const [navShadow, setNavShadow] = useState(false)
+  const [, setNavShadow] = useState(false)
   const [dockShow, setDockShow] = useState(false)
   const [dockDismissed, setDockDismissed] = useState(false)
   const [eventFilter, setEventFilter] = useState<EventFilter>('all')

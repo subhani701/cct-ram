@@ -26,13 +26,6 @@ const GRADIENTS = [
 
 const COVER_HEIGHTS = [140, 170, 200]
 
-const CATEGORY_EMOJI: Record<StoryCategory, string> = {
-  'Blood Drives': '🩸',
-  'Fundraisers': '💛',
-  'Volunteering': '🌱',
-  'Milestones': '🏅',
-}
-
 const ALL_STORIES: Story[] = [
   {
     id: 1, category: 'Blood Drives', emoji: '🩸',
