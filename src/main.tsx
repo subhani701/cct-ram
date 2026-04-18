@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import CustomCursor from './components/CustomCursor.tsx'
 import Navbar from './components/Navbar.tsx'
+import { PageErrorBoundary } from './components/PageErrorBoundary.tsx'
 import App from './App.tsx'
 import DonorRegistration from './pages/DonorRegistration.tsx'
 import Campaigns from './pages/Campaigns.tsx'
@@ -14,22 +15,31 @@ import Donate from './pages/Donate.tsx'
 import GoodWorks from './pages/GoodWorks.tsx'
 import Impact from './pages/Impact.tsx'
 import Contact from './pages/Contact.tsx'
+import { normalizeHash, routesMatch } from './utils/hashRoute.ts'
 
 const NO_NAVBAR_ROUTES = ['#/donate']
 
-function Router() {
-  const [route, setRoute] = useState(window.location.hash || '#/')
+export function Router() {
+  const [route, setRoute] = useState(() => normalizeHash(window.location.hash))
 
   useEffect(() => {
-    const onHash = () => setRoute(window.location.hash || '#/')
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    const sync = () => setRoute(normalizeHash(window.location.hash))
+    window.addEventListener('hashchange', sync)
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) sync()
+    }
+    window.addEventListener('pageshow', onPageShow)
+    return () => {
+      window.removeEventListener('hashchange', sync)
+      window.removeEventListener('pageshow', onPageShow)
+    }
   }, [])
 
-  const showNavbar = !NO_NAVBAR_ROUTES.includes(route)
+  const path = normalizeHash(route).toLowerCase()
+  const showNavbar = !NO_NAVBAR_ROUTES.some(r => routesMatch(path, r))
 
   let Page
-  switch (route) {
+  switch (path) {
     case '#/register': Page = DonorRegistration; break
     case '#/campaigns': Page = Campaigns; break
     case '#/blood-inventory': Page = BloodInventory; break
@@ -47,7 +57,9 @@ function Router() {
     <>
       <CustomCursor />
       {showNavbar && <Navbar />}
-      <Page />
+      <PageErrorBoundary key={path}>
+        <Page />
+      </PageErrorBoundary>
     </>
   )
 }

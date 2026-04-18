@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { SiteFooter } from '../components/SiteFooter'
 
 type PaymentMethod = 'upi' | 'card' | 'netbanking' | ''
 
@@ -267,12 +268,7 @@ export default function DonatePage() {
           </div>
         </div>
 
-        <footer className="don-footer">
-          <div className="don-footer-inner">
-            <span>&copy; 2026 Chiranjeevi Charitable Trust &middot; Hyderabad</span>
-            <span>Built by <strong>VoltusWave</strong></span>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     )
   }
@@ -645,12 +641,7 @@ export default function DonatePage() {
         </div>
       </div>
 
-      <footer className="don-footer">
-        <div className="don-footer-inner">
-          <span>&copy; 2026 Chiranjeevi Charitable Trust &middot; Hyderabad</span>
-          <span>Built by <strong>VoltusWave</strong></span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

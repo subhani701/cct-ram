@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Reveal } from '../components/Reveal'
 import { AnimatedCounter } from '../components/AnimatedCounter'
+import { SiteFooter } from '../components/SiteFooter'
 
 type Category = 'All' | 'Equipment' | 'Patient Support' | 'Infrastructure' | 'Emergency'
 
@@ -280,7 +281,7 @@ export default function Campaigns() {
     const pct = getPercent(selected.raised, selected.goal)
     const catColor = CATEGORY_COLORS[selected.category]
     return (
-      <div className="camp-page" style={{ paddingTop: 62 }}>
+      <div className="camp-page" style={{ paddingTop: 'var(--nav-h)' }}>
         <div className="camp-detail">
           <button className="camp-back-btn" onClick={() => setSelectedId(null)}>← All Campaigns</button>
 
@@ -405,16 +406,14 @@ export default function Campaigns() {
           </div>
         </div>
 
-        <footer className="camp-footer">
-          <p>© 2026 CCT · Hyderabad | Built by VoltusWave</p>
-        </footer>
+        <SiteFooter />
       </div>
     )
   }
 
   /* ─── LISTING VIEW ─── */
   return (
-    <div className="camp-page" style={{ paddingTop: 62 }}>
+    <div className="camp-page" style={{ paddingTop: 'var(--nav-h)' }}>
       <header className="camp-header">
         <Reveal>
           <span className="camp-eyebrow">Fund a Cause</span>
@@ -509,9 +508,7 @@ export default function Campaigns() {
         </div>
       </div>
 
-      <footer className="camp-footer">
-        <p>© 2026 CCT · Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { SiteFooter } from '../components/SiteFooter'
 
 interface DonorForm {
   fullName: string
@@ -218,12 +219,7 @@ export default function ContributePage() {
             <a href="#/register" className="don-btn don-btn-back">Register as Blood Donor</a>
           </div>
         </div>
-        <footer className="don-footer">
-          <div className="don-footer-inner">
-            <span>&copy; 2026 Chiranjeevi Charitable Trust &middot; Hyderabad</span>
-            <span>Built by <strong>VoltusWave</strong></span>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     )
   }
@@ -635,12 +631,7 @@ export default function ContributePage() {
         </div>
       </div>
 
-      <footer className="don-footer">
-        <div className="don-footer-inner">
-          <span>&copy; 2026 Chiranjeevi Charitable Trust &middot; Hyderabad</span>
-          <span>Built by <strong>VoltusWave</strong></span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

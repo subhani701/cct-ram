@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatedCounter } from './components/AnimatedCounter'
 import { Reveal } from './components/Reveal'
+import { SiteFooter } from './components/SiteFooter'
 import {
   BLOOD_URGENCY,
   DONORS,
@@ -384,7 +385,7 @@ export default function App() {
                 Support a Cause
               </a>
               <button type="button" className="btn-brd" onClick={() => scrollTo(worksRef.current)}>
-                See Good Works
+                See Stories
               </button>
             </div>
           </div>
@@ -1204,80 +1205,7 @@ export default function App() {
         </Reveal>
       </section>
 
-      <footer>
-        <div className="fg">
-          <div>
-            <div className="fb-name">
-              <div className="ldot" />
-              CCT
-            </div>
-            <p className="fb-desc">Chiranjeevi Charitable Trust — turning the love of millions into a force for good</p>
-            <div className="fb-soc">
-              <div className="fsc">𝕏</div>
-              <div className="fsc">📸</div>
-              <div className="fsc">▶</div>
-              <div className="fsc">💬</div>
-            </div>
-          </div>
-          <div>
-            <h5>Donate</h5>
-            <ul>
-              <li>
-                <a href="#/campaigns">Campaigns</a>
-              </li>
-              <li>
-                <a href="#/donate">General Fund</a>
-              </li>
-              <li>
-                <a href="#/blood-inventory">Blood Inventory</a>
-              </li>
-              <li>
-                <a href="#/register">Register as Donor</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h5>Community</h5>
-            <ul>
-              <li>
-                <a href="#/events">Events</a>
-              </li>
-              <li>
-                <a href="#/good-works">Good Works</a>
-              </li>
-              <li>
-                <a href="#/good-works">Share Story</a>
-              </li>
-              <li>
-                <a href="#/donors">Leaderboard</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h5>Trust</h5>
-            <ul>
-              <li>
-                <a href="#/about">About CCT</a>
-              </li>
-              <li>
-                <a href="#/impact">Our Impact</a>
-              </li>
-              <li>
-                <a href="#/donate">80G Info</a>
-              </li>
-              <li>
-                <a href="#/about">Contact</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="fb-bot">
-          <span>© 2026 Chiranjeevi Charitable Trust · Hyderabad</span>
-          <span>
-            No cookies · No tracking · Just goodness · Built by <strong>VoltusWave</strong>
-          </span>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {!dockDismissed ? (
         <div className={`fdock${dockShow ? ' show' : ''}`} id="fdock">

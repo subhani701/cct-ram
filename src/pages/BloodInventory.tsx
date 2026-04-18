@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { SiteFooter } from '../components/SiteFooter'
 
 type BloodType = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-'
 type FilterBG = BloodType | 'All'
@@ -126,7 +127,7 @@ export default function BloodInventory() {
   }
 
   return (
-    <div className="inv-page" style={{ paddingTop: 62 }}>
+    <div className="inv-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* Header */}
       <header className="inv-header">
         <h1 className="inv-heading">Blood Bank <span className="inv-heading-accent">Inventory</span></h1>
@@ -286,9 +287,7 @@ export default function BloodInventory() {
       </div>
 
       {/* Footer */}
-      <footer className="inv-footer">
-        <p>© 2026 CCT · Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

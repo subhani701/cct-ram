@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import cctLogo from '../assets/cct-logo.png'
+import { normalizeHash, routesMatch } from '../utils/hashRoute.ts'
 
 const NAV_LINKS = [
   { href: '#/', label: 'Home' },
   { href: '#/events', label: 'Events' },
-  { href: '#/good-works', label: 'Good Works' },
+  { href: '#/good-works', label: 'Stories' },
   { href: '#/donors', label: 'Leaderboard' },
   { href: '#/campaigns', label: 'Campaigns' },
   { href: '#/impact', label: 'Our Impact' },
@@ -14,7 +15,7 @@ const NAV_LINKS = [
 
 export default function Navbar({ dark = false }: { dark?: boolean }) {
   const [shadow, setShadow] = useState(false)
-  const [route, setRoute] = useState(window.location.hash || '#/')
+  const [route, setRoute] = useState(() => normalizeHash(window.location.hash))
 
   useEffect(() => {
     const onScroll = () => setShadow(window.scrollY > 10)
@@ -24,9 +25,16 @@ export default function Navbar({ dark = false }: { dark?: boolean }) {
   }, [])
 
   useEffect(() => {
-    const onHash = () => setRoute(window.location.hash || '#/')
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    const sync = () => setRoute(normalizeHash(window.location.hash))
+    window.addEventListener('hashchange', sync)
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) sync()
+    }
+    window.addEventListener('pageshow', onPageShow)
+    return () => {
+      window.removeEventListener('hashchange', sync)
+      window.removeEventListener('pageshow', onPageShow)
+    }
   }, [])
 
   return (
@@ -46,7 +54,7 @@ export default function Navbar({ dark = false }: { dark?: boolean }) {
         {NAV_LINKS.map(link => (
           <a
             key={link.href}
-            className={`npl${route === link.href ? ' on' : ''}`}
+            className={`npl${routesMatch(route, link.href) ? ' on' : ''}`}
             href={link.href}
           >
             {link.label}

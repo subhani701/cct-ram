@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Reveal } from '../components/Reveal'
+import { SiteFooter } from '../components/SiteFooter'
 
 type StoryCategory = 'Blood Drives' | 'Fundraisers' | 'Volunteering' | 'Milestones'
 type FilterCat = 'All' | StoryCategory
@@ -149,12 +150,12 @@ export default function GoodWorks() {
   }
 
   return (
-    <div className="gw-page" style={{ paddingTop: 62 }}>
+    <div className="gw-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* Header */}
       <header className="gw-header">
         <Reveal>
           <span className="gw-eyebrow">Community</span>
-          <h1 className="gw-heading">Good Works</h1>
+          <h1 className="gw-heading">Stories</h1>
           <p className="gw-subtitle">Stories of impact from the CCT community</p>
           <button className="gw-share-btn" onClick={() => setShowModal(true)}>
             Share Your Story &rarr;
@@ -286,9 +287,7 @@ export default function GoodWorks() {
         </div>
       )}
 
-      <footer className="gw-footer">
-        <p>&copy; 2026 CCT &middot; Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

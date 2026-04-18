@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatedCounter } from '../components/AnimatedCounter'
+import { SiteFooter } from '../components/SiteFooter'
 
 interface Trustee {
   name: string
@@ -68,7 +69,7 @@ export default function About() {
   }
 
   return (
-    <div className="abt-page" style={{ paddingTop: 62 }}>
+    <div className="abt-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* HERO */}
       <section className="abt-hero">
         <div className="abt-hero-grid">
@@ -223,9 +224,7 @@ export default function About() {
       </section>
 
       {/* FOOTER */}
-      <footer className="abt-footer">
-        <p>&copy; 2026 CCT &middot; Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

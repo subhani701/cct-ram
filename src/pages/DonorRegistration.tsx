@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { SiteFooter } from '../components/SiteFooter'
 
 type Gender = 'male' | 'female' | 'other' | ''
 type BloodType = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-' | ''
@@ -200,7 +201,7 @@ export default function DonorRegistration() {
 
   if (submitted) {
     return (
-      <div className="reg-page" style={{ paddingTop: 62 }}>
+      <div className="reg-page" style={{ paddingTop: 'var(--nav-h)' }}>
         <div className="reg-success">
           <div className="reg-success-icon">&#10003;</div>
           <h1 className="reg-success-title">
@@ -234,7 +235,7 @@ export default function DonorRegistration() {
   }
 
   return (
-    <div className="reg-page" style={{ paddingTop: 62 }}>
+    <div className="reg-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* Progress Bar */}
       <div className="reg-progress">
         <div className="reg-progress-inner">
@@ -684,12 +685,7 @@ export default function DonorRegistration() {
         </div>
       </div>
 
-      <footer className="reg-footer">
-        <div className="reg-footer-inner">
-          <span>&copy; 2026 Chiranjeevi Charitable Trust &middot; Hyderabad</span>
-          <span>Built by <strong>VoltusWave</strong></span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

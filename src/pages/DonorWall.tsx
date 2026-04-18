@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
+import { SiteFooter } from '../components/SiteFooter'
 
 type Tier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum'
-type LeaderTab = 'city' | 'individual' | 'fanclub'
+type LeaderTab = 'area' | 'individual' | 'fanclub'
 
 interface DonorEntry {
   name: string
   bloodType: string
-  city: string
+  /** Hyderabad locality / neighborhood */
+  area: string
   timeAgo: string
   donationCount: number
   tier: Tier
@@ -22,71 +24,72 @@ const TIER_COLORS: Record<Tier, string> = {
 const AVATAR_COLORS = ['#FDEEF2', '#EFF6FF', '#FEF3D7', '#EDFFF4', '#FFF3E0']
 
 const DONORS: DonorEntry[] = [
-  { name: 'Ravi Kumar', bloodType: 'A+', city: 'Hyderabad', timeAgo: '2h ago', donationCount: 4, tier: 'Silver' },
-  { name: 'Lakshmi Devi', bloodType: 'O+', city: 'Vijayawada', timeAgo: '3h ago', donationCount: 7, tier: 'Gold' },
-  { name: 'Venkat Rao', bloodType: 'B+', city: 'Tirupati', timeAgo: '4h ago', donationCount: 2, tier: 'Bronze' },
-  { name: 'Priya Reddy', bloodType: 'AB+', city: 'Hyderabad', timeAgo: '5h ago', donationCount: 12, tier: 'Platinum' },
-  { name: 'Mahesh B', bloodType: 'A-', city: 'Guntur', timeAgo: '6h ago', donationCount: 1, tier: 'Bronze' },
-  { name: 'Swathi N', bloodType: 'O-', city: 'Warangal', timeAgo: '7h ago', donationCount: 3, tier: 'Silver' },
-  { name: 'Arjun S', bloodType: 'B-', city: 'Kakinada', timeAgo: '8h ago', donationCount: 5, tier: 'Gold' },
-  { name: 'Divya T', bloodType: 'O+', city: 'Nellore', timeAgo: '9h ago', donationCount: 2, tier: 'Bronze' },
-  { name: 'Kiran R', bloodType: 'A+', city: 'Vizag', timeAgo: '10h ago', donationCount: 8, tier: 'Silver' },
-  { name: 'Ananya P', bloodType: 'AB-', city: 'Kurnool', timeAgo: '11h ago', donationCount: 1, tier: 'Bronze' },
-  { name: 'Srinivas Rao', bloodType: 'O+', city: 'Hyderabad', timeAgo: '12h ago', donationCount: 9, tier: 'Platinum' },
-  { name: 'Deepika C', bloodType: 'B+', city: 'Vijayawada', timeAgo: '13h ago', donationCount: 3, tier: 'Silver' },
-  { name: 'Ramesh N', bloodType: 'A-', city: 'Tirupati', timeAgo: '14h ago', donationCount: 6, tier: 'Gold' },
-  { name: 'Krishna M', bloodType: 'AB+', city: 'Guntur', timeAgo: '15h ago', donationCount: 4, tier: 'Silver' },
-  { name: 'Bharathi D', bloodType: 'O-', city: 'Warangal', timeAgo: '16h ago', donationCount: 10, tier: 'Platinum' },
-  { name: 'Nagarjuna K', bloodType: 'B+', city: 'Kakinada', timeAgo: '17h ago', donationCount: 2, tier: 'Bronze' },
-  { name: 'Kavitha R', bloodType: 'A+', city: 'Nellore', timeAgo: '18h ago', donationCount: 5, tier: 'Gold' },
-  { name: 'Prasad V', bloodType: 'O+', city: 'Vizag', timeAgo: '19h ago', donationCount: 7, tier: 'Gold' },
-  { name: 'Sujatha Rao', bloodType: 'AB-', city: 'Kurnool', timeAgo: '20h ago', donationCount: 3, tier: 'Silver' },
-  { name: 'Gopal Reddy', bloodType: 'B-', city: 'Hyderabad', timeAgo: '21h ago', donationCount: 11, tier: 'Platinum' },
+  { name: 'Ravi Kumar', bloodType: 'A+', area: 'Banjara Hills', timeAgo: '2h ago', donationCount: 4, tier: 'Silver' },
+  { name: 'Lakshmi Devi', bloodType: 'O+', area: 'Secunderabad', timeAgo: '3h ago', donationCount: 7, tier: 'Gold' },
+  { name: 'Venkat Rao', bloodType: 'B+', area: 'Film Nagar', timeAgo: '4h ago', donationCount: 2, tier: 'Bronze' },
+  { name: 'Priya Reddy', bloodType: 'AB+', area: 'Jubilee Hills', timeAgo: '5h ago', donationCount: 12, tier: 'Platinum' },
+  { name: 'Mahesh B', bloodType: 'A-', area: 'Kukatpally', timeAgo: '6h ago', donationCount: 1, tier: 'Bronze' },
+  { name: 'Swathi N', bloodType: 'O-', area: 'Madhapur', timeAgo: '7h ago', donationCount: 3, tier: 'Silver' },
+  { name: 'Arjun S', bloodType: 'B-', area: 'Gachibowli', timeAgo: '8h ago', donationCount: 5, tier: 'Gold' },
+  { name: 'Divya T', bloodType: 'O+', area: 'Begumpet', timeAgo: '9h ago', donationCount: 2, tier: 'Bronze' },
+  { name: 'Kiran R', bloodType: 'A+', area: 'HITEC City', timeAgo: '10h ago', donationCount: 8, tier: 'Silver' },
+  { name: 'Ananya P', bloodType: 'AB-', area: 'Somajiguda', timeAgo: '11h ago', donationCount: 1, tier: 'Bronze' },
+  { name: 'Srinivas Rao', bloodType: 'O+', area: 'Kondapur', timeAgo: '12h ago', donationCount: 9, tier: 'Platinum' },
+  { name: 'Deepika C', bloodType: 'B+', area: 'Ameerpet', timeAgo: '13h ago', donationCount: 3, tier: 'Silver' },
+  { name: 'Ramesh N', bloodType: 'A-', area: 'LB Nagar', timeAgo: '14h ago', donationCount: 6, tier: 'Gold' },
+  { name: 'Krishna M', bloodType: 'AB+', area: 'Dilsukhnagar', timeAgo: '15h ago', donationCount: 4, tier: 'Silver' },
+  { name: 'Bharathi D', bloodType: 'O-', area: 'Uppal', timeAgo: '16h ago', donationCount: 10, tier: 'Platinum' },
+  { name: 'Nagarjuna K', bloodType: 'B+', area: 'Miyapur', timeAgo: '17h ago', donationCount: 2, tier: 'Bronze' },
+  { name: 'Kavitha R', bloodType: 'A+', area: 'Tolichowki', timeAgo: '18h ago', donationCount: 5, tier: 'Gold' },
+  { name: 'Prasad V', bloodType: 'O+', area: 'Nacharam', timeAgo: '19h ago', donationCount: 7, tier: 'Gold' },
+  { name: 'Sujatha Rao', bloodType: 'AB-', area: 'Malakpet', timeAgo: '20h ago', donationCount: 3, tier: 'Silver' },
+  { name: 'Gopal Reddy', bloodType: 'B-', area: 'Manikonda', timeAgo: '21h ago', donationCount: 11, tier: 'Platinum' },
 ]
 
 const LIVE_DONORS: DonorEntry[] = [
-  { name: 'Padma Kumari', bloodType: 'O+', city: 'Hyderabad', timeAgo: 'Just now', donationCount: 6, tier: 'Gold' },
-  { name: 'Anil Prasad', bloodType: 'B+', city: 'Vijayawada', timeAgo: 'Just now', donationCount: 3, tier: 'Silver' },
-  { name: 'Meena K', bloodType: 'A-', city: 'Tirupati', timeAgo: 'Just now', donationCount: 1, tier: 'Bronze' },
-  { name: 'Suresh V', bloodType: 'AB+', city: 'Guntur', timeAgo: 'Just now', donationCount: 8, tier: 'Platinum' },
-  { name: 'Rajesh Kumar', bloodType: 'O-', city: 'Warangal', timeAgo: 'Just now', donationCount: 5, tier: 'Gold' },
+  { name: 'Padma Kumari', bloodType: 'O+', area: 'Khairatabad', timeAgo: 'Just now', donationCount: 6, tier: 'Gold' },
+  { name: 'Anil Prasad', bloodType: 'B+', area: 'Jubilee Hills', timeAgo: 'Just now', donationCount: 3, tier: 'Silver' },
+  { name: 'Meena K', bloodType: 'A-', area: 'Secunderabad', timeAgo: 'Just now', donationCount: 1, tier: 'Bronze' },
+  { name: 'Suresh V', bloodType: 'AB+', area: 'Gachibowli', timeAgo: 'Just now', donationCount: 8, tier: 'Platinum' },
+  { name: 'Rajesh Kumar', bloodType: 'O-', area: 'Madhapur', timeAgo: 'Just now', donationCount: 5, tier: 'Gold' },
 ]
 
-const CITY_LEADERS = [
-  { city: 'Hyderabad', donations: 1240, funds: '₹18.5L', rank: 1 },
-  { city: 'Vijayawada', donations: 890, funds: '₹12.1L', rank: 2 },
-  { city: 'Tirupati', donations: 720, funds: '₹9.8L', rank: 3 },
-  { city: 'Guntur', donations: 580, funds: '₹7.2L', rank: 4 },
-  { city: 'Visakhapatnam', donations: 520, funds: '₹6.8L', rank: 5 },
-  { city: 'Warangal', donations: 340, funds: '₹4.5L', rank: 6 },
-  { city: 'Kakinada', donations: 280, funds: '₹3.6L', rank: 7 },
-  { city: 'Nellore', donations: 210, funds: '₹2.8L', rank: 8 },
-  { city: 'Kurnool', donations: 180, funds: '₹2.2L', rank: 9 },
-  { city: 'Rajahmundry', donations: 150, funds: '₹1.9L', rank: 10 },
+/** Monthly leaderboard: Hyderabad neighborhoods & corridors */
+const HYDERABAD_AREA_LEADERS = [
+  { area: 'Jubilee Hills', donations: 468, funds: '₹6.8L', rank: 1 },
+  { area: 'Gachibowli', donations: 412, funds: '₹5.9L', rank: 2 },
+  { area: 'Secunderabad', donations: 395, funds: '₹5.4L', rank: 3 },
+  { area: 'Banjara Hills', donations: 356, funds: '₹4.9L', rank: 4 },
+  { area: 'Madhapur', donations: 318, funds: '₹4.2L', rank: 5 },
+  { area: 'Kukatpally', donations: 289, funds: '₹3.8L', rank: 6 },
+  { area: 'HITEC City', donations: 265, funds: '₹3.5L', rank: 7 },
+  { area: 'Kondapur', donations: 241, funds: '₹3.1L', rank: 8 },
+  { area: 'Dilsukhnagar', donations: 198, funds: '₹2.6L', rank: 9 },
+  { area: 'Uppal', donations: 172, funds: '₹2.2L', rank: 10 },
 ]
 
 const INDIVIDUAL_LEADERS = [
-  { name: 'Venkat Rao', tier: 'Platinum' as Tier, credits: 4800, donations: 48, city: 'Guntur' },
-  { name: 'Mahesh Babu', tier: 'Platinum' as Tier, credits: 4200, donations: 42, city: 'Hyderabad' },
-  { name: 'Gopal Reddy', tier: 'Platinum' as Tier, credits: 3900, donations: 39, city: 'Hyderabad' },
-  { name: 'Srinivas Rao', tier: 'Platinum' as Tier, credits: 3600, donations: 36, city: 'Hyderabad' },
-  { name: 'Anitha Reddy', tier: 'Gold' as Tier, credits: 3200, donations: 32, city: 'Tirupati' },
-  { name: 'Padma Kumari', tier: 'Gold' as Tier, credits: 2800, donations: 28, city: 'Kurnool' },
-  { name: 'Anil Prasad', tier: 'Gold' as Tier, credits: 2400, donations: 24, city: 'Kakinada' },
-  { name: 'Suresh Varma', tier: 'Silver' as Tier, credits: 2000, donations: 20, city: 'Warangal' },
-  { name: 'Rajesh Kumar', tier: 'Silver' as Tier, credits: 1800, donations: 18, city: 'Visakhapatnam' },
-  { name: 'Krishna Murthy', tier: 'Silver' as Tier, credits: 1500, donations: 15, city: 'Hyderabad' },
+  { name: 'Venkat Rao', tier: 'Platinum' as Tier, credits: 4800, donations: 48, area: 'Film Nagar' },
+  { name: 'Mahesh Babu', tier: 'Platinum' as Tier, credits: 4200, donations: 42, area: 'Jubilee Hills' },
+  { name: 'Gopal Reddy', tier: 'Platinum' as Tier, credits: 3900, donations: 39, area: 'Banjara Hills' },
+  { name: 'Srinivas Rao', tier: 'Platinum' as Tier, credits: 3600, donations: 36, area: 'Gachibowli' },
+  { name: 'Anitha Reddy', tier: 'Gold' as Tier, credits: 3200, donations: 32, area: 'Secunderabad' },
+  { name: 'Padma Kumari', tier: 'Gold' as Tier, credits: 2800, donations: 28, area: 'Khairatabad' },
+  { name: 'Anil Prasad', tier: 'Gold' as Tier, credits: 2400, donations: 24, area: 'Madhapur' },
+  { name: 'Suresh Varma', tier: 'Silver' as Tier, credits: 2000, donations: 20, area: 'Kukatpally' },
+  { name: 'Rajesh Kumar', tier: 'Silver' as Tier, credits: 1800, donations: 18, area: 'HITEC City' },
+  { name: 'Krishna Murthy', tier: 'Silver' as Tier, credits: 1500, donations: 15, area: 'Kondapur' },
 ]
 
 const FAN_CLUBS = [
-  { name: 'Mega Star Fans — Hyderabad', events: 42, donations: 3200, members: 1800 },
-  { name: 'Mega Star Fans — Tirupati', events: 38, donations: 2800, members: 1500 },
-  { name: 'Mega Star Fans — Vijayawada', events: 35, donations: 2400, members: 1200 },
-  { name: 'Chiru Youth Brigade — Guntur', events: 28, donations: 1900, members: 950 },
-  { name: 'Blood Warriors — Visakhapatnam', events: 25, donations: 1600, members: 800 },
-  { name: 'CCT Volunteers — Warangal', events: 20, donations: 1200, members: 600 },
-  { name: 'Red Drop Society — Kakinada', events: 18, donations: 980, members: 450 },
-  { name: 'Life Savers Club — Nellore', events: 15, donations: 750, members: 380 },
+  { name: 'Mega Star Fans — Jubilee Hills & Banjara', events: 42, donations: 890, members: 620 },
+  { name: 'Mega Star Fans — Gachibowli & HITEC', events: 38, donations: 756, members: 540 },
+  { name: 'Chiru Youth Brigade — Secunderabad', events: 35, donations: 612, members: 480 },
+  { name: 'Blood Warriors — Madhapur & Kondapur', events: 28, donations: 498, members: 410 },
+  { name: 'CCT Volunteers — Kukatpally & Miyapur', events: 25, donations: 445, members: 360 },
+  { name: 'Red Drop Society — Dilsukhnagar & LB Nagar', events: 22, donations: 392, members: 310 },
+  { name: 'Life Savers Club — Uppal & Nacharam', events: 18, donations: 286, members: 245 },
+  { name: 'Mega Star Fans — Old City & Charminar', events: 15, donations: 228, members: 198 },
 ]
 
 const MONTHS = [
@@ -96,7 +99,9 @@ const MONTHS = [
 ]
 
 function getInitials(name: string) {
-  return name.split(' ').map(w => w[0]).join('').slice(0, 2)
+  const parts = name.split(/\s+/).filter(Boolean)
+  const letters = parts.map(w => w[0]!).join('')
+  return (letters.slice(0, 2) || '?').toUpperCase()
 }
 
 function getOrdinal(n: number) {
@@ -114,16 +119,19 @@ function getAvatarTextColor(bg: string) {
 export default function DonorWall() {
   const [visibleCount, setVisibleCount] = useState(10)
   const [liveFeed, setLiveFeed] = useState<DonorEntry[]>([])
-  const [leaderTab, setLeaderTab] = useState<LeaderTab>('city')
+  const [leaderTab, setLeaderTab] = useState<LeaderTab>('area')
   const [monthIdx, setMonthIdx] = useState(3) // April 2026
   const liveIdx = useRef(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (liveIdx.current < LIVE_DONORS.length) {
-        setLiveFeed(prev => [LIVE_DONORS[liveIdx.current], ...prev])
-        liveIdx.current++
+      if (liveIdx.current >= LIVE_DONORS.length) {
+        clearInterval(interval)
+        return
       }
+      const next = LIVE_DONORS[liveIdx.current]
+      liveIdx.current += 1
+      setLiveFeed(prev => [next, ...prev])
     }, 8000)
     return () => clearInterval(interval)
   }, [])
@@ -135,10 +143,10 @@ export default function DonorWall() {
   const nextMonth = () => setMonthIdx(i => Math.min(MONTHS.length - 1, i + 1))
 
   return (
-    <div className="dw2-page" style={{ paddingTop: 62 }}>
+    <div className="dw2-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* ── HEADER ── */}
       <header className="dw2-hero">
-        <span className="dw2-eyebrow">Our Heroes</span>
+        <span className="dw2-eyebrow">Community Recognition</span>
         <h1 className="dw2-heading">Wall of <span className="dw2-heading-accent">Heroes</span></h1>
         <p className="dw2-subtitle">Every donation writes a story of hope</p>
       </header>
@@ -147,25 +155,24 @@ export default function DonorWall() {
       <div className="dw2-main">
         {/* LEFT — DONOR FEED */}
         <section className="dw2-feed-col">
-          <div className="dw2-live-indicator">
-            <span className="dw2-live-dot" />
-            <span className="dw2-live-text">Live</span>
-          </div>
-
           <div className="dw2-feed">
             {visibleDonors.map((d, i) => {
               const isNew = i < liveFeed.length
-              const avatarBg = AVATAR_COLORS[d.name.charCodeAt(0) % AVATAR_COLORS.length]
+              const ci = Math.abs(d.name.charCodeAt(0) || 0) % AVATAR_COLORS.length
+              const avatarBg = AVATAR_COLORS[ci]
               const avatarTxt = getAvatarTextColor(avatarBg)
               return (
-                <div key={`${d.name}-${i}`} className={`dw2-donor-card${isNew ? ' dw2-new' : ''}`}>
+                <div
+                  key={`${d.name}|${d.bloodType}|${d.timeAgo}|${d.area}|${i}`}
+                  className={`dw2-donor-card${isNew ? ' dw2-new' : ''}`}
+                >
                   <div className="dw2-donor-avatar" style={{ background: avatarBg, color: avatarTxt }}>
                     {getInitials(d.name)}
                   </div>
                   <div className="dw2-donor-info">
                     <div className="dw2-donor-top">
                       <span className="dw2-donor-name">{d.name}</span>
-                      <span className="dw2-donor-city">📍 {d.city}</span>
+                      <span className="dw2-donor-city">📍 {d.area}</span>
                     </div>
                     <div className="dw2-donor-bottom">
                       <span className="dw2-blood-badge">{d.bloodType}</span>
@@ -193,52 +200,53 @@ export default function DonorWall() {
         {/* RIGHT — LEADERBOARD */}
         <section className="dw2-leader-col">
           <div className="dw2-leader-tabs">
-            {(['city', 'individual', 'fanclub'] as LeaderTab[]).map(tab => (
+            {(['area', 'individual', 'fanclub'] as LeaderTab[]).map(tab => (
               <button
                 key={tab}
                 className={`dw2-tab${leaderTab === tab ? ' dw2-tab-active' : ''}`}
                 onClick={() => setLeaderTab(tab)}
               >
-                {tab === 'city' ? 'City' : tab === 'individual' ? 'Individual' : 'Fan Club'}
+                {tab === 'area' ? 'Area' : tab === 'individual' ? 'Individual' : 'Fan Club'}
               </button>
             ))}
           </div>
 
-          {/* ── CITY TAB ── */}
-          {leaderTab === 'city' && (
+          {/* ── HYDERABAD AREAS TAB ── */}
+          {leaderTab === 'area' && (
             <div className="dw2-city-board">
               <div className="dw2-month-selector">
                 <button className="dw2-month-btn" onClick={prevMonth} disabled={monthIdx === 0}>←</button>
                 <span className="dw2-month-label">{MONTHS[monthIdx]}</span>
                 <button className="dw2-month-btn" onClick={nextMonth} disabled={monthIdx === MONTHS.length - 1}>→</button>
               </div>
+              <p className="dw2-area-hint">Top neighborhoods · Greater Hyderabad</p>
 
               <div className="dw2-podium">
                 {/* 2nd place */}
                 <div className="dw2-podium-block dw2-podium-2">
                   <div className="dw2-podium-medal">🥈</div>
-                  <div className="dw2-podium-city">{CITY_LEADERS[1].city}</div>
-                  <div className="dw2-podium-count">{CITY_LEADERS[1].donations.toLocaleString('en-IN')}</div>
+                  <div className="dw2-podium-city">{HYDERABAD_AREA_LEADERS[1].area}</div>
+                  <div className="dw2-podium-count">{HYDERABAD_AREA_LEADERS[1].donations.toLocaleString('en-IN')}</div>
                 </div>
                 {/* 1st place */}
                 <div className="dw2-podium-block dw2-podium-1">
                   <div className="dw2-podium-medal">🥇</div>
-                  <div className="dw2-podium-city">{CITY_LEADERS[0].city}</div>
-                  <div className="dw2-podium-count">{CITY_LEADERS[0].donations.toLocaleString('en-IN')}</div>
+                  <div className="dw2-podium-city">{HYDERABAD_AREA_LEADERS[0].area}</div>
+                  <div className="dw2-podium-count">{HYDERABAD_AREA_LEADERS[0].donations.toLocaleString('en-IN')}</div>
                 </div>
                 {/* 3rd place */}
                 <div className="dw2-podium-block dw2-podium-3">
                   <div className="dw2-podium-medal">🥉</div>
-                  <div className="dw2-podium-city">{CITY_LEADERS[2].city}</div>
-                  <div className="dw2-podium-count">{CITY_LEADERS[2].donations.toLocaleString('en-IN')}</div>
+                  <div className="dw2-podium-city">{HYDERABAD_AREA_LEADERS[2].area}</div>
+                  <div className="dw2-podium-count">{HYDERABAD_AREA_LEADERS[2].donations.toLocaleString('en-IN')}</div>
                 </div>
               </div>
 
               <div className="dw2-rank-list">
-                {CITY_LEADERS.slice(3).map(c => (
+                {HYDERABAD_AREA_LEADERS.slice(3).map(c => (
                   <div key={c.rank} className="dw2-rank-row">
                     <span className="dw2-rank-num">{c.rank}</span>
-                    <span className="dw2-rank-name">{c.city}</span>
+                    <span className="dw2-rank-name">{c.area}</span>
                     <span className="dw2-rank-stat">{c.donations.toLocaleString('en-IN')} donations</span>
                     <span className="dw2-rank-funds">{c.funds}</span>
                   </div>
@@ -271,7 +279,7 @@ export default function DonorWall() {
                         <span>{d.credits.toLocaleString('en-IN')} credits</span>
                         <span>{d.donations} donations</span>
                       </div>
-                      <span className="dw2-top3-city">📍 {d.city}</span>
+                      <span className="dw2-top3-city">📍 {d.area}</span>
                     </div>
                   )
                 })}
@@ -284,7 +292,7 @@ export default function DonorWall() {
                     <span className="dw2-rank-name">{d.name}</span>
                     <span className="dw2-rank-tier" style={{ color: TIER_COLORS[d.tier] }}>{d.tier}</span>
                     <span className="dw2-rank-stat">{d.credits.toLocaleString('en-IN')} credits</span>
-                    <span className="dw2-rank-funds">{d.donations} donations · {d.city}</span>
+                    <span className="dw2-rank-funds">{d.donations} donations · {d.area}</span>
                   </div>
                 ))}
               </div>
@@ -313,9 +321,7 @@ export default function DonorWall() {
       </div>
 
       {/* ── FOOTER ── */}
-      <footer className="dw2-footer">
-        <p>© 2026 CCT · Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

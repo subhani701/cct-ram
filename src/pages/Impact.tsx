@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Reveal } from '../components/Reveal'
 import { AnimatedCounter } from '../components/AnimatedCounter'
+import { SiteFooter } from '../components/SiteFooter'
 
 const TIMELINE = [
   { year: '1998', text: 'CCT Founded by Megastar Chiranjeevi' },
@@ -81,7 +82,7 @@ export default function Impact() {
   })
 
   return (
-    <div className="imp-page" style={{ paddingTop: 62 }}>
+    <div className="imp-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* HERO STATS */}
       <section className="imp-hero">
         <Reveal>
@@ -261,9 +262,7 @@ export default function Impact() {
         </Reveal>
       </section>
 
-      <footer className="imp-footer">
-        <p>&copy; 2026 CCT &middot; Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

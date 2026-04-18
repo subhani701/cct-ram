@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Reveal } from '../components/Reveal'
+import { SiteFooter } from '../components/SiteFooter'
 
 type EventType = 'Blood Drive' | 'Fundraiser' | 'Awareness' | 'Community'
 type FilterType = 'All' | EventType
@@ -168,7 +169,7 @@ export default function Events() {
     const tc = TYPE_COLORS[selected.type]
 
     return (
-      <div className="evt-page" style={{ paddingTop: 62 }}>
+      <div className="evt-page" style={{ paddingTop: 'var(--nav-h)' }}>
         <div className="evt-detail">
           <button className="evt-back-btn" onClick={() => setSelectedId(null)}>← All Events</button>
 
@@ -298,16 +299,14 @@ export default function Events() {
           </div>
         </div>
 
-        <footer className="evt-footer">
-          <p>© 2026 CCT · Hyderabad | Built by VoltusWave</p>
-        </footer>
+        <SiteFooter />
       </div>
     )
   }
 
   /* ─── LISTING VIEW ─── */
   return (
-    <div className="evt-page" style={{ paddingTop: 62 }}>
+    <div className="evt-page" style={{ paddingTop: 'var(--nav-h)' }}>
       <header className="evt-header">
         <Reveal>
           <span className="evt-eyebrow">What's Happening</span>
@@ -383,9 +382,7 @@ export default function Events() {
         </Reveal>
       </div>
 
-      <footer className="evt-footer">
-        <p>© 2026 CCT · Hyderabad | Built by VoltusWave</p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
