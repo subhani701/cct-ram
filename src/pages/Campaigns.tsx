@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Reveal } from '../components/Reveal'
 import { AnimatedCounter } from '../components/AnimatedCounter'
-import { SiteFooter } from '../components/SiteFooter'
 
 type Category = 'All' | 'Equipment' | 'Patient Support' | 'Infrastructure' | 'Emergency'
 
@@ -405,8 +404,6 @@ export default function Campaigns() {
             </div>
           </div>
         </div>
-
-        <SiteFooter />
       </div>
     )
   }
@@ -507,8 +504,6 @@ export default function Campaigns() {
           })}
         </div>
       </div>
-
-      <SiteFooter />
     </div>
   )
 }

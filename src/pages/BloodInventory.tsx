@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react'
-import { SiteFooter } from '../components/SiteFooter'
 
 type BloodType = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-'
 type FilterBG = BloodType | 'All'
@@ -285,9 +284,6 @@ export default function BloodInventory() {
           </div>
         )}
       </div>
-
-      {/* Footer */}
-      <SiteFooter />
     </div>
   )
 }

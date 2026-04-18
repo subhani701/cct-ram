@@ -1,4 +1,15 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+
+const inquiryReasons = [
+  { value: '', label: 'Reason for message' },
+  { value: 'general', label: 'General inquiry' },
+  { value: 'donation', label: 'Donations' },
+  { value: 'volunteer', label: 'Volunteering' },
+  { value: 'partnership', label: 'Partnership / sponsorship' },
+  { value: 'media', label: 'Media / press' },
+  { value: 'other', label: 'Other' },
+] as const
 
 const contactInfoItems = [
   {
@@ -24,10 +35,30 @@ const contactInfoItems = [
 ]
 
 const socialLinks = [
-  { key: 'f', label: 'Facebook' },
-  { key: 'x', label: 'X' },
-  { key: 'ig', label: 'Instagram' },
-  { key: 'yt', label: 'YouTube' },
+  {
+    key: 'facebook',
+    label: 'Facebook',
+    href: 'https://www.facebook.com/CCT/',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png',
+  },
+  {
+    key: 'x',
+    label: 'X',
+    href: 'https://x.com/CCT_Offl/status/2044803021176271038',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png',
+  },
+  {
+    key: 'instagram',
+    label: 'Instagram',
+    href: 'https://www.instagram.com/chiranjeevicharitabletrust/',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png',
+  },
+  {
+    key: 'youtube',
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@ChiranjeeviCharitableTrust',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png',
+  },
 ]
 
 const sparkles = [
@@ -46,6 +77,8 @@ const fadeUp = {
 }
 
 export default function Contact() {
+  const [reason, setReason] = useState('')
+
   return (
     <section className="contact-page">
       <div className="contact-bg-layer contact-bg-layer-a" />
@@ -81,8 +114,7 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
           >
-            Have questions or want to get involved? We would love to hear from you. Reach out to us through any of the
-            channels below.
+            Have questions or want to get involved? We would love to hear from you.
           </motion.p>
         </motion.div>
 
@@ -96,13 +128,37 @@ export default function Contact() {
             transition={{ duration: 0.62, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <h2>Send us a Message</h2>
-            <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="contact-form"
+              onSubmit={(e) => {
+                e.preventDefault()
+              }}
+            >
               <motion.div className="contact-row" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.16, duration: 0.42 }}>
                 <motion.input type="text" placeholder="Full Name" aria-label="Full Name" whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
                 <motion.input type="tel" placeholder="Phone Number" aria-label="Phone Number" whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
               </motion.div>
               <motion.input type="email" placeholder="Email Address" aria-label="Email Address" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.22, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
-              <motion.input type="text" placeholder="Subject" aria-label="Subject" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.28, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
+              <motion.select
+                className={reason ? undefined : 'contact-reason-empty'}
+                aria-label="Reason for message"
+                name="reason"
+                required
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                transition={{ delay: 0.28, duration: 0.42 }}
+                whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }}
+              >
+                {inquiryReasons.map((opt) => (
+                  <option key={opt.value || 'placeholder'} value={opt.value} disabled={opt.value === ''}>
+                    {opt.label}
+                  </option>
+                ))}
+              </motion.select>
               <motion.textarea placeholder="Your Message" aria-label="Your Message" rows={4} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.34, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
               <motion.button type="submit" whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.985 }}>
                 Send Message
@@ -146,15 +202,19 @@ export default function Contact() {
               <h3>Follow Us</h3>
               <div className="contact-socials" aria-label="social links">
                 {socialLinks.map((social) => (
-                  <motion.span
+                  <motion.a
                     key={social.key}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`contact-social-link${social.key === 'x' ? ' contact-social-link-x' : ''}`}
                     aria-label={social.label}
                     whileHover={{ y: -2, scale: 1.06 }}
                     animate={{ y: [0, -2, 0] }}
                     transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}
                   >
-                    {social.key}
-                  </motion.span>
+                    <img src={social.src} alt={social.label} />
+                  </motion.a>
                 ))}
               </div>
             </div>

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import CustomCursor from './components/CustomCursor.tsx'
 import Navbar from './components/Navbar.tsx'
+import { SiteFooter } from './components/SiteFooter.tsx'
 import { PageErrorBoundary } from './components/PageErrorBoundary.tsx'
 import App from './App.tsx'
 import DonorRegistration from './pages/DonorRegistration.tsx'
@@ -60,6 +61,7 @@ export function Router() {
       <PageErrorBoundary key={path}>
         <Page />
       </PageErrorBoundary>
+      <SiteFooter />
     </>
   )
 }

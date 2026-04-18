@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { SiteFooter } from '../components/SiteFooter'
 
 type Tier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum'
 type LeaderTab = 'area' | 'individual' | 'fanclub'
@@ -319,9 +318,6 @@ export default function DonorWall() {
           )}
         </section>
       </div>
-
-      {/* ── FOOTER ── */}
-      <SiteFooter />
     </div>
   )
 }

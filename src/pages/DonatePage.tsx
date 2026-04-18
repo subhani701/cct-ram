@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { SiteFooter } from '../components/SiteFooter'
 
 type PaymentMethod = 'upi' | 'card' | 'netbanking' | ''
 
@@ -267,8 +266,6 @@ export default function DonatePage() {
             }}>Explore More Campaigns</a>
           </div>
         </div>
-
-        <SiteFooter />
       </div>
     )
   }
@@ -640,8 +637,6 @@ export default function DonatePage() {
           )}
         </div>
       </div>
-
-      <SiteFooter />
     </div>
   )
 }

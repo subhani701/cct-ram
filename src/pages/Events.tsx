@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Reveal } from '../components/Reveal'
-import { SiteFooter } from '../components/SiteFooter'
 
 type EventType = 'Blood Drive' | 'Fundraiser' | 'Awareness' | 'Community'
 type FilterType = 'All' | EventType
@@ -298,8 +297,6 @@ export default function Events() {
             </aside>
           </div>
         </div>
-
-        <SiteFooter />
       </div>
     )
   }
@@ -381,8 +378,6 @@ export default function Events() {
           </div>
         </Reveal>
       </div>
-
-      <SiteFooter />
     </div>
   )
 }

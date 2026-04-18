@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { SiteFooter } from '../components/SiteFooter'
 
 type Gender = 'male' | 'female' | 'other' | ''
 type BloodType = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-' | ''
@@ -684,8 +683,6 @@ export default function DonorRegistration() {
           )}
         </div>
       </div>
-
-      <SiteFooter />
     </div>
   )
 }

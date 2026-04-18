@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Reveal } from '../components/Reveal'
 import { AnimatedCounter } from '../components/AnimatedCounter'
-import { SiteFooter } from '../components/SiteFooter'
 
 const TIMELINE = [
   { year: '1998', text: 'CCT Founded by Megastar Chiranjeevi' },
@@ -123,18 +122,22 @@ export default function Impact() {
           <h2 className="imp-section-title">Our Journey</h2>
         </Reveal>
         <div className="imp-timeline">
-          <div className="imp-tl-line" />
-          {TIMELINE.map((item, i) => (
-            <Reveal key={item.year} delayClass={(['d1', 'd2', 'd3', 'd4'] as const)[i % 4]}>
-              <div className="imp-tl-item">
-                <div className="imp-tl-dot" />
-                <div className="imp-tl-content">
-                  <span className="imp-tl-year">{item.year}</span>
-                  <p className="imp-tl-text">{item.text}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+          <div className="imp-tl-shell">
+            <div className="imp-tl-rail" aria-hidden />
+            <div className="imp-tl-nodes">
+              {TIMELINE.map((item, i) => (
+                <Reveal key={item.year} delayClass={(['d1', 'd2', 'd3', 'd4'] as const)[i % 4]}>
+                  <article className="imp-tl-node">
+                    <span className="imp-tl-year">{item.year}</span>
+                    <div className="imp-tl-marker">
+                      <span className="imp-tl-dot" />
+                    </div>
+                    <p className="imp-tl-text">{item.text}</p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -261,8 +264,6 @@ export default function Impact() {
           </div>
         </Reveal>
       </section>
-
-      <SiteFooter />
     </div>
   )
 }

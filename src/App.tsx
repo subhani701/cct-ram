@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatedCounter } from './components/AnimatedCounter'
 import { Reveal } from './components/Reveal'
-import { SiteFooter } from './components/SiteFooter'
 import {
   BLOOD_URGENCY,
   DONORS,
@@ -1204,8 +1203,6 @@ export default function App() {
           </div>
         </Reveal>
       </section>
-
-      <SiteFooter />
 
       {!dockDismissed ? (
         <div className={`fdock${dockShow ? ' show' : ''}`} id="fdock">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { SiteFooter } from '../components/SiteFooter'
 
 interface DonorForm {
   fullName: string
@@ -219,7 +218,6 @@ export default function ContributePage() {
             <a href="#/register" className="don-btn don-btn-back">Register as Blood Donor</a>
           </div>
         </div>
-        <SiteFooter />
       </div>
     )
   }
@@ -630,8 +628,6 @@ export default function ContributePage() {
           )}
         </div>
       </div>
-
-      <SiteFooter />
     </div>
   )
 }

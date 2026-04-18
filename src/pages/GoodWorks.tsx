@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Reveal } from '../components/Reveal'
-import { SiteFooter } from '../components/SiteFooter'
 
 type StoryCategory = 'Blood Drives' | 'Fundraisers' | 'Volunteering' | 'Milestones'
 type FilterCat = 'All' | StoryCategory
@@ -286,8 +285,6 @@ export default function GoodWorks() {
           </div>
         </div>
       )}
-
-      <SiteFooter />
     </div>
   )
 }
