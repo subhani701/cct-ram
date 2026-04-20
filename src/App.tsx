@@ -306,10 +306,33 @@ export default function App() {
 
       <div className="hero">
         <div className="hero-red">
+          <div className="hero-site-brand" aria-label="CCT brand">
+            <div className="hero-site-title">CCT</div>
+            <div className="hero-site-sub">Chiranjeevi Charitable Trust</div>
+          </div>
           <div className="hero-tagline">
-            <div className="htline"><span className="hv">Fund</span> <span className="hc">a cause</span></div>
-            <div className="htline"><span className="hv">Drop</span> <span className="hc">a pint</span></div>
-            <div className="htline"><span className="hv">Save</span> <span className="hc">a life</span></div>
+            <div className="hero-tagline-eyebrow">A simple act. A powerful impact.</div>
+            <div className="htline">
+              <span className="hv">Fund</span>
+              <span className="hc-wrap">
+                <span className="hc">a cause</span>
+              </span>
+            </div>
+            <div className="htline">
+              <span className="hv">Drop</span>
+              <span className="hc-wrap">
+                <span className="hc">a pint</span>
+              </span>
+            </div>
+            <div className="htline">
+              <span className="hv">Save</span>
+              <span className="hc-wrap">
+                <span className="hc">a life</span>
+              </span>
+            </div>
+          </div>
+          <div className="hero-portrait-wrap">
+            <img src="/hero-chiranjeevi.png" alt="Chiranjeevi" className="hero-portrait" />
           </div>
           <div className="hero-stats">
             <div className="hs-item">

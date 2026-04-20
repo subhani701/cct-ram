@@ -63,7 +63,6 @@ export function SiteFooter() {
         <div>
           <h5>Community</h5>
           <ul>
-            <li><a href="#/events">Events</a></li>
             <li><a href="#/good-works">Stories</a></li>
             <li><a href="#/good-works">Share Story</a></li>
             <li><a href="#/donors">Leaderboard</a></li>
