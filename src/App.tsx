@@ -319,9 +319,9 @@ export default function App() {
               </span>
             </div>
             <div className="htline">
-              <span className="hv">Drop</span>
+              <span className="hv">Donate</span>
               <span className="hc-wrap">
-                <span className="hc">a pint</span>
+                <span className="hc">blood</span>
               </span>
             </div>
             <div className="htline">
@@ -361,7 +361,7 @@ export default function App() {
               Infinite lives changed
             </div>
             <p className="hc-desc">
-              You don&apos;t need a cape to be a hero. One pint of blood. One rupee. One story shared. The Chiranjeevi
+              You don&apos;t need a cape to be a hero. One unit of blood. One rupee. One story shared. The Chiranjeevi
               Charitable Trust turns love into action — across blood donation, community giving, and a legacy of care
             </p>
             <div className="hc-btns">

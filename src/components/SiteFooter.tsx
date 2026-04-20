@@ -78,7 +78,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="fb-bot">
-        <span>Copyright © 2026 ChiranjeeviCharitableTrust - All Rights Reserved.</span>
+        <span>Copyright © 2026 VoltusWave - All Rights Reserved.</span>
       </div>
     </footer>
   )
