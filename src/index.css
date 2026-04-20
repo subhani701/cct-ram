@@ -761,10 +761,10 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 .camp-filter.on,.camp-filter:hover{background:var(--red);border-color:var(--red);color:#fff}
 
 .camp-content{padding:28px 52px 72px}
-.camp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+.camp-content .camp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
 
 /* General Fund card */
-.camp-general-card{grid-column:span 5}
+.camp-content .camp-general-card{grid-column:span 5}
 .camp-general-inner{background:var(--ink-warm);border-radius:22px;padding:40px 36px;position:relative;overflow:hidden}
 .camp-general-inner::before{content:'';position:absolute;top:-20%;right:-10%;width:50%;height:140%;background:radial-gradient(circle,rgba(201,138,10,.15),transparent 70%);pointer-events:none}
 .camp-general-emoji{font-size:48px;position:absolute;top:28px;right:32px;opacity:.18;pointer-events:none}
