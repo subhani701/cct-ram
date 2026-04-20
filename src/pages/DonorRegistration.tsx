@@ -17,14 +17,6 @@ interface FormData {
   district: string
   state: StateOption
   pinCode: string
-  healthQ1: boolean | null
-  healthQ2: boolean | null
-  healthQ3: boolean | null
-  healthQ4: boolean | null
-  notifSms: boolean
-  notifEmail: boolean
-  notifWhatsapp: boolean
-  donorWallVisible: boolean
 }
 
 const CITIES = [
@@ -47,24 +39,7 @@ const DISTRICTS: Record<string, string[]> = {
 
 const BLOOD_TYPES: BloodType[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
 
-const HEALTH_QUESTIONS = [
-  { key: 'healthQ1' as const, q: 'Do you weigh more than 45 kg?' },
-  { key: 'healthQ2' as const, q: 'Have you had any surgery in the last 6 months?' },
-  { key: 'healthQ3' as const, q: 'Do you have any chronic medical conditions?' },
-  { key: 'healthQ4' as const, q: 'Are you currently on any blood-thinning medication?' },
-]
-
-function getEligibility(data: FormData): { eligible: boolean; reason: string } | null {
-  const { healthQ1, healthQ2, healthQ3, healthQ4 } = data
-  if (healthQ1 === null || healthQ2 === null || healthQ3 === null || healthQ4 === null) return null
-  if (!healthQ1) return { eligible: false, reason: 'Donors must weigh at least 45 kg' }
-  if (healthQ2) return { eligible: false, reason: 'Please wait 6 months after surgery before donating' }
-  if (healthQ3) return { eligible: false, reason: 'Please consult your doctor before donating blood' }
-  if (healthQ4) return { eligible: false, reason: 'Blood-thinning medications may affect donation eligibility' }
-  return { eligible: true, reason: 'You are eligible to donate blood' }
-}
-
-const STEP_LABELS = ['Verify Phone', 'Personal Details', 'Location & Health', 'Confirm']
+const STEP_LABELS = ['Verify Phone', 'Personal Details', 'Location', 'Confirm']
 
 const initialForm: FormData = {
   phone: '',
@@ -79,14 +54,6 @@ const initialForm: FormData = {
   district: '',
   state: '',
   pinCode: '',
-  healthQ1: null,
-  healthQ2: null,
-  healthQ3: null,
-  healthQ4: null,
-  notifSms: true,
-  notifEmail: true,
-  notifWhatsapp: true,
-  donorWallVisible: true,
 }
 
 export default function DonorRegistration() {
@@ -196,7 +163,6 @@ export default function DonorRegistration() {
 
   const canProceed2 = form.fullName.trim() && form.dob && form.gender && form.bloodType
   const canProceed3 = form.city && form.state && form.pinCode.length >= 6
-  const eligibility = getEligibility(form)
 
   if (submitted) {
     return (
@@ -209,7 +175,7 @@ export default function DonorRegistration() {
           </h1>
           <p className="reg-success-desc">
             Your registration is complete. You are now part of a community that has saved over 4,700 lives.
-            We will notify you about upcoming blood drives in {form.city || 'your city'}
+            We will notify you about upcoming blood drives
           </p>
           <div className="reg-success-details">
             <div className="reg-sd-item">
@@ -466,13 +432,13 @@ export default function DonorRegistration() {
             </div>
           )}
 
-          {/* STEP 3 — Location & Health */}
+          {/* STEP 3 — Location */}
           {step === 3 && (
             <div className="reg-card">
               <div className="reg-card-header">
                 <div className="reg-card-eyebrow">Step 3 of 4</div>
-                <h2 className="reg-card-title">Location & Health Screening</h2>
-                <p className="reg-card-desc">Help us find drives near you and ensure safe donation</p>
+                <h2 className="reg-card-title">Location Details</h2>
+                <p className="reg-card-desc">Help us find drives near you</p>
               </div>
 
               <div className="reg-form-grid">
@@ -532,41 +498,6 @@ export default function DonorRegistration() {
                     onChange={e => set('pinCode', e.target.value.replace(/\D/g, ''))}
                   />
                 </div>
-              </div>
-
-              <div className="reg-health-section">
-                <h3 className="reg-health-title">Health Screening</h3>
-                <p className="reg-health-desc">Answer honestly — this ensures your safety and the recipient's</p>
-                <div className="reg-health-cards">
-                  {HEALTH_QUESTIONS.map(hq => (
-                    <div key={hq.key} className="reg-hq-card">
-                      <div className="reg-hq-text">{hq.q}</div>
-                      <div className="reg-hq-toggle">
-                        <button
-                          type="button"
-                          className={`reg-hq-btn${form[hq.key] === true ? ' yes' : ''}`}
-                          onClick={() => set(hq.key, true)}
-                        >
-                          Yes
-                        </button>
-                        <button
-                          type="button"
-                          className={`reg-hq-btn${form[hq.key] === false ? ' no' : ''}`}
-                          onClick={() => set(hq.key, false)}
-                        >
-                          No
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {eligibility && (
-                  <div className={`reg-eligibility${eligibility.eligible ? ' eligible' : ' ineligible'}`}>
-                    <span className="reg-elig-icon">{eligibility.eligible ? '\u2713' : '\u2717'}</span>
-                    <span>{eligibility.reason}</span>
-                  </div>
-                )}
               </div>
 
               <div className="reg-actions">
@@ -632,43 +563,6 @@ export default function DonorRegistration() {
                     <span className="reg-summary-value">{form.pinCode}</span>
                   </div>
                 </div>
-              </div>
-
-              <div className="reg-prefs-section">
-                <h3 className="reg-prefs-title">Notification Preferences</h3>
-                <p className="reg-prefs-desc">How would you like to hear about blood drives?</p>
-                <div className="reg-toggle-list">
-                  <label className="reg-toggle-item">
-                    <span className="reg-toggle-label">SMS Notifications</span>
-                    <button type="button" className={`reg-toggle${form.notifSms ? ' on' : ''}`} onClick={() => set('notifSms', !form.notifSms)}>
-                      <span className="reg-toggle-knob" />
-                    </button>
-                  </label>
-                  <label className="reg-toggle-item">
-                    <span className="reg-toggle-label">Email Notifications</span>
-                    <button type="button" className={`reg-toggle${form.notifEmail ? ' on' : ''}`} onClick={() => set('notifEmail', !form.notifEmail)}>
-                      <span className="reg-toggle-knob" />
-                    </button>
-                  </label>
-                  <label className="reg-toggle-item">
-                    <span className="reg-toggle-label">WhatsApp Notifications</span>
-                    <button type="button" className={`reg-toggle${form.notifWhatsapp ? ' on' : ''}`} onClick={() => set('notifWhatsapp', !form.notifWhatsapp)}>
-                      <span className="reg-toggle-knob" />
-                    </button>
-                  </label>
-                </div>
-              </div>
-
-              <div className="reg-prefs-section">
-                <label className="reg-toggle-item">
-                  <div>
-                    <span className="reg-toggle-label">Show me on the Donor Wall</span>
-                    <span className="reg-toggle-hint">Your name and city will appear on the public donor wall</span>
-                  </div>
-                  <button type="button" className={`reg-toggle${form.donorWallVisible ? ' on' : ''}`} onClick={() => set('donorWallVisible', !form.donorWallVisible)}>
-                    <span className="reg-toggle-knob" />
-                  </button>
-                </label>
               </div>
 
               <div className="reg-actions">

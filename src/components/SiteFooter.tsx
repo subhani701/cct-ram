@@ -58,7 +58,6 @@ export function SiteFooter() {
             <li><a href="#/campaigns">Campaigns</a></li>
             <li><a href="#/donate">General Fund</a></li>
             <li><a href="#/blood-inventory">Blood Inventory</a></li>
-            <li><a href="#/register">Register as Donor</a></li>
           </ul>
         </div>
         <div>
