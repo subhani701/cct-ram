@@ -2,6 +2,7 @@
 
 :root{
   --nav-h:92px;
+  --section-heading-size:clamp(24px,2.8vw,34px);
   --bg:#F4EFE6;--bg2:#EDE7DC;--white:#FEFCF8;
   --red:#CC0033;--red2:#E8003A;--red-pale:#FDEEF2;
   --gold:#C98A09;--gold-lt:#FEF3D7;
@@ -199,7 +200,7 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
 .s-hrow{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px}
 .s-ey{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .s-ey::before{content:'';width:14px;height:1.5px;background:var(--gold)}
-.s-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.s-h{font-family:'Bricolage Grotesque',sans-serif;font-size:var(--section-heading-size);font-weight:600;letter-spacing:-.015em;line-height:1.15}
 .s-h .sr{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--muted)}
 .frow{display:flex;gap:7px;flex-wrap:wrap}
 .fb{font-size:12px;font-weight:500;padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.04em}
@@ -818,7 +819,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 
 /* shared heading pattern */
 .camp-heading,.inv-heading,.evt-heading,.dw2-heading,.abt-section-title,.gw-heading{
-  font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:12px
+  font-family:'Bricolage Grotesque',sans-serif;font-size:var(--section-heading-size);font-weight:600;letter-spacing:-.015em;line-height:1.15;margin-bottom:12px
 }
 .camp-header .camp-heading{margin-bottom:6px}
 .camp-heading-accent,.inv-heading-accent,.evt-heading-accent,.dw2-heading-accent,.abt-title-accent,.gw-heading-accent{
@@ -1219,7 +1220,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 .dw2-hero{text-align:center;padding:68px 52px 40px}
 .dw2-hero .dw2-eyebrow{color:var(--gold);justify-content:center}
 .dw2-hero .dw2-eyebrow::before{background:var(--gold)}
-.dw2-hero .dw2-heading{font-size:clamp(36px,4.5vw,56px)}
+.dw2-hero .dw2-heading{font-size:var(--section-heading-size)}
 .dw2-subtitle{font-size:16px;color:var(--muted);font-family:'Instrument Serif',serif;font-style:italic;margin-top:8px}
 /* Two-column main layout */
 .dw2-main{display:grid;grid-template-columns:5fr 4fr;gap:40px;padding:0 52px 64px;max-width:1400px;margin:0 auto}
@@ -1455,7 +1456,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 
 /* Timeline — horizontal journey */
 .abt-timeline-section{background:var(--surface);padding:64px 52px;position:relative}
-.abt-section-heading{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);text-align:center;margin-bottom:40px;letter-spacing:-.02em}
+.abt-section-heading{font-family:'Bricolage Grotesque',sans-serif;font-size:var(--section-heading-size);font-weight:600;color:var(--ink);text-align:center;margin-bottom:40px;letter-spacing:-.015em;line-height:1.15}
 .abt-timeline{position:relative;max-width:min(1120px,100%);margin:0 auto;padding:8px 0 16px}
 .abt-tl-shell{position:relative;padding:12px 8px 28px}
 .abt-tl-rail{
@@ -1558,6 +1559,8 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   border-radius:14px;
   padding:20px;
   text-align:center;
+  color:inherit;
+  text-decoration:none;
   transition:border-color .25s,box-shadow .25s,transform .25s;
 }
 .abt-partner-glow{
@@ -1651,12 +1654,18 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 .don-split{flex:1;display:grid;grid-template-columns:5fr 4fr}
 
 /* LEFT PANEL */
-.don-left{background:var(--bg);border-right:1px solid var(--border);display:flex;overflow-y:auto}
+.don-left{background:var(--bg);border-right:1px solid var(--border);display:flex;overflow-y:auto;position:relative}
+.don-left-back{
+  position:absolute;
+  top:48px;
+  left:300px;
+  z-index:2;
+}
 .don-left-inner{padding:48px 48px 48px 56px;max-width:520px;margin-left:auto;width:100%}
 .don-left-divider{height:1px;background:var(--border);margin:28px 0}
 
 .don-context{}
-.don-context-badge{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:12px}
+.don-context-badge{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:0}
 .don-context-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px}
 .don-context-desc{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:20px}
 .don-context-bar-wrap{margin-bottom:8px}
@@ -1691,6 +1700,24 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 /* RIGHT PANEL */
 .don-right{background:var(--surface);display:flex;overflow-y:auto}
 .don-right-inner{padding:48px 56px 48px 48px;max-width:500px;width:100%}
+.don-history-back{
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  border-radius:999px;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.04em;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 12px;
+  cursor:pointer;
+  transition:all .2s;
+  margin-bottom:0;
+}
+.don-history-back:hover{background:var(--bg);border-color:var(--ink)}
 
 /* Step indicator */
 .don-steps{display:flex;align-items:center;justify-content:center;gap:0;position:relative;margin-bottom:36px}
@@ -1840,7 +1867,9 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   .don-topbar{padding:0 20px}
   .don-split{grid-template-columns:1fr}
   .don-left{display:none}
+  .don-left-back{display:none}
   .don-right-inner{padding:32px 20px;max-width:100%}
+  .don-history-back{margin-bottom:12px}
   .don-amount-grid{grid-template-columns:repeat(3,1fr);gap:8px}
   .don-amount-btn{padding:16px 8px}
   .don-amount-val{font-size:16px}
@@ -1865,7 +1894,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,0));
   border-bottom:1px solid rgba(0,0,0,.04);
 }
-.gw-heading{font-size:clamp(36px,5vw,58px)}
+.gw-heading{font-size:var(--section-heading-size)}
 .gw-subtitle{font-size:16px;color:var(--muted);margin-bottom:22px}
 .gw-header-stats{
   margin:0 auto 24px;
@@ -2092,7 +2121,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 .imp-hero-num{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(42px,7vw,72px);font-weight:800;color:var(--gold);line-height:1;margin-bottom:8px}
 .imp-hero-label{font-size:11px;color:rgba(34,28,24,.6);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
 
-.imp-section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;text-align:center;margin-bottom:12px;color:#1f1916}
+.imp-section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:var(--section-heading-size);font-weight:600;text-align:center;margin-bottom:12px;color:#1f1916;letter-spacing:-.015em;line-height:1.15}
 
 /* timeline — horizontal journey */
 .imp-timeline-section{padding:80px 52px}
@@ -2248,7 +2277,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 .contact-bg-grid{position:absolute;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(to right,rgba(13,9,5,.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(13,9,5,.03) 1px,transparent 1px);background-size:36px 36px;mask-image:radial-gradient(ellipse at center,rgba(0,0,0,.65),transparent 84%)}
 .contact-sparkle{position:absolute;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(255,255,255,.8) 32%,rgba(204,0,51,.5) 72%,rgba(204,0,51,0) 100%);box-shadow:0 0 12px rgba(204,0,51,.36);pointer-events:none;z-index:2}
 .contact-heading{text-align:center;margin-bottom:24px}
-.contact-heading h1{font-family:'Bricolage Grotesque',sans-serif;font-size:50px;letter-spacing:-.03em;margin-bottom:12px;line-height:1.02}
+.contact-heading h1{font-family:'Bricolage Grotesque',sans-serif;font-size:var(--section-heading-size);font-weight:600;letter-spacing:-.015em;margin-bottom:12px;line-height:1.15}
 .contact-heading p{
   max-width:670px;
   margin:0 auto;
@@ -2269,7 +2298,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   box-shadow:0 22px 52px rgba(13,9,5,.1);
   backdrop-filter:blur(6px);
 }
-.contact-form-card h2{font-family:'Instrument Serif',serif;font-size:29px;margin-bottom:14px;letter-spacing:-.01em}
+.contact-form-card h2{font-family:'Instrument Serif',serif;font-size:25px;margin-bottom:14px;letter-spacing:-.01em}
 .contact-form{display:flex;flex-direction:column;gap:10px}
 .contact-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .contact-form input,.contact-form textarea,.contact-form select{
@@ -2335,7 +2364,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 }
 .contact-info-card{background:linear-gradient(150deg,rgba(249,246,243,.97),rgba(236,232,227,.99))}
 .contact-info-head{padding-bottom:10px;margin-bottom:8px;border-bottom:1px solid rgba(13,9,5,.09)}
-.contact-info-head h2{font-family:'Instrument Serif',serif;font-size:26px;letter-spacing:-.01em;line-height:1.05;margin-bottom:4px}
+.contact-info-head h2{font-family:'Instrument Serif',serif;font-size:24px;letter-spacing:-.01em;line-height:1.05;margin-bottom:4px}
 .contact-info-head p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
 .contact-info-item{
   display:flex;
@@ -2345,18 +2374,18 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   border-bottom:1px solid rgba(13,9,5,.08);
 }
 .contact-info-icon{
-  width:34px;
-  height:34px;
-  border-radius:10px;
+  width:27px;
+  height:27px;
+  border-radius:8px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
   background:linear-gradient(145deg,rgba(204,0,51,.11),rgba(201,138,10,.11));
   border:1px solid rgba(204,0,51,.2);
-  font-size:14px;
+  font-size:12px;
   flex-shrink:0;
 }
-.contact-info-copy h3{font-size:17px;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:2px}
+.contact-info-copy h3{font-size:16px;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:2px}
 .contact-info-copy p{font-size:12px;line-height:1.55;color:var(--muted);margin:0}
 .contact-follow h3{font-size:15px;font-family:'Bricolage Grotesque',sans-serif;margin:10px 0 8px}
 .contact-socials{display:flex;gap:8px;margin-bottom:12px}
@@ -2394,12 +2423,12 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   .contact-page{padding:calc(var(--nav-h) + 28px) 40px 28px}
   .contact-wrap{max-width:1120px}
   .contact-heading{margin-bottom:18px}
-  .contact-heading h1{font-size:42px;margin-bottom:8px}
+  .contact-heading h1{font-size:var(--section-heading-size);margin-bottom:8px}
   .contact-heading p{font-size:17px;line-height:1.4;max-width:620px}
   .contact-grid{gap:16px}
   .contact-form-card,.contact-info-card{padding:18px}
-  .contact-form-card h2{font-size:27px;margin-bottom:10px}
-  .contact-info-head h2{font-size:24px}
+  .contact-form-card h2{font-size:23px;margin-bottom:10px}
+  .contact-info-head h2{font-size:22px}
   .contact-form{gap:8px}
   .contact-row{gap:8px}
   .contact-form input,.contact-form textarea{padding:9px 12px}
@@ -2480,7 +2509,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   .contact-page{padding:calc(var(--nav-h) + 40px) 20px 52px}
   .contact-bg-layer-a{left:-230px;top:-190px}
   .contact-bg-layer-b{right:-260px;top:220px}
-  .contact-heading h1{font-size:38px}
+  .contact-heading h1{font-size:var(--section-heading-size)}
   .contact-form-card,.contact-info-card{padding:22px}
   .contact-grid{grid-template-columns:1fr;gap:18px}
   .contact-row{grid-template-columns:1fr}
@@ -2514,12 +2543,13 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 .impact-flow-head h1,
 .impact-flow-head h2{
   font-family:'Bricolage Grotesque',sans-serif;
-  font-size:clamp(34px,4vw,54px);
-  line-height:1.06;
+  font-size:var(--section-heading-size);
+  line-height:1.15;
   margin:0;
-  letter-spacing:-0.03em;
+  letter-spacing:-0.015em;
+  font-weight:600;
 }
-.impact-flow-head h2{font-size:clamp(32px,3.5vw,48px)}
+.impact-flow-head h2{font-size:var(--section-heading-size)}
 .impact-flow-head h1 span,
 .impact-flow-head h2 span{
   color:#d5961a;
@@ -2656,7 +2686,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   font-size:22px;
 }
 .impact-flow-stat-card .impact-flow-stat-value{
-  font-size:clamp(28px,2.2vw,44px);
+  font-size:clamp(18px,1.5vw,30px);
   line-height:.92;
   letter-spacing:-0.03em;
 }
@@ -2903,7 +2933,7 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
 }
 .impact-flow-cta h2{
   margin:0;
-  font-size:clamp(38px,4vw,62px);
+  font-size:clamp(24px,2.6vw,40px);
   letter-spacing:-0.03em;
   font-family:'Bricolage Grotesque',sans-serif;
 }
@@ -3141,6 +3171,11 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
   .don-right-inner {
     padding: 24px 14px 30px;
   }
+  .don-history-back {
+    margin-bottom: 10px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
   .don-steps {
     margin-bottom: 24px;
   }
@@ -3184,14 +3219,16 @@ footer ul a:hover{color:var(--ink);text-decoration:underline;text-decoration-thi
     padding: calc(var(--nav-h) + 26px) 14px 40px;
   }
   .contact-heading h1 {
-    font-size: clamp(32px, 11vw, 40px);
+    font-size: var(--section-heading-size);
   }
   .contact-heading p {
     font-size: 17px;
   }
-  .contact-form-card h2,
+  .contact-form-card h2 {
+    font-size: 19px;
+  }
   .contact-info-head h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
   .contact-form-card,
   .contact-info-card {

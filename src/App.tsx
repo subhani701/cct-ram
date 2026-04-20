@@ -307,7 +307,7 @@ export default function App() {
       <div className="hero">
         <div className="hero-red">
           <div className="hero-tagline">
-            <div className="hero-tagline-eyebrow">A simple act. A powerful impact.</div>
+            <div className="hero-tagline-eyebrow">A simple act. A powerful impact</div>
             <div className="htline">
               <span className="hv">Fund</span>
               <span className="hc-wrap">
@@ -461,8 +461,8 @@ export default function App() {
                 lineHeight: 1.75,
               }}
             >
-              Blood comes in eight types, and every one of them saves lives. CCT collects across all groups at partner
-              hospitals in AP &amp; Telangana — your donation matters, no matter your type
+              Blood comes in eight types, and each one plays a vital role in saving lives. CCT collects across all groups
+              at partner hospitals in AP &amp; Telangana — your donation matters, no matter your type
             </p>
           </div>
           <a href="#/register" className="btn-ink" style={{ flexShrink: 0, textDecoration: 'none' }}>

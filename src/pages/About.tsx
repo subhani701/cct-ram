@@ -69,11 +69,19 @@ const HOSPITALS = [
   { name: 'Apollo Blood Bank', href: 'https://bloodlinks.in/details_bank?id=744' },
 ]
 
-const STATS = [
-  { target: 1200000, label: 'Blood Units Collected', icon: '🩸', suffix: '' },
-  { target: 4700, label: 'Lives Impacted', icon: '♡', suffix: '+' },
+interface AboutStat {
+  target: number
+  label: string
+  icon: string
+  suffix?: string
+  valueText?: string
+}
+
+const STATS: AboutStat[] = [
+  { target: 1200000, label: 'Blood Units Collected', icon: '🩸', suffix: '+' },
+  { target: 4700, label: 'Lives Saved', icon: '❤️', suffix: '+' },
   { target: 28000, label: 'Active Donors', icon: '⚕', suffix: '+' },
-  { target: 23000000, label: 'Funds Raised', icon: '₹', suffix: '' },
+  { target: 23000000, label: 'Funds Raised', icon: '₹', valueText: 'Rs.2.3 Cr' },
 ]
 
 const easeSoft = [0.22, 1, 0.36, 1] as const
@@ -234,8 +242,14 @@ export default function About() {
                   {s.icon}
                 </span>
                 <div className="abt-stat-value-row">
-                  <AnimatedCounter target={s.target} className="abt-stat-num" formatter={formatIndian} />
-                  {s.suffix && <span className="abt-stat-suffix">{s.suffix}</span>}
+                  {s.valueText ? (
+                    <span className="abt-stat-num">{s.valueText}</span>
+                  ) : (
+                    <>
+                      <AnimatedCounter target={s.target} className="abt-stat-num" formatter={formatIndian} />
+                      {s.suffix && <span className="abt-stat-suffix">{s.suffix}</span>}
+                    </>
+                  )}
                 </div>
                 <span className="abt-stat-label">{s.label}</span>
               </motion.div>

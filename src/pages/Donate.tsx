@@ -93,6 +93,14 @@ export default function Donate() {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const handlePageBack = () => {
+    if (window.history.length > 1) {
+      window.history.back()
+      return
+    }
+    window.location.hash = '#/campaigns'
+  }
+
   /* ─── SUCCESS SCREEN ─── */
   if (success) {
     return (
@@ -150,19 +158,18 @@ export default function Donate() {
 
         {/* LEFT PANEL — Context & Impact */}
         <div className="don-left">
+          <div className="don-left-back">
+            <button type="button" className="don-history-back" onClick={handlePageBack} aria-label="Go back">
+              <span aria-hidden="true">←</span>
+              <span>Back</span>
+            </button>
+          </div>
           <div className="don-left-inner">
             {/* Campaign context */}
             <div className="don-context">
               <span className="don-context-badge">General Fund</span>
               <h2 className="don-context-title">Chiranjeevi Charitable Trust</h2>
               <p className="don-context-desc">Your donation goes where it's needed most — blood drives, patient support, and community health</p>
-              <div className="don-context-bar-wrap">
-                <div className="don-context-bar-meta">
-                  <span>{formatAmount(1480000)} raised</span>
-                  <span>Goal: {formatAmount(2400000)}</span>
-                </div>
-              </div>
-              <div className="don-context-donors">🤝 3,240 donors · 142 days left</div>
             </div>
 
             {/* Dynamic impact — only shown once an amount is chosen */}

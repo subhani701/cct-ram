@@ -172,14 +172,14 @@ export default function Impact() {
         <motion.div className="impact-flow-head" variants={staggerContainer}>
           <h1>
             <motion.span className="impact-flow-head-plain" variants={headingWord} style={{ display: 'inline-block' }}>
-              Our
+              Our 
             </motion.span>{' '}
             <motion.span variants={headingWord} style={{ display: 'inline-block' }}>
               <span>Impact</span>
             </motion.span>
           </h1>
           <motion.p variants={fadeUp}>
-            Three decades of saving lives across Andhra Pradesh and Telangana
+            Empowering communities for three decades by saving lives across Andhra Pradesh and Telangana
           </motion.p>
         </motion.div>
         <motion.div
@@ -233,7 +233,7 @@ export default function Impact() {
           <h2>
             Our <span>Journey</span>
           </h2>
-          <p>Key milestones in our mission to save lives</p>
+          <p>Celebrating key milestones in our enduring mission to save lives</p>
         </motion.div>
         <motion.div className="impact-flow-timeline-wrap" variants={fadeUp}>
           <div className="impact-flow-timeline-line">
@@ -283,7 +283,7 @@ export default function Impact() {
           <h2>
             Donation <span>Heatmap</span>
           </h2>
-          <p>Blood donation trends based on our overall donor activity</p>
+          <p>Mapping blood donation trends through our overall donor activity</p>
         </motion.div>
         <motion.div className="impact-flow-heatmap" variants={fadeUp}>
           <motion.div className="impact-flow-bars" variants={staggerContainer}>
@@ -316,9 +316,7 @@ export default function Impact() {
             </motion.button>
           </motion.div>
         </motion.div>
-        <motion.div className="impact-flow-scale" variants={fadeUp}>
-          Low ▭▭▭▭▭ High
-        </motion.div>
+        
       </motion.section>
 
       <motion.section
@@ -332,7 +330,7 @@ export default function Impact() {
           <h2>
             Blood Type Distribution
           </h2>
-          <p>Breakdown of donations by blood type</p>
+          <p>Presenting a clear breakdown of donations by blood type</p>
         </motion.div>
         <motion.div className="impact-flow-blood-layout" variants={staggerContainer}>
           <motion.div
@@ -370,7 +368,7 @@ export default function Impact() {
           <h2>
             Campaign Impact
           </h2>
-          <p>Rs.2.3 Crore raised across 47 campaigns</p>
+          <p>Empowering critical care with Rs.2.3 Crore raised across 47 campaigns</p>
         </motion.div>
         <motion.div className="impact-flow-campaign-grid" variants={staggerContainer}>
           {campaignImpact.map((item) => (
@@ -400,7 +398,7 @@ export default function Impact() {
           Be part of the <span>next chapter</span>
         </motion.h2>
         <motion.p variants={fadeUp}>
-          Join thousands of heroes who have made a difference. Your contribution can save lives.
+          Join thousands of heroes creating impact. Your contribution helps save lives.
         </motion.p>
         <motion.div className="impact-flow-cta-actions" variants={staggerContainer}>
           <motion.a

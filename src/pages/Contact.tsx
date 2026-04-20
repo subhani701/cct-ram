@@ -15,7 +15,7 @@ const contactInfoItems = [
   {
     title: 'Head Office',
     value: 'Plot No. 123, Road No. 10, Jubilee Hills, Hyderabad, Telangana 500033',
-    icon: 'HQ',
+    icon: 'HO',
   },
   {
     title: 'Emergency Helpline',
