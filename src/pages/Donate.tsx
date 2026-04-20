@@ -165,20 +165,21 @@ export default function Donate() {
               <div className="don-context-donors">🤝 3,240 donors · 142 days left</div>
             </div>
 
-            <div className="don-left-divider" />
-
-            {/* Dynamic impact */}
+            {/* Dynamic impact — only shown once an amount is chosen */}
             {effectiveAmount >= 50 && (
-              <div className="don-impact-card">
-                <div className="don-impact-eyebrow">Your impact</div>
-                <div className="don-impact-row">
-                  <span className="don-impact-icon">{getImpactIcon(effectiveAmount)}</span>
-                  <div>
-                    <div className="don-impact-amount">{formatAmount(effectiveAmount)}</div>
-                    <div className="don-impact-text">{impactText}</div>
+              <>
+                <div className="don-left-divider" />
+                <div className="don-impact-card">
+                  <div className="don-impact-eyebrow">Your impact</div>
+                  <div className="don-impact-row">
+                    <span className="don-impact-icon">{getImpactIcon(effectiveAmount)}</span>
+                    <div>
+                      <div className="don-impact-amount">{formatAmount(effectiveAmount)}</div>
+                      <div className="don-impact-text">{impactText}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
 
             <div className="don-left-divider" />

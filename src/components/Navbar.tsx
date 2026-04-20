@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { href: '#/good-works', label: 'Stories' },
   { href: '#/donors', label: 'Leaderboard' },
   { href: '#/campaigns', label: 'Campaigns' },
-  { href: '#/impact', label: 'Our Impact' },
+  { href: '#/impact', label: 'Impact' },
   { href: '#/about', label: 'About' },
   { href: '#/contact', label: 'Contact Us' },
 ]

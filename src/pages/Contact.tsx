@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 
 const inquiryReasons = [
@@ -78,6 +78,68 @@ const fadeUp = {
 
 export default function Contact() {
   const [reason, setReason] = useState('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  const canSubmit = name.trim().length >= 2 && email.trim().length >= 4 && reason && message.trim().length >= 10
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!canSubmit) return
+    setSubmitted(true)
+  }
+
+  const handleReset = () => {
+    setName('')
+    setPhone('')
+    setEmail('')
+    setReason('')
+    setMessage('')
+    setSubmitted(false)
+  }
+
+  const firstName = name.trim().split(/\s+/)[0] || 'friend'
+
+  if (submitted) {
+    return (
+      <section className="contact-page contact-page-success">
+        <div className="contact-bg-layer contact-bg-layer-a" />
+        <div className="contact-bg-layer contact-bg-layer-b" />
+        <div className="contact-bg-grid" />
+        <motion.div
+          className="contact-success-full"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.div
+            className="contact-success-check"
+            initial={{ scale: 0, rotate: -40 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.15, type: 'spring', stiffness: 240, damping: 18 }}
+          >
+            ✓
+          </motion.div>
+          <h1 className="contact-success-title">
+            Thanks, <span>{firstName}!</span>
+          </h1>
+          <p className="contact-success-desc">
+            Your message has been received. A member of the CCT team will respond to you at{' '}
+            <strong>{email}</strong>.
+          </p>
+          <div className="contact-success-actions">
+            <a href="#/" className="contact-success-home">Back to Home</a>
+            <button type="button" className="contact-success-reset" onClick={handleReset}>
+              Send another message
+            </button>
+          </div>
+        </motion.div>
+      </section>
+    )
+  }
 
   return (
     <section className="contact-page">
@@ -128,17 +190,12 @@ export default function Contact() {
             transition={{ duration: 0.62, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <h2>Send us a Message</h2>
-            <form
-              className="contact-form"
-              onSubmit={(e) => {
-                e.preventDefault()
-              }}
-            >
+            <form className="contact-form" onSubmit={handleSubmit}>
               <motion.div className="contact-row" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.16, duration: 0.42 }}>
-                <motion.input type="text" placeholder="Full Name" aria-label="Full Name" whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
-                <motion.input type="tel" placeholder="Phone Number" aria-label="Phone Number" whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
+                <motion.input type="text" placeholder="Full Name" aria-label="Full Name" value={name} onChange={(e) => setName(e.target.value)} required whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
+                <motion.input type="tel" placeholder="Phone Number" aria-label="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
               </motion.div>
-              <motion.input type="email" placeholder="Email Address" aria-label="Email Address" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.22, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
+              <motion.input type="email" placeholder="Email Address" aria-label="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} required variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.22, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
               <motion.select
                 className={reason ? undefined : 'contact-reason-empty'}
                 aria-label="Reason for message"
@@ -159,8 +216,14 @@ export default function Contact() {
                   </option>
                 ))}
               </motion.select>
-              <motion.textarea placeholder="Your Message" aria-label="Your Message" rows={4} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.34, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
-              <motion.button type="submit" whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.985 }}>
+              <motion.textarea placeholder="Your Message" aria-label="Your Message" rows={4} value={message} onChange={(e) => setMessage(e.target.value)} required variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: 0.34, duration: 0.42 }} whileFocus={{ y: -2, boxShadow: '0 0 0 2px rgba(204,0,51,.14)' }} />
+              <motion.button
+                type="submit"
+                disabled={!canSubmit}
+                whileHover={canSubmit ? { y: -2, scale: 1.01 } : undefined}
+                whileTap={canSubmit ? { scale: 0.985 } : undefined}
+                style={canSubmit ? undefined : { opacity: 0.55, cursor: 'not-allowed' }}
+              >
                 Send Message
               </motion.button>
             </form>
