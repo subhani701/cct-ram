@@ -59,8 +59,14 @@ const TRUSTEES: Trustee[] = [
 ]
 
 const HOSPITALS = [
-  'NIMS', 'Gandhi', 'NTR Blood Bank', 'SVR Ruia',
-  'KGH Vizag', 'Guntur Govt', 'KIMS Hyderabad', 'Apollo Blood Bank',
+  { name: 'NIMS', href: 'https://nims.edu.in/NIMSWP/' },
+  { name: 'Gandhi', href: 'https://www.gandhihospital.telangana.gov.in/index.htm' },
+  { name: 'NTR Blood Bank', href: 'https://ntrtrust.org/blood-centers/' },
+  { name: 'SVR Ruia', href: 'https://tirupati.ap.gov.in/public-utility/sri-venkateswara-ramnarayan-ruia-government-general-hospital-ruia-hospital/' },
+  { name: 'KGH Vizag', href: 'https://en.wikipedia.org/wiki/King_George_Hospital,_Visakhapatnam' },
+  { name: 'Guntur Govt', href: 'https://guntur.ap.gov.in/public-utility-category/hospitals/' },
+  { name: 'KIMS Hyderabad', href: 'https://www.kimshospitals.com/' },
+  { name: 'Apollo Blood Bank', href: 'https://bloodlinks.in/details_bank?id=744' },
 ]
 
 const STATS = [
@@ -346,10 +352,13 @@ export default function About() {
           whileInView="show"
           viewport={{ once: true, amount: 0.12 }}
         >
-          {HOSPITALS.map((h, index) => (
-            <motion.div
+          {HOSPITALS.map((hospital, index) => (
+            <motion.a
               className="abt-partner-card"
-              key={h}
+              key={hospital.name}
+              href={hospital.href}
+              target="_blank"
+              rel="noreferrer"
               variants={statItem}
               initial={reduceMotion ? undefined : { opacity: 0, y: 22, scale: 0.96 }}
               whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
@@ -382,8 +391,8 @@ export default function About() {
                   ease: 'easeInOut',
                 }}
               />
-              <span className="abt-partner-name">{h}</span>
-            </motion.div>
+              <span className="abt-partner-name">{hospital.name}</span>
+            </motion.a>
           ))}
         </motion.div>
       </section>

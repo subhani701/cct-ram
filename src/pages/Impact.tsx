@@ -330,7 +330,7 @@ export default function Impact() {
       >
         <motion.div className="impact-flow-head" variants={fadeUp}>
           <h2>
-            Blood Type <span>Distribution</span>
+            Blood Type Distribution
           </h2>
           <p>Breakdown of donations by blood type</p>
         </motion.div>
@@ -368,7 +368,7 @@ export default function Impact() {
       >
         <motion.div className="impact-flow-head" variants={fadeUp}>
           <h2>
-            Campaign <span>Impact</span>
+            Campaign Impact
           </h2>
           <p>Rs.2.3 Crore raised across 47 campaigns</p>
         </motion.div>

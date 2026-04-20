@@ -498,12 +498,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:56px 52p
 .fb-brand .nav-logo-img{width:64px;height:64px}
 .fb-brand .nav-logo-subtitle{max-width:min(320px,100%);font-weight:600;color:rgba(13,9,5,.88);letter-spacing:-.01em}
 .fb-desc{
-  font-family:'Instrument Serif',Georgia,serif;
-  font-size:clamp(15px,1.65vw,18px);
-  font-style:italic;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  font-style:normal;
   font-weight:400;
   color:#4a3f36;
-  line-height:1.55;
+  line-height:1.5;
   max-width:min(340px,100%);
   margin-bottom:20px;
   letter-spacing:.01em
