@@ -65,7 +65,7 @@ const HOSPITALS = [
 
 const STATS = [
   { target: 1200000, label: 'Blood Units Collected', icon: '🩸', suffix: '' },
-  { target: 4700, label: 'Lives Saved', icon: '♡', suffix: '+' },
+  { target: 4700, label: 'Lives Impacted', icon: '♡', suffix: '+' },
   { target: 28000, label: 'Active Donors', icon: '⚕', suffix: '+' },
   { target: 23000000, label: 'Funds Raised', icon: '₹', suffix: '' },
 ]

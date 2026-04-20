@@ -2,10 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatedCounter } from './components/AnimatedCounter'
 import { Reveal } from './components/Reveal'
 import {
-  BLOOD_URGENCY,
+  BLOOD_TYPES,
   DONORS,
   FAN_EVENTS,
-  type EventFilter,
   type FedEmojiFilter,
   PAST_EVENTS,
   STORIES,
@@ -99,7 +98,7 @@ const WORKS: WorkDef[] = [
       { cls: 'wch wch-r', t: 'Blood Drive' },
       { cls: 'wch wch-k', t: 'Vijayawada' },
     ],
-    title: '500 Units. One Birthday. One City',
+    title: '500 Units · One Birthday · One City',
     body: "Fans organised a city-wide drive on Chiranjeevi garu's birthday. 500+ units across 3 hospitals in one day",
     wavBg: 'var(--red-pale)',
     wavColor: 'var(--red)',
@@ -115,7 +114,7 @@ const WORKS: WorkDef[] = [
       { cls: 'wch wch-gr', t: 'Community' },
       { cls: 'wch wch-k', t: 'Tirupati' },
     ],
-    title: '1,000 Trees. 5 Villages. Zero Fuss',
+    title: '1,000 Trees · 5 Villages · Zero Fuss',
     body: 'Fan club members from Tirupati planted trees across drought-prone Chittoor villages. In memory. In hope',
     wavBg: 'var(--green-lt)',
     wavColor: 'var(--green)',
@@ -163,7 +162,7 @@ const WORKS: WorkDef[] = [
       { cls: 'wch wch-r', t: 'Food Drive' },
       { cls: 'wch wch-k', t: 'Guntur' },
     ],
-    title: '10,000 Meals. Flood Relief. 8 Days',
+    title: '10,000 Meals · Flood Relief · 8 Days',
     body: 'Community kitchen set up overnight when floods hit Guntur. 10,000 hot meals. No headlines needed',
     wavBg: 'var(--red-pale)',
     wavColor: 'var(--red)',
@@ -238,17 +237,14 @@ export default function App() {
   const eventsRef = useRef<HTMLElement>(null)
   const campaignsRef = useRef<HTMLElement>(null)
   const worksRef = useRef<HTMLElement>(null)
-  const urgRef = useRef<HTMLElement>(null)
 
   const [, setNavShadow] = useState(false)
   const [dockShow, setDockShow] = useState(false)
   const [dockDismissed, setDockDismissed] = useState(false)
-  const [eventFilter, setEventFilter] = useState<EventFilter>('all')
   const [worksFilter, setWorksFilter] = useState<'all' | 'fund' | 'blood' | 'community'>('all')
   const [fedQuery, setFedQuery] = useState('')
   const [fedEmoji, setFedEmoji] = useState<FedEmojiFilter>('all')
   const [fedShow, setFedShow] = useState(12)
-  const [urgBars, setUrgBars] = useState(false)
   const [dpAmt, setDpAmt] = useState('100')
   const [amtSel, setAmtSel] = useState<string>('100')
 
@@ -283,22 +279,6 @@ export default function App() {
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const root = urgRef.current
-    if (!root) return
-    const ro = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setTimeout(() => setUrgBars(true), 200)
-          ro.disconnect()
-        }
-      },
-      { threshold: 0.2 },
-    )
-    ro.observe(root)
-    return () => ro.disconnect()
   }, [])
 
   const pickAmt = (val: string) => {
@@ -337,33 +317,34 @@ export default function App() {
 
       <div className="hero">
         <div className="hero-red">
-          <div className="hero-kicker">
-            <span className="hero-kicker-name">Chiranjeevi Charitable Trust</span>
-            <span className="hero-kicker-est">Est. 1997</span>
+          <div className="hero-brand">
+            <span className="hero-est-badge">EST. 1997</span>
+            <div className="hero-wordmark">
+              <h1 className="hero-name">Chiranjeevi</h1>
+              <div className="hero-sub">Charitable Trust</div>
+            </div>
+            <div className="hero-divider" />
           </div>
-          <div className="hbig">
-            DROP
-            <br />
-            GIVE
-            <br />
-            <span className="scr">Live</span>
+          <div className="hero-tagline">
+            <div className="htline"><span className="hv">Fund</span> <span className="hc">a cause</span></div>
+            <div className="htline"><span className="hv">Drop</span> <span className="hc">a pint</span></div>
+            <div className="htline"><span className="hv">Save</span> <span className="hc">a life</span></div>
           </div>
-          <div className="hero-red-foot">
-            <div className="hrstats">
-              <div className="hrst">
-                <div className="n">12L+</div>
-                <div className="l">Units</div>
-              </div>
-              <div className="hrst">
-                <div className="n">4.7K</div>
-                <div className="l">Lives</div>
-              </div>
-              <div className="hrst">
-                <div className="n">28K</div>
-                <div className="l">Donors</div>
-              </div>
+          <div className="hero-stats">
+            <div className="hs-item">
+              <div className="hs-n">12+</div>
+              <div className="hs-l">Units</div>
+            </div>
+            <div className="hs-item">
+              <div className="hs-n">4.7K</div>
+              <div className="hs-l">Lives</div>
+            </div>
+            <div className="hs-item">
+              <div className="hs-n">28K</div>
+              <div className="hs-l">Donors</div>
             </div>
           </div>
+          <div className="hero-foot" />
         </div>
         <div className="hero-cream">
           <div className="hc-chip">Megastar · Fan Community · Impact Platform</div>
@@ -407,22 +388,17 @@ export default function App() {
 
       <div className="bento">
         <Reveal delayClass="d1">
-          <div className="bt bt-hero">
-            <div className="bt-accent" />
+          <div className="bt">
             <span className="bt-icon">🩸</span>
-            <AnimatedCounter
-              target={1200000}
-              className="bt-num"
-              style={{ background: 'none', WebkitTextFillColor: '#fff' }}
-            />
-            <div className="bt-lbl" style={{ color: 'rgba(255,255,255,.55)' }}>Blood Units Collected</div>
+            <AnimatedCounter target={1200000} className="bt-num" />
+            <div className="bt-lbl">Blood Units Collected</div>
           </div>
         </Reveal>
         <Reveal delayClass="d2">
           <div className="bt">
             <span className="bt-icon">❤️</span>
             <AnimatedCounter target={4700} className="bt-num" />
-            <div className="bt-lbl">Lives Saved</div>
+            <div className="bt-lbl">Lives Impacted</div>
           </div>
         </Reveal>
         <Reveal delayClass="d3">
@@ -469,12 +445,12 @@ export default function App() {
         </Reveal>
       </div>
 
-      <section className="urgency-section rev up" id="urgency" ref={urgRef}>
+      <section className="urgency-section rev up" id="urgency">
         <div className="s-hrow">
           <div>
-            <div className="s-ey">Blood Bank · Live Status</div>
+            <div className="s-ey">Blood Donation</div>
             <h2 className="s-h">
-              Right Now, <span className="sr">We Need…</span>
+              Every Type <span className="sr">Every Drop</span>
             </h2>
             <p
               style={{
@@ -485,8 +461,8 @@ export default function App() {
                 lineHeight: 1.75,
               }}
             >
-              Live blood inventory status across CCT partner hospitals. If your type is critical — this is the moment to
-              step up
+              Blood comes in eight types, and every one of them saves lives. CCT collects across all groups at partner
+              hospitals in AP &amp; Telangana — your donation matters, no matter your type
             </p>
           </div>
           <a href="#/register" className="btn-ink" style={{ flexShrink: 0, textDecoration: 'none' }}>
@@ -494,269 +470,44 @@ export default function App() {
           </a>
         </div>
         <div className="urgency-grid" id="urgGrid">
-          {BLOOD_URGENCY.map((b) => (
-            <div key={b.type} className={`ub status-${b.status} rev up`}>
-              <div className="ub-corner" />
+          {BLOOD_TYPES.map((b) => (
+            <div key={b.type} className="ub rev up">
               <div className="ub-type">{b.type}</div>
-              <div className="ub-bar-bg">
-                <div className="ub-bar-fill" style={{ width: urgBars ? `${b.pct}%` : '0%' }} data-pct={b.pct} />
-              </div>
-              <div className="ub-status">{b.label}</div>
-              <div className="ub-units">{b.units}</div>
+              <div className="ub-note">{b.note}</div>
             </div>
           ))}
-        </div>
-        <div className="urgency-cta-row">
-          <div className="urgency-note">Updated every 6 hours from CCT partner hospitals across AP &amp; Telangana</div>
-          <div style={{ display: 'flex', gap: 16, fontSize: 12, flexWrap: 'wrap' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: 'var(--red)',
-                  display: 'inline-block',
-                }}
-              />{' '}
-              Critical
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: 'var(--orange)',
-                  display: 'inline-block',
-                }}
-              />{' '}
-              Low
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: 'var(--green)',
-                  display: 'inline-block',
-                }}
-              />{' '}
-              Sufficient
-            </span>
-          </div>
         </div>
       </section>
 
       <section className="events-section" id="events" ref={eventsRef}>
-        <Reveal>
-          <div className="s-hrow">
-            <div>
-              <div className="s-ey">What&apos;s Happening</div>
-              <h2 className="s-h">
-                Events &amp; <span className="sr">Blood Drives</span>
-              </h2>
+        <div className="past-events rev up">
+          <Reveal>
+            <div className="s-hrow">
+              <div>
+                <div className="s-ey">In His Name</div>
+                <h2 className="s-h">
+                  Already <span className="sr">Happened</span>
+                </h2>
+              </div>
             </div>
-            <div className="frow">
-              {(
-                [
-                  ['all', 'All'],
-                  ['blood', '🩸 Blood'],
-                  ['fund', '💛 Fundraisers'],
-                  ['awareness', '📢 Awareness'],
-                  ['community', '🌱 Community'],
-                ] as const
-              ).map(([k, label]) => (
-                <button
-                  key={k}
-                  type="button"
-                  className={`fb${eventFilter === k ? ' on' : ''}`}
-                  onClick={() => setEventFilter(k)}
-                >
-                  {label}
-                </button>
+          </Reveal>
+          <div className="past-scroll" id="pastScroll">
+            <div className="past-track" aria-hidden="false">
+              {PAST_EVENTS.map((p) => (
+                <div key={`a-${p.d}-${p.t}`} className="past-pill">
+                  <div className="past-pill-date">{p.d}</div>
+                  <div className="past-pill-text">{p.t}</div>
+                  <div className="past-pill-count">{p.n}</div>
+                </div>
+              ))}
+              {PAST_EVENTS.map((p) => (
+                <div key={`b-${p.d}-${p.t}`} className="past-pill" aria-hidden="true">
+                  <div className="past-pill-date">{p.d}</div>
+                  <div className="past-pill-text">{p.t}</div>
+                  <div className="past-pill-count">{p.n}</div>
+                </div>
               ))}
             </div>
-          </div>
-        </Reveal>
-
-        <Reveal>
-          <div className="evscroll" id="evScroll">
-            {[
-              {
-                et: 'blood' as const,
-                bg: 'var(--red)',
-                emoji: '🩸',
-                dd: '20',
-                badge: 'Mega Event',
-                type: '🩸 Flagship Blood Drive',
-                title: "Megastar's Birthday Grand Drive 2026",
-                desc: '5 simultaneous donation centres across Hyderabad. Last year: 1,400 units. Bring your crew, your office, your family',
-                loc: '5 Venues · Hyderabad',
-                spots: '⚡ 142 slots remaining',
-                btn: 'Register Free',
-              },
-              {
-                et: 'blood' as const,
-                bg: 'linear-gradient(135deg,#1A0610,#080204)',
-                emoji: '🏥',
-                dd: '22',
-                badge: 'Vijayawada',
-                type: '🩸 City Blood Drive',
-                title: 'Vijayawada Fan Club Grand Camp',
-                desc: "Krishna district fan network's biggest annual camp. Target: 600 units across 3 hospitals in a single day",
-                loc: 'Vijayawada, AP',
-                spots: '⚡ 210 slots open',
-                btn: 'Register',
-              },
-              {
-                et: 'fund' as const,
-                bg: 'linear-gradient(135deg,#5C3A00,#2A1505)',
-                emoji: '🎭',
-                dd: '28',
-                badge: 'Fundraiser',
-                type: '💛 Charity Gala',
-                title: 'Film Screening & Fundraiser Gala',
-                desc: 'Exclusive one-night event. Special screening + live auction. All proceeds go to the Platelet Separator campaign',
-                loc: 'Prasads IMAX, HYD',
-                spots: null,
-                btn: 'Get Tickets',
-              },
-              {
-                et: 'awareness' as const,
-                bg: 'linear-gradient(135deg,#001428,#00080F)',
-                emoji: '👁️',
-                dd: '4',
-                dm: 'May',
-                badge: 'Awareness',
-                type: '📢 Eye Pledge Drive',
-                title: 'Walk for Sight — Eye Donation Drive',
-                desc: '2km awareness walk through Jubilee Hills. Pledge your eyes on the spot. Bring your family',
-                loc: 'Jubilee Hills, HYD',
-                spots: null,
-                btn: 'Join Walk',
-              },
-              {
-                et: 'blood' as const,
-                bg: 'linear-gradient(135deg,#160020,#090010)',
-                emoji: '🎓',
-                dd: '7',
-                dm: 'Jun',
-                badge: 'Youth Drive',
-                type: '🩸 Campus Circuit',
-                title: '20 Campuses · One Week',
-                desc: 'CCT teams hitting 20 engineering and medical colleges across Hyderabad. First-time donors especially welcome',
-                loc: '20 Campuses · HYD',
-                spots: '⚡ Open registrations',
-                btn: 'Register Campus',
-              },
-              {
-                et: 'fund' as const,
-                bg: 'linear-gradient(135deg,#0A1428,#050A18)',
-                emoji: '🌍',
-                dd: '1',
-                dm: 'Jun',
-                badge: 'NRI',
-                type: '💛 NRI Fundraiser',
-                title: 'Telugu Diaspora Giving Night — USA',
-                desc: 'Virtual fundraiser for Telugu fans across the US. All proceeds fund the Thalassemia Treatment Campaign',
-                loc: 'Virtual · US Timezones',
-                spots: null,
-                btn: 'Join Online',
-              },
-              {
-                et: 'community' as const,
-                bg: 'linear-gradient(135deg,#012A10,#001508)',
-                emoji: '🌱',
-                dd: '18',
-                dm: 'May',
-                badge: 'Community',
-                type: '🌱 Fan Tree Drive',
-                title: 'Green Hyderabad — 5,000 Trees',
-                desc: '500 fans. 5,000 saplings. Multiple wards. CCT fan clubs greening Hyderabad one neighbourhood at a time',
-                loc: 'Multiple Wards, HYD',
-                spots: null,
-                btn: 'Volunteer',
-              },
-              {
-                et: 'blood' as const,
-                bg: 'linear-gradient(135deg,#1A1000,#0A0800)',
-                emoji: '🏃',
-                dd: '15',
-                dm: 'Jun',
-                badge: 'Tirupati',
-                type: '📢 Awareness Run',
-                title: '5K Run for Blood Awareness',
-                desc: 'Annual charity run. Open to all ages. T-shirt + certificate for all finishers. Bring the family',
-                loc: 'Tirupati, AP',
-                spots: null,
-                btn: 'Register ₹99',
-              },
-              {
-                et: 'fund' as const,
-                bg: 'linear-gradient(135deg,#140A1A,#0A0510)',
-                emoji: '🎬',
-                dd: '29',
-                dm: 'Jun',
-                badge: 'Chennai',
-                type: '💛 Charity Auction',
-                title: 'Chennai Mega Fans — Memorabilia Auction',
-                desc: 'Rare Chiranjeevi memorabilia auction by Chennai fans. All proceeds go to the Mobile Blood Bank fund',
-                loc: 'Chennai, TN',
-                spots: null,
-                btn: 'Bid Online',
-              },
-            ].map((ev) => (
-              <div
-                key={ev.title}
-                className="evc"
-                data-et={ev.et}
-                style={{ display: eventFilter === 'all' || eventFilter === ev.et ? '' : 'none' }}
-              >
-                <div className="evc-img" style={{ background: ev.bg }}>
-                  <div className="evc-bg-emoji">{ev.emoji}</div>
-                  <div className="evc-db">
-                    <div className="dd">{ev.dd}</div>
-                    <div className="dm">{ev.dm ?? 'Apr'}</div>
-                  </div>
-                  <div className="evc-badge">{ev.badge}</div>
-                </div>
-                <div className="evc-body">
-                  <div className="evc-type">{ev.type}</div>
-                  <div className="evc-title">{ev.title}</div>
-                  <p className="evc-desc">{ev.desc}</p>
-                  <div className="evc-foot">
-                    <div>
-                      <div className="evc-loc">{ev.loc}</div>
-                      {ev.spots ? <div className="evc-spots">{ev.spots}</div> : null}
-                    </div>
-                    <button type="button" className="evc-rsvp">
-                      {ev.btn}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
-        <div className="past-events rev up" style={{ padding: 0, marginTop: 40 }}>
-          <div className="past-label-row">
-            <div className="past-label">Already happened — in his name</div>
-            <div className="past-line" />
-            <div className="past-label" style={{ whiteSpace: 'nowrap' }}>
-              Scroll for more →
-            </div>
-          </div>
-          <div className="past-scroll" id="pastScroll">
-            {PAST_EVENTS.map((p) => (
-              <div key={p.d + p.t} className="past-pill">
-                <div className="past-pill-date">{p.d}</div>
-                <div className="past-pill-text">{p.t}</div>
-                <div className="past-pill-count">{p.n}</div>
-              </div>
-            ))}
           </div>
         </div>
 
@@ -775,7 +526,7 @@ export default function App() {
                     letterSpacing: '-0.02em',
                   }}
                 >
-                  Fan Events{' '}
+                  Fan Campaigns{' '}
                   <span
                     style={{
                       fontFamily: "'Instrument Serif',serif",
@@ -788,7 +539,7 @@ export default function App() {
                   </span>
                 </h3>
                 <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 5 }}>
-                  Hundreds of fan clubs. Every event listed. Search by city or type
+                  Hundreds of fan clubs · Every campaign listed · Search by city or type
                 </p>
               </div>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -817,7 +568,7 @@ export default function App() {
             <div className="fed-table" id="fedTable">
               <div className="fed-hdr">
                 <div>Date</div>
-                <div>Event</div>
+                <div>Campaign</div>
                 <div>City</div>
                 <div>Type</div>
                 <div>Status</div>
@@ -845,7 +596,7 @@ export default function App() {
                   </div>
                   <div className={`fst ${e.s === 'open' ? 'fst-open' : e.s === 'few' ? 'fst-few' : 'fst-full'}`}>{e.sl}</div>
                   <div className="fact">
-                    <a href="#/events">Details →</a>
+                    <a href="#/campaigns">Details →</a>
                   </div>
                 </div>
               ))}
@@ -879,10 +630,10 @@ export default function App() {
                 }}
               >
                 <span style={{ fontSize: 13, color: 'var(--muted)' }}>
-                  🗓️ <strong style={{ color: 'var(--ink)' }}>Organising an event in his name?</strong> Add it — no approval needed
+                  🤝 <strong style={{ color: 'var(--ink)' }}>Planning a drive or fundraiser in his name?</strong> We&apos;d love to partner with you
                 </span>
-                <button
-                  type="button"
+                <a
+                  href="#/contact"
                   style={{
                     fontFamily: "'DM Sans',sans-serif",
                     fontSize: 11,
@@ -897,10 +648,11 @@ export default function App() {
                     letterSpacing: '0.06em',
                     transition: 'all .2s',
                     whiteSpace: 'nowrap',
+                    textDecoration: 'none',
                   }}
                 >
-                  Add Your Event →
-                </button>
+                  Get in Touch →
+                </a>
               </div>
             </div>
           </div>
@@ -937,7 +689,7 @@ export default function App() {
               <div className="mst-divider" />
               <div className="mst">
                 <div className="n">4.7K+</div>
-                <div className="l">Lives Saved</div>
+                <div className="l">Lives Impacted</div>
               </div>
             </div>
         </Reveal>
@@ -960,7 +712,7 @@ export default function App() {
             <div>
               <div className="s-ey">Fan Community</div>
               <h2 className="s-h">
-                Good Work Done
+                Impact Stories
                 <br />
                 <span className="sr">in His Name</span>
               </h2>
@@ -981,7 +733,7 @@ export default function App() {
         </Reveal>
         <Reveal>
           <div className="wmason" id="wGrid">
-            {WORKS.map((w) => (
+            {WORKS.slice(0, 3).map((w) => (
               <WorkCard key={w.title} w={w} worksFilter={worksFilter} />
             ))}
           </div>
@@ -989,12 +741,17 @@ export default function App() {
         <Reveal>
           <div className="share-bar">
             <div>
-              <h4>Did something good in his name?</h4>
-              <p>Tag it here. No account. No signup. Just your story</p>
-              <div className="no-trk">No tracking · No binding · No account needed</div>
+              <h4>Led an initiative in his name?</h4>
+              <p>Share your story and help inspire the next community effort</p>
+              <div className="no-trk">Every story reviewed · Published with credit to your fan club</div>
             </div>
             <div className="sbtns">
-              <a href="#/good-works" className="sbtn sbtn-w" style={{ textDecoration: 'none' }}>
+              <a
+                href="#/good-works"
+                className="sbtn sbtn-w"
+                style={{ textDecoration: 'none' }}
+                onClick={() => sessionStorage.setItem('cct:open-share', '1')}
+              >
                 Share Your Story →
               </a>
               <a href="#/good-works" className="sbtn sbtn-gh" style={{ textDecoration: 'none' }}>
@@ -1012,7 +769,7 @@ export default function App() {
             <h2 className="s-h">
               The <span className="sr">Donor Wall</span>
             </h2>
-            <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 8 }}>Every donor recognised. Every drop counted</p>
+            <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 8 }}>Every donor recognised · Every drop counted</p>
           </div>
           <a href="#/register" className="btn-ink" style={{ flexShrink: 0, textDecoration: 'none' }}>
             Register as Donor &rarr;
@@ -1065,7 +822,7 @@ export default function App() {
         <Reveal>
           <div className="camp-grid">
             <div className="cc">
-              <div className="cu cu-star">★ Featured</div>
+              <div className="cu cu-star">★ Priority Cause</div>
               <div className="cc-title">Thalassemia Children&apos;s Fund</div>
               <p className="cc-desc">Monthly transfusions for 24 children. Every ₹500 = one session for one child</p>
               <div className="cc-pm">
@@ -1080,7 +837,7 @@ export default function App() {
                   🤝 <strong>1,240</strong> donors
                 </div>
                 <a href="#/donate" className="cc-cta" style={{ textDecoration: 'none' }}>
-                  Donate ₹500+
+                  Donate Now
                 </a>
               </div>
             </div>

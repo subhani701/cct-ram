@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { Reveal } from '../components/Reveal'
 import { Heart, Share2 } from 'lucide-react'
 
@@ -159,6 +159,13 @@ export default function GoodWorks() {
   const [modalSubmitted, setModalSubmitted] = useState(false)
   const [pulsingId, setPulsingId] = useState<number | null>(null)
   const storyPhotoInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (sessionStorage.getItem('cct:open-share') === '1') {
+      sessionStorage.removeItem('cct:open-share')
+      setShowModal(true)
+    }
+  }, [])
 
   const filtered = filter === 'All'
     ? ALL_STORIES

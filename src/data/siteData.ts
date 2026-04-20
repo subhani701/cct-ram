@@ -1,14 +1,10 @@
 export const TICKER_ITEMS = [
-  '12 Lakh Blood Units Collected',
-  '28,000+ Active Donors',
-  'Birthday Blood Drive · Apr 20 · HYD',
-  'Thalassemia Fund 70% to Goal',
-  '4,700 Lives Saved',
-  'Eye Pledges: 200 This Month',
-  'Platelet Separator — Urgent Need',
-  'Mobile Blood Bank 80% Funded',
-  'Next Event: Vijayawada · Apr 22',
-  '320 Campaigns Completed',
+  'Birthday Blood Drive · Apr 20 · Hyderabad',
+  'Thalassemia Children Fund · 70% funded',
+  'Vijayawada Grand Camp · Apr 22',
+  'Mobile Blood Bank · 80% funded',
+  'Est. 1997 · 27 years of service',
+  'Campus Circuit · 20 colleges · June',
 ] as const
 
 export type StoryItem = {
@@ -19,39 +15,31 @@ export type StoryItem = {
 }
 
 export const STORIES: StoryItem[] = [
-  { emoji: '🩸', label: 'HYD Drive', live: true, seen: false },
   { emoji: '💛', label: 'Fund Night', live: false, seen: false },
   { emoji: '🌱', label: 'Tree Drive', live: false, seen: true },
   { emoji: '👁️', label: 'Eye Pledge', live: false, seen: false },
-  { emoji: '🏃', label: '5K Run', live: false, seen: true },
   { emoji: '🎭', label: 'Gala Night', live: false, seen: false },
   { emoji: '🍱', label: 'Food Drive', live: false, seen: false },
   { emoji: '🏢', label: 'Corp Camp', live: false, seen: true },
-  { emoji: '🎓', label: 'Campus', live: false, seen: false },
   { emoji: '🌍', label: 'NRI Drive', live: false, seen: false },
   { emoji: '🏥', label: 'Medical Aid', live: false, seen: true },
   { emoji: '📢', label: 'Awareness', live: false, seen: false },
 ]
 
-export type BloodTypeStatus = 'critical' | 'low' | 'ok'
-
-export type BloodUrgency = {
+export type BloodType = {
   type: string
-  pct: number
-  status: BloodTypeStatus
-  label: string
-  units: string
+  note: string
 }
 
-export const BLOOD_URGENCY: BloodUrgency[] = [
-  { type: 'O−', pct: 8, status: 'critical', label: 'CRITICAL', units: '18 units left' },
-  { type: 'B−', pct: 14, status: 'critical', label: 'CRITICAL', units: '31 units left' },
-  { type: 'AB−', pct: 22, status: 'low', label: 'LOW', units: '49 units left' },
-  { type: 'A−', pct: 35, status: 'low', label: 'LOW', units: '78 units left' },
-  { type: 'O+', pct: 55, status: 'ok', label: 'SUFFICIENT', units: '240 units' },
-  { type: 'B+', pct: 68, status: 'ok', label: 'SUFFICIENT', units: '302 units' },
-  { type: 'A+', pct: 80, status: 'ok', label: 'SUFFICIENT', units: '451 units' },
-  { type: 'AB+', pct: 90, status: 'ok', label: 'SUFFICIENT', units: '198 units' },
+export const BLOOD_TYPES: BloodType[] = [
+  { type: 'O−', note: 'Universal Donor' },
+  { type: 'O+', note: 'Most Common' },
+  { type: 'A−', note: 'Rare Type' },
+  { type: 'A+', note: 'Very Common' },
+  { type: 'B−', note: 'Rare Type' },
+  { type: 'B+', note: 'Common' },
+  { type: 'AB−', note: 'Rarest Type' },
+  { type: 'AB+', note: 'Universal Recipient' },
 ]
 
 export type Donor = {
