@@ -4,7 +4,6 @@ import { normalizeHash, routesMatch } from '../utils/hashRoute.ts'
 
 const NAV_LINKS = [
   { href: '#/', label: 'Home' },
-  { href: '#/events', label: 'Events' },
   { href: '#/good-works', label: 'Stories' },
   { href: '#/donors', label: 'Leaderboard' },
   { href: '#/campaigns', label: 'Campaigns' },
