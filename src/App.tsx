@@ -306,10 +306,6 @@ export default function App() {
 
       <div className="hero">
         <div className="hero-red">
-          <div className="hero-site-brand" aria-label="CCT brand">
-            <div className="hero-site-title">CCT</div>
-            <div className="hero-site-sub">Chiranjeevi Charitable Trust</div>
-          </div>
           <div className="hero-tagline">
             <div className="hero-tagline-eyebrow">A simple act. A powerful impact.</div>
             <div className="htline">

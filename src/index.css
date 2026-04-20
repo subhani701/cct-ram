@@ -72,8 +72,8 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
 
 .hero-site-brand{position:relative;z-index:3;display:inline-flex;flex-direction:column;align-items:flex-start;gap:8px;padding-bottom:6px}
 .hero-site-brand::after{content:'';width:78px;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,.95),rgba(255,255,255,.35))}
-.hero-site-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,38px);line-height:.9;font-weight:800;letter-spacing:.11em;color:#fff;text-shadow:0 8px 24px rgba(0,0,0,.24)}
-.hero-site-sub{font-family:'DM Sans',sans-serif;font-size:11px;line-height:1.4;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.88);max-width:300px}
+.hero-site-sub{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,2.6vw,34px);line-height:1.05;font-weight:800;letter-spacing:-.01em;color:#fff;text-shadow:0 8px 24px rgba(0,0,0,.24);max-width:440px}
+.hero-site-title{font-family:'DM Sans',sans-serif;font-size:clamp(12px,1.15vw,15px);line-height:1;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.78)}
 
 /* Top zone — brand lockup */
 .hero-brand{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;position:relative;z-index:1;width:100%}
@@ -108,8 +108,8 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
 
 @media(max-width:1024px){
   .hero-red{padding:40px}
-  .hero-site-title{font-size:clamp(24px,4vw,32px)}
-  .hero-site-sub{font-size:10px;letter-spacing:.15em}
+  .hero-site-sub{font-size:clamp(20px,3vw,28px)}
+  .hero-site-title{font-size:clamp(11px,1.3vw,13px);letter-spacing:.16em}
   .hero-portrait-wrap{top:-22%;right:-10%;width:72%;height:118%}
   .hero-divider{width:48px;margin-top:24px}
   .hero-stats{gap:28px}
@@ -118,8 +118,8 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
   .hero-red{padding:32px}
   .hero-site-brand{gap:6px}
   .hero-site-brand::after{width:62px}
-  .hero-site-title{font-size:clamp(22px,7vw,28px);letter-spacing:.09em}
-  .hero-site-sub{font-size:9px;letter-spacing:.12em}
+  .hero-site-sub{font-size:clamp(18px,5vw,24px)}
+  .hero-site-title{font-size:clamp(10px,2.4vw,12px);letter-spacing:.14em}
   .hero-portrait-wrap{top:-12%;right:-20%;width:82%;height:112%}
   .hs-l{font-size:10px;letter-spacing:.18em}
   .hero-stats{gap:22px;padding-top:16px}
