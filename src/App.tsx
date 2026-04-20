@@ -310,14 +310,6 @@ export default function App() {
 
       <div className="hero">
         <div className="hero-red">
-          <div className="hero-brand">
-            <span className="hero-est-badge">EST. 1997</span>
-            <div className="hero-wordmark">
-              <h1 className="hero-name">Chiranjeevi</h1>
-              <div className="hero-sub">Charitable Trust · CCT</div>
-            </div>
-            <div className="hero-divider" />
-          </div>
           <div className="hero-tagline">
             <div className="htline"><span className="hv">Fund</span> <span className="hc">a cause</span></div>
             <div className="htline"><span className="hv">Drop</span> <span className="hc">a pint</span></div>

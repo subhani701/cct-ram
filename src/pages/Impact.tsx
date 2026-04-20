@@ -1,656 +1,426 @@
-import '../impact-tw.css'
-import { useState, useEffect, useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import {
-  Heart,
-  Droplet,
-  Users,
-  IndianRupee,
-  Building2,
-  Stethoscope,
-  ArrowRight,
-} from 'lucide-react'
+import { useMemo } from 'react'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 
-const PAGE_CONTAINER = 'mx-auto w-full max-w-[90rem] px-5 sm:px-8 lg:px-10'
-const SECTION_PADDING = 'py-16 md:py-20 lg:py-24'
-const SECTION_HEADER = 'mb-10 text-center md:mb-14'
-
-function navigateToPage(page: string) {
-  const routes: Record<string, string> = {
-    register: '#/register',
-    campaigns: '#/campaigns',
-  }
-  window.location.hash = routes[page] ?? `#/${page}`
-}
-
-function useCountUp(end: number, duration: number = 2000, startOnView: boolean = true) {
-  const [count, setCount] = useState(0)
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const hasStarted = useRef(false)
-
-  useEffect(() => {
-    if (startOnView && !isInView) return
-    if (hasStarted.current) return
-    hasStarted.current = true
-
-    const startTime = Date.now()
-    const animate = () => {
-      const elapsed = Date.now() - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      const easeOut = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(end * easeOut))
-      if (progress < 1) {
-        requestAnimationFrame(animate)
-      }
-    }
-    requestAnimationFrame(animate)
-  }, [end, duration, isInView, startOnView])
-
-  return { count, ref }
-}
-
-function FloatingParticles() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {[...Array(30)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute h-1 w-1 rounded-full bg-[#F59E0B] opacity-30"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: 4 + Math.random() * 2,
-            repeat: Infinity,
-            delay: Math.random() * 2,
-            ease: 'easeInOut',
-          }}
+const impactStats = [
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path
+          d="M12 2.8c-.7 1.5-2.2 3.6-3.6 5.3C6.8 10 5.6 11.8 5.6 14.2A6.4 6.4 0 0 0 12 20.6a6.4 6.4 0 0 0 6.4-6.4c0-2.4-1.2-4.2-2.8-6.1C14.2 6.4 12.7 4.3 12 2.8Z"
+          fill="#ef3b2d"
+          stroke="#c72127"
+          strokeWidth="1"
         />
-      ))}
-    </div>
+      </svg>
+    ),
+    value: '12,00,000+',
+    label: 'Blood Units Collected',
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path
+          d="M12 20.2 3.8 12c-2-2.1-1.9-5.4.2-7.4a5 5 0 0 1 7.1 0L12 5.5l.9-.9a5 5 0 0 1 7.1 0c2.1 2 2.2 5.3.2 7.4L12 20.2Z"
+          fill="#ef3b2d"
+          stroke="#c72127"
+          strokeWidth="1"
+        />
+      </svg>
+    ),
+    value: '4,700+',
+    label: 'Lives Saved',
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <circle cx="8.2" cy="8.2" r="3.1" fill="#2f82f5" />
+        <circle cx="15.8" cy="8.2" r="3.1" fill="#2f82f5" />
+        <path d="M3.8 18.6c0-2.7 2.2-4.9 4.9-4.9h1.2c2.7 0 4.9 2.2 4.9 4.9" fill="#2f82f5" />
+        <path d="M9.2 18.6c0-2.7 2.2-4.9 4.9-4.9h1.2c2.7 0 4.9 2.2 4.9 4.9" fill="#2f82f5" />
+      </svg>
+    ),
+    value: '28,000+',
+    label: 'Active Donors',
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <text
+          x="12"
+          y="16.5"
+          textAnchor="middle"
+          fontSize="16"
+          fontWeight="700"
+          fill="#7f1f2b"
+          fontFamily="DM Sans, sans-serif"
+        >
+          ₹
+        </text>
+      </svg>
+    ),
+    value: 'Rs.2.3 Cr',
+    label: 'Funds Raised',
+  },
+]
+
+const journey = [
+  { year: '1998', text: 'CCT founded by Megastar Chiranjeevi' },
+  { year: '2005', text: '1,00,000 blood units milestone' },
+  { year: '2012', text: 'First mega blood drive with 5,000 donors in one day' },
+  { year: '2018', text: 'Partnership with 50+ hospitals across AP & TS' },
+  { year: '2024', text: 'Digital platform launch' },
+  { year: '2026', text: '12 lakh units and counting' },
+]
+
+const districts = [
+  { city: 'Hyderabad', count: 85000, rank: 1, hot: true },
+  { city: 'Vijayawada', count: 62000, rank: 2, hot: true },
+  { city: 'Visakhapatnam', count: 58000, rank: 3, hot: true },
+  { city: 'Guntur', count: 45000, rank: 4, hot: true },
+  { city: 'Tirupati', count: 42000, rank: 5, hot: false },
+]
+
+const bloodMix = [
+  { type: 'O+', pct: 35, color: '#d62839' },
+  { type: 'B+', pct: 25, color: '#f0a50b' },
+  { type: 'A+', pct: 20, color: '#3f7de0' },
+  { type: 'AB+', pct: 8, color: '#7b5bf6' },
+  { type: 'O-', pct: 5, color: '#e5485a' },
+  { type: 'B-', pct: 3, color: '#f2c23a' },
+  { type: 'A-', pct: 3, color: '#5b9bf6' },
+  { type: 'AB-', pct: 1, color: '#9f87ff' },
+]
+
+const campaignImpact = [
+  { icon: '🩺', value: '12', label: 'Equipment Campaigns Completed' },
+  { icon: '👨‍👩‍👧', value: '2,500+', label: 'Patients Supported' },
+  { icon: '🏥', value: '8', label: 'Blood Banks Upgraded' },
+]
+
+const donutStops = (() => {
+  let start = 0
+  return bloodMix
+    .map((item) => {
+      const end = start + item.pct
+      const stop = `${item.color} ${start}% ${end}%`
+      start = end
+      return stop
+    })
+    .join(', ')
+})()
+
+export default function Impact() {
+  const reduceMotion = useReducedMotion()
+
+  const easeSoft = [0.22, 1, 0.36, 1] as const
+  const fadeUp: Variants = reduceMotion
+    ? { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.2 } } }
+    : {
+        hidden: { opacity: 0, y: 26 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.58, ease: easeSoft } },
+      }
+
+  const popIn: Variants = reduceMotion
+    ? { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.2 } } }
+    : {
+        hidden: { opacity: 0, scale: 0.94, y: 10 },
+        show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.48, ease: easeSoft } },
+      }
+
+  const staggerContainer = useMemo(
+    () =>
+      ({
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: reduceMotion ? 0.03 : 0.1,
+            delayChildren: reduceMotion ? 0 : 0.04,
+          },
+        },
+      }) satisfies Variants,
+    [reduceMotion],
   )
-}
 
-type HeroStat = {
-  value: number
-  label: string
-  suffix: string
-  prefix?: string
-  isRupee?: boolean
-  icon: typeof Droplet
-}
+  const timelineItem: Variants = reduceMotion
+    ? { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.2 } } }
+    : {
+        hidden: { opacity: 0, y: 14 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeSoft } },
+      }
 
-function HeroStatCard({ stat, index }: { stat: HeroStat; index: number }) {
-  const { count, ref } = useCountUp(stat.value, 2000)
-  const Icon = stat.icon
+  const headingWord: Variants = reduceMotion
+    ? { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.2 } } }
+    : {
+        hidden: { opacity: 0, y: 20, filter: 'blur(4px)' },
+        show: {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          transition: { duration: 0.6, ease: easeSoft },
+        },
+      }
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24, scale: 0.96 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.55, delay: index * 0.12, ease: 'easeOut' }}
-      whileHover={{ y: -4 }}
-      className="group relative"
+      className="impact-flow-page"
+      style={{ paddingTop: 'var(--nav-h)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: reduceMotion ? 0.2 : 0.45 }}
     >
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-[#F59E0B]/25 via-transparent to-[#DC2626]/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="relative h-full overflow-hidden rounded-[2rem] border border-[#EADFCC] bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFCF7_100%)] p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.07)] transition-colors hover:border-[#F59E0B]/45 md:p-6 lg:p-8">
-        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#F59E0B] to-transparent" />
-        <div className="absolute -left-10 -top-10 h-24 w-24 rounded-full bg-[#F59E0B]/6" />
-        <div className="absolute -bottom-10 -right-8 h-28 w-28 rounded-full border border-[#F3E5CF]" />
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.3 + index * 0.1, type: 'spring' }}
-          className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl border border-[#F59E0B]/25 bg-[#F59E0B]/10 shadow-sm"
-        >
-          <Icon className="h-6 w-6 text-[#DC2626]" />
-        </motion.div>
-
-        <div
-          className={`mb-2 font-serif font-bold leading-[0.95] tracking-tight text-[#1E3A5F] ${
-            stat.isRupee ? 'text-4xl md:text-5xl lg:text-6xl' : 'whitespace-nowrap text-4xl md:text-5xl lg:text-[56px]'
-          }`}
-        >
-          {stat.prefix && <span>{stat.prefix}</span>}
-          {stat.isRupee ? (
-            <span>{(count / 10000000).toFixed(1)} Cr</span>
-          ) : (
-            <span>{count.toLocaleString('en-IN')}</span>
-          )}
-          {stat.suffix && <span>{stat.suffix}</span>}
-        </div>
-        <p className="text-base text-[#6B7280] md:text-lg">{stat.label}</p>
-      </div>
-    </motion.div>
-  )
-}
-
-function HeroStatsSection() {
-  const stats: HeroStat[] = [
-    { value: 1200000, label: 'Blood Units Collected', suffix: '', icon: Droplet },
-    { value: 4700, label: 'Lives Saved', suffix: '+', icon: Heart },
-    { value: 28000, label: 'Active Donors', suffix: '+', icon: Users },
-    {
-      value: 23000000,
-      label: 'Funds Raised',
-      prefix: 'Rs.',
-      suffix: '',
-      isRupee: true,
-      icon: IndianRupee,
-    },
-  ]
-
-  return (
-    <section className="relative flex min-h-[76vh] items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#FFF7ED_0%,#FFF9F2_45%,#FFFDF9_100%)] pb-16 pt-14 md:pb-24 md:pt-20 lg:pb-28">
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(30,58,95,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(30,58,95,0.2) 1px, transparent 1px)',
-          backgroundSize: '42px 42px',
-        }}
-      />
-      <div className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-[#DC2626]/10 blur-3xl" />
-      <div className="absolute -right-16 top-1/3 h-[22rem] w-[22rem] rounded-full bg-[#F59E0B]/12 blur-3xl" />
-      <div className="absolute -bottom-20 left-1/3 h-[18rem] w-[18rem] rounded-full bg-[#1E3A5F]/8 blur-3xl" />
-      <FloatingParticles />
-
-      <div className={`relative z-10 ${PAGE_CONTAINER}`}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-10 text-center md:mb-14 lg:mb-16"
-        >
-          <h1 className="mb-4 font-serif text-4xl font-bold leading-tight text-[#1A1A1A] md:text-6xl lg:text-7xl">
-            Our <span className="italic text-[#F59E0B]">Impact</span>
+      <motion.section className="impact-flow-section impact-flow-top" initial="hidden" animate="show">
+        <motion.div className="impact-flow-head" variants={staggerContainer}>
+          <h1>
+            <motion.span className="impact-flow-head-plain" variants={headingWord} style={{ display: 'inline-block' }}>
+              Our
+            </motion.span>{' '}
+            <motion.span variants={headingWord} style={{ display: 'inline-block' }}>
+              <span>Impact</span>
+            </motion.span>
           </h1>
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#6B7280] md:text-xl">
+          <motion.p variants={fadeUp}>
             Three decades of saving lives across Andhra Pradesh and Telangana
-          </p>
+          </motion.p>
         </motion.div>
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7 lg:grid-cols-4 lg:gap-8">
-          {stats.map((stat, index) => (
-            <HeroStatCard key={stat.label} stat={stat} index={index} />
+        <motion.div
+          className="impact-flow-stat-grid"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          {impactStats.map((item, index) => (
+            <motion.article
+              key={item.label}
+              className="impact-flow-card impact-flow-stat-card"
+              variants={popIn}
+              animate={
+                reduceMotion
+                  ? undefined
+                  : {
+                      y: [0, -4, 0],
+                    }
+              }
+              transition={
+                reduceMotion
+                  ? undefined
+                  : {
+                      duration: 3.2,
+                      ease: 'easeInOut',
+                      repeat: Infinity,
+                      delay: index * 0.12,
+                    }
+              }
+              whileHover={reduceMotion ? undefined : { y: -4, scale: 1.02 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+            >
+              <div className="impact-flow-icon">{item.icon}</div>
+              <h3 className="impact-flow-stat-value">{item.value}</h3>
+              <p className="impact-flow-stat-label">{item.label}</p>
+            </motion.article>
           ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function TimelineSection() {
-  const milestones = [
-    { year: '1998', event: 'CCT Founded by Megastar Chiranjeevi' },
-    { year: '2005', event: '1,00,000 blood units milestone' },
-    { year: '2012', event: 'First mega blood drive — 5,000 donors in one day' },
-    { year: '2018', event: 'Partnership with 50+ hospitals across AP & TS' },
-    { year: '2024', event: 'Digital platform launch' },
-    { year: '2026', event: '12 lakh units and counting' },
-  ]
-
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
-
-  return (
-    <section className={`relative overflow-hidden border-t border-[#E8DED0]/60 bg-[#FFFDF9]/40 ${SECTION_PADDING}`}>
-      <div className={PAGE_CONTAINER}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className={SECTION_HEADER}
-        >
-          <h2 className="mb-5 font-serif text-3xl font-bold text-[#1A1A1A] md:text-5xl">
-            Our <span className="text-[#F59E0B]">Journey</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base leading-relaxed text-[#6B7280] md:text-lg">
-            Key milestones in our mission to save lives
-          </p>
         </motion.div>
+      </motion.section>
 
-        <div ref={containerRef} className="relative">
-          <div className="-mx-2 overflow-x-auto px-2 pb-8 pt-2 scrollbar-hide sm:-mx-0 sm:px-0 md:pb-10">
-            <div className="relative min-w-[920px] md:min-w-0">
-              {/* Line through vertical center of marker (h-5 = 20px) */}
-              <div className="absolute left-0 right-0 top-[9px] h-0.5 bg-[#E6DCCB]">
+      <motion.section
+        className="impact-flow-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.div className="impact-flow-head" variants={fadeUp}>
+          <h2>
+            Our <span>Journey</span>
+          </h2>
+          <p>Key milestones in our mission to save lives</p>
+        </motion.div>
+        <motion.div className="impact-flow-timeline-wrap" variants={fadeUp}>
+          <div className="impact-flow-timeline-line">
+            <motion.div
+              className="impact-flow-timeline-line-progress"
+              initial={reduceMotion ? { opacity: 0 } : { scaleX: 0, opacity: 1 }}
+              whileInView={reduceMotion ? { opacity: 1 } : { scaleX: 1, opacity: 1 }}
+              viewport={{ once: false, amount: 0.85 }}
+              transition={{ duration: reduceMotion ? 0.2 : 1.2, ease: easeSoft }}
+              style={{ transformOrigin: 'left center' }}
+            />
+          </div>
+          <motion.div className="impact-flow-timeline-grid" variants={staggerContainer}>
+            {journey.map((item, index) => (
+              <motion.div
+                key={item.year}
+                className="impact-flow-timeline-item"
+                variants={timelineItem}
+                whileHover={reduceMotion ? undefined : { y: -3 }}
+              >
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#DC2626] via-[#F59E0B] to-[#DC2626]"
-                  initial={{ width: '0%' }}
-                  animate={isInView ? { width: '100%' } : { width: '0%' }}
-                  transition={{ duration: 2, ease: 'easeInOut' }}
+                  className="impact-flow-dot"
+                  animate={reduceMotion ? undefined : { scale: [1, 1.25, 1] }}
+                  transition={{
+                    duration: reduceMotion ? 0.2 : 1.9,
+                    ease: 'easeInOut',
+                    repeat: reduceMotion ? 0 : Infinity,
+                    delay: index * 0.14,
+                  }}
                 />
-              </div>
-
-              <div className="relative flex justify-between">
-                {milestones.map((milestone, index) => (
-                  <motion.div
-                    key={milestone.year}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ delay: 0.3 + index * 0.2, duration: 0.5 }}
-                    className="flex w-[9.5rem] flex-col items-center sm:w-40 md:w-[11.5rem]"
-                  >
-                    <motion.div
-                      className="relative z-10 h-5 w-5 rounded-full border-[5px] border-[#F59E0B] bg-white"
-                      initial={{ scale: 0 }}
-                      animate={isInView ? { scale: 1 } : { scale: 0 }}
-                      transition={{ delay: 0.5 + index * 0.2, type: 'spring' }}
-                    >
-                      <motion.div
-                        className="absolute inset-0 rounded-full bg-[#F59E0B]"
-                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                      />
-                    </motion.div>
-
-                    <span className="mt-5 font-serif text-2xl font-bold text-[#F59E0B] md:mt-7">
-                      {milestone.year}
-                    </span>
-
-                    <p className="mt-2.5 max-w-[11rem] text-center text-sm leading-snug text-[#6B7280] md:mt-3.5 md:text-[0.9375rem] md:leading-relaxed">
-                      {milestone.event}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function DonationHeatmapSection() {
-  const [visibleCount, setVisibleCount] = useState(5)
-  const districts = [
-    { name: 'Hyderabad', donations: 85000, color: '#DC2626' },
-    { name: 'Vijayawada', donations: 62000, color: '#DC2626' },
-    { name: 'Visakhapatnam', donations: 58000, color: '#EF4444' },
-    { name: 'Guntur', donations: 45000, color: '#EF4444' },
-    { name: 'Tirupati', donations: 42000, color: '#F87171' },
-    { name: 'Warangal', donations: 38000, color: '#F87171' },
-    { name: 'Kakinada', donations: 32000, color: '#FCA5A5' },
-    { name: 'Nellore', donations: 28000, color: '#FCA5A5' },
-    { name: 'Kurnool', donations: 25000, color: '#FECACA' },
-    { name: 'Rajahmundry', donations: 22000, color: '#FECACA' },
-    { name: 'Kadapa', donations: 18000, color: '#FEE2E2' },
-    { name: 'Anantapur', donations: 15000, color: '#FEE2E2' },
-  ]
-  const sortedDistricts = [...districts].sort((a, b) => b.donations - a.donations)
-  const maxDonations = sortedDistricts[0]?.donations ?? 1
-  const hotspotDistricts = sortedDistricts.slice(0, 4)
-  const visibleDistricts = sortedDistricts.slice(0, visibleCount)
-  const hasMore = visibleCount < sortedDistricts.length
-
-  return (
-    <section className={`relative border-t border-[#E8DED0]/60 ${SECTION_PADDING}`}>
-      <div className={PAGE_CONTAINER}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className={SECTION_HEADER}
-        >
-          <h2 className="mb-5 font-serif text-3xl font-bold text-[#1A1A1A] md:text-5xl">
-            Donation <span className="text-[#DC2626]">Heatmap</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base leading-relaxed text-[#6B7280] md:text-lg">
-            Blood donation density across AP & Telangana districts
-          </p>
-        </motion.div>
-
-        <div className="rounded-3xl border border-[#E8DED0] bg-white p-5 shadow-lg shadow-black/5 md:p-7 lg:p-8">
-          <div className="grid gap-7 lg:grid-cols-[1.65fr_1fr] lg:gap-10 xl:gap-12">
-            <div className="min-w-0 space-y-3.5 md:space-y-4">
-              {visibleDistricts.map((district, index) => {
-                const width = Math.max(10, Math.round((district.donations / maxDonations) * 100))
-                return (
-                  <motion.div
-                    key={district.name}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.04 }}
-                    className="rounded-xl border border-[#EFE5D6] bg-[#FFFDF9] p-3 md:p-3.5"
-                  >
-                    <div className="mb-2 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FEE2E2] text-xs font-bold text-[#DC2626]">
-                          #{index + 1}
-                        </span>
-                        <p className="text-sm font-semibold text-[#1A1A1A]">{district.name}</p>
-                      </div>
-                      <p className="text-sm font-bold text-[#DC2626]">
-                        {district.donations.toLocaleString('en-IN')}
-                      </p>
-                    </div>
-                    <div className="h-2.5 overflow-hidden rounded-full bg-[#F5EDE0]">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${width}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: index * 0.04 }}
-                        className="h-full rounded-full"
-                        style={{ backgroundColor: district.color }}
-                      />
-                    </div>
-                  </motion.div>
-                )
-              })}
-
-              {hasMore && (
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setVisibleCount(prev => Math.min(prev + 4, sortedDistricts.length))}
-                  className="mt-3 w-full rounded-xl border border-[#E8DED0] bg-white py-3 text-sm font-semibold text-[#1E3A5F] transition-colors hover:border-[#DC2626] hover:text-[#DC2626]"
-                >
-                  Load More Details
-                </motion.button>
-              )}
-            </div>
-
-            <div className="grid min-w-0 gap-3.5 sm:grid-cols-2 lg:grid-cols-2 lg:gap-4">
-              {hotspotDistricts.map((district, index) => (
-                <motion.div
-                  key={district.name}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                  className="rounded-xl border border-[#E8DED0] bg-[#FFF7ED] p-3.5 md:p-[1.125rem]"
-                >
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#6B7280]">Top Hotspot</p>
-                  <p className="mt-1.5 font-serif text-2xl font-bold text-[#1A1A1A]">{district.name}</p>
-                  <p className="mt-1.5 font-semibold text-[#DC2626]">
-                    {district.donations.toLocaleString('en-IN')} donations
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5 border-t border-[#F0E6D8] pt-8 md:mt-10 md:gap-[1.125rem] md:pt-10">
-          <span className="text-sm font-medium text-[#6B7280]">Low</span>
-          <div className="flex gap-1.5">
-            {['#FEE2E2', '#FECACA', '#FCA5A5', '#F87171', '#EF4444', '#DC2626'].map(color => (
-              <div key={color} className="h-4 w-8 rounded shadow-sm" style={{ backgroundColor: color }} />
+                <div className="impact-flow-year">{item.year}</div>
+                <div className="impact-flow-year-text">{item.text}</div>
+              </motion.div>
             ))}
-          </div>
-          <span className="text-sm font-medium text-[#6B7280]">High</span>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function BloodTypeDistributionSection() {
-  const bloodTypes = [
-    { type: 'O+', percentage: 35, color: '#DC2626' },
-    { type: 'B+', percentage: 25, color: '#F59E0B' },
-    { type: 'A+', percentage: 20, color: '#3B82F6' },
-    { type: 'AB+', percentage: 8, color: '#8B5CF6' },
-    { type: 'O-', percentage: 5, color: '#EF4444' },
-    { type: 'B-', percentage: 3, color: '#FBBF24' },
-    { type: 'A-', percentage: 3, color: '#60A5FA' },
-    { type: 'AB-', percentage: 1, color: '#A78BFA' },
-  ]
-
-  const [hoveredType, setHoveredType] = useState<string | null>(null)
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
-  const radius = 80
-  const circumference = 2 * Math.PI * radius
-  let accumulatedOffset = 0
-
-  return (
-    <section className={`relative border-t border-[#E8DED0]/60 ${SECTION_PADDING}`}>
-      <div className={PAGE_CONTAINER}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className={SECTION_HEADER}
-        >
-          <h2 className="mb-5 font-serif text-3xl font-bold text-[#1A1A1A] md:text-5xl">
-            Blood Type <span className="text-[#DC2626]">Distribution</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base leading-relaxed text-[#6B7280] md:text-lg">
-            Breakdown of donations by blood type
-          </p>
+          </motion.div>
         </motion.div>
+      </motion.section>
 
-        <div
-          ref={ref}
-          className="flex flex-col items-center justify-center gap-10 md:flex-row md:items-center md:justify-center md:gap-12 lg:gap-16"
-        >
-          <div className="relative shrink-0">
-            <svg width="280" height="280" viewBox="0 0 200 200">
-              {bloodTypes.map((blood, index) => {
-                const strokeLength = (blood.percentage / 100) * circumference
-                const currentOffset = accumulatedOffset
-                accumulatedOffset += strokeLength
-
-                const isHovered = hoveredType === blood.type
-
-                return (
-                  <motion.circle
-                    key={blood.type}
-                    cx="100"
-                    cy="100"
-                    r={radius}
-                    fill="none"
-                    stroke={blood.color}
-                    strokeWidth={isHovered ? 28 : 24}
-                    strokeDasharray={`${strokeLength} ${circumference}`}
-                    strokeDashoffset={-currentOffset}
-                    strokeLinecap="round"
-                    initial={{ strokeDashoffset: circumference }}
-                    animate={isInView ? { strokeDashoffset: -currentOffset } : { strokeDashoffset: circumference }}
-                    transition={{ duration: 1.5, delay: index * 0.1, ease: 'easeOut' }}
-                    onMouseEnter={() => setHoveredType(blood.type)}
-                    onMouseLeave={() => setHoveredType(null)}
-                    style={{
-                      cursor: 'pointer',
-                      transformOrigin: 'center',
-                      transform: 'rotate(-90deg)',
-                    }}
+      <motion.section
+        className="impact-flow-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.div className="impact-flow-head" variants={fadeUp}>
+          <h2>
+            Donation <span>Heatmap</span>
+          </h2>
+          <p>Blood donation trends based on our overall donor activity</p>
+        </motion.div>
+        <motion.div className="impact-flow-heatmap" variants={fadeUp}>
+          <motion.div className="impact-flow-bars" variants={staggerContainer}>
+            {districts.map((item) => (
+              <motion.div key={item.city} className="impact-flow-row" variants={timelineItem}>
+                <div className="impact-flow-row-top">
+                  <strong>
+                    #{item.rank} {item.city}
+                  </strong>
+                  <span>{item.count.toLocaleString()}</span>
+                </div>
+                <div className="impact-flow-track">
+                  <motion.div
+                    className="impact-flow-fill"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${(item.count / districts[0].count) * 100}%` }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{ duration: reduceMotion ? 0.2 : 0.8, ease: easeSoft }}
                   />
-                )
-              })}
-              <text
-                x="100"
-                y="95"
-                textAnchor="middle"
-                className="fill-[#1A1A1A] font-serif text-2xl font-bold"
-              >
-                {hoveredType || 'All'}
-              </text>
-              <text x="100" y="115" textAnchor="middle" className="fill-[#6B7280] text-sm">
-                {hoveredType ? `${bloodTypes.find(b => b.type === hoveredType)?.percentage}%` : 'Types'}
-              </text>
-            </svg>
-          </div>
-
-          <div className="grid w-full max-w-md grid-cols-2 gap-x-6 gap-y-2.5 md:max-w-lg md:gap-x-8 md:gap-y-3">
-            {bloodTypes.map((blood, index) => (
-              <motion.div
-                key={blood.type}
-                initial={{ opacity: 0, x: 20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
-                onMouseEnter={() => setHoveredType(blood.type)}
-                onMouseLeave={() => setHoveredType(null)}
-                className={`flex cursor-pointer items-center gap-2.5 rounded-xl px-2 py-2 transition-colors md:px-2.5 md:py-2.5 ${
-                  hoveredType === blood.type ? 'border border-[#E8DED0] bg-white shadow-sm' : ''
-                }`}
-              >
-                <div className="h-4 w-4 rounded-full" style={{ backgroundColor: blood.color }} />
-                <span className="font-semibold text-[#1A1A1A]">{blood.type}</span>
-                <span className="text-[#6B7280]">{blood.percentage}%</span>
+                </div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function CampaignImpactSection() {
-  const highlights = [
-    { icon: Stethoscope, value: '12', label: 'Equipment Campaigns Completed', color: '#DC2626' },
-    { icon: Users, value: '2,500+', label: 'Patients Supported', color: '#F59E0B' },
-    { icon: Building2, value: '8', label: 'Blood Banks Upgraded', color: '#3B82F6' },
-  ]
-
-  return (
-    <section className={`relative border-t border-[#E8DED0]/60 ${SECTION_PADDING}`}>
-      <div className={PAGE_CONTAINER}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className={SECTION_HEADER}
-        >
-          <h2 className="mb-5 font-serif text-3xl font-bold text-[#1A1A1A] md:text-5xl">
-            Campaign <span className="text-[#F59E0B]">Impact</span>
-          </h2>
-          <p className="text-lg font-semibold leading-relaxed text-[#F59E0B] md:text-xl">
-            Rs.2.3 Crore raised across 47 campaigns
-          </p>
+            <motion.button
+              type="button"
+              className="impact-flow-more-btn"
+              whileHover={reduceMotion ? undefined : { y: -1, scale: 1.01 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.99 }}
+            >
+              Load More Details
+            </motion.button>
+          </motion.div>
         </motion.div>
+        <motion.div className="impact-flow-scale" variants={fadeUp}>
+          Low ▭▭▭▭▭ High
+        </motion.div>
+      </motion.section>
 
-        <div className="grid gap-5 md:grid-cols-3 md:gap-7">
-          {highlights.map((item, index) => {
-            const Icon = item.icon
-            return (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15, type: 'spring', stiffness: 100 }}
-                className="rounded-3xl border border-[#E8DED0] bg-white p-7 text-center shadow-lg shadow-black/5 transition-colors hover:border-[#F59E0B]/40"
-              >
-                <motion.div
-                  className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-2xl"
-                  style={{ backgroundColor: `${item.color}20` }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
-                  <Icon className="h-8 w-8" style={{ color: item.color }} />
-                </motion.div>
-                <div className="mb-2 font-serif text-4xl font-bold text-[#1A1A1A]">{item.value}</div>
-                <p className="text-[#6B7280]">{item.label}</p>
+      <motion.section
+        className="impact-flow-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.div className="impact-flow-head" variants={fadeUp}>
+          <h2>
+            Blood Type <span>Distribution</span>
+          </h2>
+          <p>Breakdown of donations by blood type</p>
+        </motion.div>
+        <motion.div className="impact-flow-blood-layout" variants={staggerContainer}>
+          <motion.div
+            className="impact-flow-donut"
+            style={{ background: `conic-gradient(${donutStops})` }}
+            variants={popIn}
+            whileHover={reduceMotion ? undefined : { rotate: 7, scale: 1.02 }}
+            transition={{ duration: 0.45, ease: easeSoft }}
+          >
+            <div className="impact-flow-donut-inner">
+              <strong>All</strong>
+              <span>Types</span>
+            </div>
+          </motion.div>
+          <motion.div className="impact-flow-legend" variants={staggerContainer}>
+            {bloodMix.map((item) => (
+              <motion.div key={item.type} className="impact-flow-legend-item" variants={timelineItem}>
+                <span style={{ background: item.color }} />
+                <label>{item.type}</label>
+                <b>{item.pct}%</b>
               </motion.div>
-            )
-          })}
-        </div>
-      </div>
-    </section>
-  )
-}
+            ))}
+          </motion.div>
+        </motion.div>
+      </motion.section>
 
-function CTASection() {
-  return (
-    <section className="relative overflow-hidden border-t border-[#E8DED0]/60 py-16 md:py-20 lg:py-24">
-      <div className="absolute left-1/4 top-1/2 h-96 w-96 rounded-full bg-[#DC2626]/20 blur-3xl" />
-      <div className="absolute right-1/4 top-1/2 h-96 w-96 rounded-full bg-[#F59E0B]/20 blur-3xl" />
+      <motion.section
+        className="impact-flow-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.div className="impact-flow-head" variants={fadeUp}>
+          <h2>
+            Campaign <span>Impact</span>
+          </h2>
+          <p>Rs.2.3 Crore raised across 47 campaigns</p>
+        </motion.div>
+        <motion.div className="impact-flow-campaign-grid" variants={staggerContainer}>
+          {campaignImpact.map((item) => (
+            <motion.article
+              key={item.label}
+              className="impact-flow-card impact-flow-campaign-card"
+              variants={popIn}
+              whileHover={reduceMotion ? undefined : { y: -4, scale: 1.02 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+            >
+              <div className="impact-flow-icon">{item.icon}</div>
+              <h3>{item.value}</h3>
+              <p>{item.label}</p>
+            </motion.article>
+          ))}
+        </motion.div>
+      </motion.section>
 
-      <div className="relative mx-auto max-w-4xl px-5 text-center sm:px-8 lg:px-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-5 font-serif text-4xl font-bold text-[#1A1A1A] md:mb-6 md:text-6xl"
-        >
-          Be part of the <span className="text-[#F59E0B]">next chapter</span>
+      <motion.section
+        className="impact-flow-section impact-flow-cta"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <motion.h2 variants={fadeUp}>
+          Be part of the <span>next chapter</span>
         </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="mx-auto mb-7 max-w-2xl text-lg text-[#6B7280] md:mb-9"
-        >
+        <motion.p variants={fadeUp}>
           Join thousands of heroes who have made a difference. Your contribution can save lives.
         </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col justify-center gap-3.5 sm:flex-row sm:gap-4"
-        >
-          <motion.button
-            type="button"
-            onClick={() => navigateToPage('register')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative overflow-hidden rounded-xl bg-[#DC2626] px-6 py-2.5 text-sm font-semibold text-white"
+        <motion.div className="impact-flow-cta-actions" variants={staggerContainer}>
+          <motion.a
+            href="#/register"
+            variants={popIn}
+            whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.98 }}
           >
-            <motion.div
-              className="absolute inset-0 z-0 bg-gradient-to-r from-[#DC2626] to-[#F59E0B]"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              <Droplet className="h-5 w-5" />
-              Donate Blood
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </span>
-          </motion.button>
-
-          <motion.button
-            type="button"
-            onClick={() => navigateToPage('campaigns')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative overflow-hidden rounded-xl border-2 border-[#F59E0B] bg-transparent px-6 py-2.5 text-sm font-semibold text-[#F59E0B]"
+            Donate Blood
+          </motion.a>
+          <motion.a
+            href="#/campaigns"
+            variants={popIn}
+            whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.98 }}
           >
-            <motion.div
-              className="absolute inset-0 z-0 bg-[#F59E0B]"
-              initial={{ y: '100%' }}
-              whileHover={{ y: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            <span className="relative z-10 flex items-center justify-center gap-2 transition-colors group-hover:text-white">
-              <Heart className="h-5 w-5" />
-              Start a Campaign
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </span>
-          </motion.button>
+            Start a Campaign
+          </motion.a>
         </motion.div>
-      </div>
-    </section>
-  )
-}
-
-export default function Impact() {
-  return (
-    <div className="min-h-screen bg-[#FFF7ED]" style={{ paddingTop: 'var(--nav-h)' }}>
-      <HeroStatsSection />
-      <TimelineSection />
-      <DonationHeatmapSection />
-      <BloodTypeDistributionSection />
-      <CampaignImpactSection />
-      <CTASection />
-    </div>
+      </motion.section>
+    </motion.div>
   )
 }
