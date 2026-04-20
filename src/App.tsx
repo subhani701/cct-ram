@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatedCounter } from './components/AnimatedCounter'
 import { Reveal } from './components/Reveal'
 import {
@@ -264,10 +264,6 @@ export default function App() {
 
   const fedRows = fedFiltered.slice(0, fedShow)
 
-  const scrollTo = useCallback((el: HTMLElement | null) => {
-    el?.scrollIntoView({ behavior: 'smooth' })
-  }, [])
-
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY
@@ -332,8 +328,8 @@ export default function App() {
           <div className="hero-foot" />
         </div>
         <div className="hero-cream">
-          <div className="hc-chip">Megastar · Fan Community · Impact Platform</div>
           <div className="hc-mid">
+            <div className="hc-chip">Megastar Fan Community · Impact Platform</div>
             <div className="hc-sub">
               Millions of fans
               <br />
@@ -349,9 +345,9 @@ export default function App() {
               <a href="#/donate" className="btn-ink" style={{ textDecoration: 'none' }}>
                 Support a Cause
               </a>
-              <button type="button" className="btn-brd" onClick={() => scrollTo(worksRef.current)}>
+              <a href="#/good-works" className="btn-brd" style={{ textDecoration: 'none' }}>
                 See Stories
-              </button>
+              </a>
             </div>
           </div>
         </div>
