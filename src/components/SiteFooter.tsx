@@ -75,7 +75,6 @@ export function SiteFooter() {
           <ul>
             <li><a href="#/about">About CCT</a></li>
             <li><a href="#/impact">Our Impact</a></li>
-            <li><a href="#/donate">80G Info</a></li>
             <li><a href="#/about">Contact</a></li>
           </ul>
         </div>

@@ -4,10 +4,14 @@ type PaymentMethod = 'upi' | 'card' | 'netbanking' | ''
 
 const PRESET_AMOUNTS = [100, 500, 1000, 2500, 5000]
 const BANKS = ['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak Mahindra Bank', 'Punjab National Bank']
-
-function formatINR(n: number): string {
-  return '₹' + n.toLocaleString('en-IN')
-}
+const COUNTRY_CODES = [
+  { code: '+91', flag: '🇮🇳', currency: 'INR', locale: 'en-IN' },
+  { code: '+1', flag: '🇺🇸', currency: 'USD', locale: 'en-US' },
+  { code: '+44', flag: '🇬🇧', currency: 'GBP', locale: 'en-GB' },
+  { code: '+61', flag: '🇦🇺', currency: 'AUD', locale: 'en-AU' },
+  { code: '+971', flag: '🇦🇪', currency: 'AED', locale: 'en-AE' },
+  { code: '+65', flag: '🇸🇬', currency: 'SGD', locale: 'en-SG' },
+]
 
 function getImpactIcon(amount: number): string {
   if (amount < 500) return '🩸'
@@ -26,14 +30,15 @@ function getImpactText(amount: number): string {
   return `Fund ${Math.floor(amount / 500)} transfusion sessions`
 }
 
-const STEP_LABELS = ['Amount', 'Details', 'Payment']
+const STEP_LABELS = ['Details', 'Amount', 'Payment']
 
 export default function Donate() {
   const [step, setStep] = useState(1)
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null)
   const [customAmount, setCustomAmount] = useState('')
   const [isCustom, setIsCustom] = useState(false)
-  const [form, setForm] = useState({ fullName: '', email: '', phone: '', pan: '', impactUpdates: true })
+  const [form, setForm] = useState({ fullName: '', email: '', phone: '' })
+  const [countryCode, setCountryCode] = useState(COUNTRY_CODES[0].code)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('')
   const [upiId, setUpiId] = useState('')
   const [cardNumber, setCardNumber] = useState('')
@@ -45,13 +50,21 @@ export default function Donate() {
   const [transitioning, setTransitioning] = useState(false)
   const [slideDir, setSlideDir] = useState<'next' | 'prev'>('next')
   const [copied, setCopied] = useState(false)
-  const [showPanTip, setShowPanTip] = useState(false)
   const [txnId] = useState(() => `TXN-2026-04-17-${Math.floor(10000 + Math.random() * 90000)}`)
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [])
 
   const effectiveAmount = isCustom ? (parseInt(customAmount) || 0) : (selectedAmount || 0)
   const impactText = getImpactText(effectiveAmount)
+  const selectedCountry = COUNTRY_CODES.find(c => c.code === countryCode) || COUNTRY_CODES[0]
+
+  const formatAmount = (n: number): string => {
+    return new Intl.NumberFormat(selectedCountry.locale, {
+      style: 'currency',
+      currency: selectedCountry.currency,
+      maximumFractionDigits: 0,
+    }).format(n)
+  }
 
   const goStep = (target: number) => {
     setSlideDir(target > step ? 'next' : 'prev')
@@ -63,7 +76,7 @@ export default function Donate() {
     }, 250)
   }
 
-  const isStep2Valid = form.fullName.length >= 2 && /\S+@\S+\.\S+/.test(form.email) && form.phone.length === 10
+  const isStep2Valid = form.fullName.length >= 2 && /\S+@\S+\.\S+/.test(form.email) && /^\d{6,15}$/.test(form.phone)
 
   const handlePay = () => {
     setProcessing(true)
@@ -90,14 +103,14 @@ export default function Donate() {
         <div className="don-success-wrap">
           <div className="don-success-check">✓</div>
           <h1 className="don-success-title">Thank you, {form.fullName.split(' ')[0]}!</h1>
-          <p className="don-success-sub">Your contribution of {formatINR(effectiveAmount)} makes a real difference</p>
+          <p className="don-success-sub">Your contribution of {formatAmount(effectiveAmount)} makes a real difference</p>
 
           <div className="don-receipt-card">
             <div className="don-receipt-header">Receipt</div>
             <div className="don-receipt-grid">
               <div className="don-receipt-item">
                 <span className="don-receipt-label">Amount</span>
-                <span className="don-receipt-val don-receipt-amount">{formatINR(effectiveAmount)}</span>
+                <span className="don-receipt-val don-receipt-amount">{formatAmount(effectiveAmount)}</span>
               </div>
               <div className="don-receipt-item">
                 <span className="don-receipt-label">Campaign</span>
@@ -112,17 +125,12 @@ export default function Donate() {
                 <span className="don-receipt-val">17 Apr 2026</span>
               </div>
             </div>
-            {form.pan && (
-              <div className="don-receipt-80g">
-                📄 80G certificate will be emailed to {form.email} within 48 hours
-              </div>
-            )}
           </div>
 
           <div className="don-success-share">
             <div className="don-success-share-label">Spread the word</div>
             <div className="don-success-share-row">
-              <button className="don-share-btn don-share-wa" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`I just donated ${formatINR(effectiveAmount)} to CCT! Join me →`)}`, '_blank')}>WhatsApp</button>
+              <button className="don-share-btn don-share-wa" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`I just donated ${formatAmount(effectiveAmount)} to CCT! Join me →`)}`, '_blank')}>WhatsApp</button>
               <button className="don-share-btn don-share-x" onClick={() => window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(`I just donated to @CCTrust! Every rupee saves lives`)}`, '_blank')}>𝕏 Post</button>
               <button className="don-share-btn don-share-copy" onClick={handleShareCopy}>{copied ? '✓ Copied' : 'Copy Link'}</button>
             </div>
@@ -159,10 +167,9 @@ export default function Donate() {
               <h2 className="don-context-title">Chiranjeevi Charitable Trust</h2>
               <p className="don-context-desc">Your donation goes where it's needed most — blood drives, patient support, and community health</p>
               <div className="don-context-bar-wrap">
-                <div className="don-context-bar"><div className="don-context-bar-fill" style={{ width: '62%' }} /></div>
                 <div className="don-context-bar-meta">
-                  <span>₹14,80,000 raised</span>
-                  <span>Goal: ₹24,00,000</span>
+                  <span>{formatAmount(1480000)} raised</span>
+                  <span>Goal: {formatAmount(2400000)}</span>
                 </div>
               </div>
               <div className="don-context-donors">🤝 3,240 donors · 142 days left</div>
@@ -177,7 +184,7 @@ export default function Donate() {
                 <div className="don-impact-row">
                   <span className="don-impact-icon">{getImpactIcon(effectiveAmount)}</span>
                   <div>
-                    <div className="don-impact-amount">{formatINR(effectiveAmount)}</div>
+                    <div className="don-impact-amount">{formatAmount(effectiveAmount)}</div>
                     <div className="don-impact-text">{impactText}</div>
                   </div>
                 </div>
@@ -227,8 +234,48 @@ export default function Donate() {
             </div>
 
             <div className={`don-form-area${transitioning ? ` don-slide-${slideDir}` : ''}`}>
-              {/* STEP 1 — AMOUNT */}
+              {/* STEP 1 — DETAILS */}
               {step === 1 && (
+                <div className="don-form-step">
+                  <h2 className="don-form-heading">Your Details</h2>
+
+                  <div className="don-fields">
+                    <div className="don-field">
+                      <label className="don-label">Full Name <span className="don-req">*</span></label>
+                      <input className="don-input" placeholder="e.g. Ramesh Kumar" value={form.fullName} onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))} />
+                    </div>
+                    <div className="don-field">
+                      <label className="don-label">Email Address <span className="don-req">*</span></label>
+                      <input className="don-input" type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                    </div>
+                    <div className="don-field">
+                      <label className="don-label">Phone Number <span className="don-req">*</span></label>
+                      <div className="don-phone-wrap">
+                        <select
+                          className="don-country-select"
+                          value={countryCode}
+                          onChange={e => setCountryCode(e.target.value)}
+                          aria-label="Country code"
+                        >
+                          {COUNTRY_CODES.map(c => (
+                            <option key={c.code} value={c.code}>
+                              {c.flag} {c.code}
+                            </option>
+                          ))}
+                        </select>
+                        <input className="don-input don-phone-input" placeholder="Phone number" maxLength={15} value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 15) }))} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="don-btn-row">
+                    <button type="button" className={`don-btn don-btn-red${!isStep2Valid ? ' disabled' : ''}`} disabled={!isStep2Valid} onClick={() => goStep(2)}>Continue →</button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2 — AMOUNT */}
+              {step === 2 && (
                 <div className="don-form-step">
                   <h2 className="don-form-heading">Choose Amount</h2>
 
@@ -240,7 +287,7 @@ export default function Donate() {
                         className={`don-amount-btn${!isCustom && selectedAmount === a ? ' selected' : ''}`}
                         onClick={() => { setSelectedAmount(a); setIsCustom(false); setCustomAmount('') }}
                       >
-                        <span className="don-amount-val">{a >= 1000 ? `₹${(a / 1000).toFixed(a % 1000 ? 1 : 0)}K` : formatINR(a)}</span>
+                        <span className="don-amount-val">{formatAmount(a)}</span>
                         {a === 500 && <span className="don-amount-popular">Popular</span>}
                       </button>
                     ))}
@@ -255,7 +302,6 @@ export default function Donate() {
 
                   {isCustom && (
                     <div className="don-custom-wrap">
-                      <span className="don-custom-prefix">₹</span>
                       <input
                         type="number"
                         className="don-custom-input"
@@ -269,64 +315,16 @@ export default function Donate() {
                   )}
                   {isCustom && <div className="don-custom-hint">Minimum ₹50</div>}
 
-                  <button
-                    type="button"
-                    className={`don-btn don-btn-red don-btn-full${effectiveAmount < 50 ? ' disabled' : ''}`}
-                    disabled={effectiveAmount < 50}
-                    onClick={() => goStep(2)}
-                  >
-                    Continue →
-                  </button>
-                </div>
-              )}
-
-              {/* STEP 2 — DETAILS */}
-              {step === 2 && (
-                <div className="don-form-step">
-                  <h2 className="don-form-heading">Your Details</h2>
-                  <p className="don-form-sub">No account needed — just a few details</p>
-
-                  <div className="don-fields">
-                    <div className="don-field">
-                      <label className="don-label">Full Name <span className="don-req">*</span></label>
-                      <input className="don-input" placeholder="e.g. Ramesh Kumar" value={form.fullName} onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))} />
-                    </div>
-                    <div className="don-field">
-                      <label className="don-label">Email Address <span className="don-req">*</span></label>
-                      <input className="don-input" type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
-                    </div>
-                    <div className="don-field">
-                      <label className="don-label">Phone Number <span className="don-req">*</span></label>
-                      <div className="don-phone-wrap">
-                        <span className="don-phone-prefix">🇮🇳 +91</span>
-                        <input className="don-input don-phone-input" placeholder="98765 43210" maxLength={10} value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} />
-                      </div>
-                    </div>
-                    <div className="don-field">
-                      <label className="don-label">
-                        PAN Number
-                        <span className="don-optional">(optional)</span>
-                        <button type="button" className="don-info-btn" onClick={() => setShowPanTip(!showPanTip)}>ℹ️</button>
-                      </label>
-                      {showPanTip && (
-                        <div className="don-tooltip">Required for 80G tax certificate. Your PAN is encrypted and never shared</div>
-                      )}
-                      <input className="don-input" placeholder="ABCDE1234F" value={form.pan} onChange={e => setForm(f => ({ ...f, pan: e.target.value.toUpperCase().slice(0, 10) }))} />
-                    </div>
-                  </div>
-
-                  <label className="don-check-row">
-                    <input type="checkbox" className="don-checkbox" checked={form.impactUpdates} onChange={e => setForm(f => ({ ...f, impactUpdates: e.target.checked }))} />
-                    <span>Send me impact updates about this campaign</span>
-                  </label>
-
-                  <div className="don-security-bar">
-                    🔒 256-bit encrypted · PCI-DSS compliant · Your data is safe
-                  </div>
-
                   <div className="don-btn-row">
                     <button type="button" className="don-btn don-btn-back" onClick={() => goStep(1)}>← Back</button>
-                    <button type="button" className={`don-btn don-btn-red${!isStep2Valid ? ' disabled' : ''}`} disabled={!isStep2Valid} onClick={() => goStep(3)}>Proceed to Payment →</button>
+                    <button
+                      type="button"
+                      className={`don-btn don-btn-red${effectiveAmount < 50 ? ' disabled' : ''}`}
+                      disabled={effectiveAmount < 50}
+                      onClick={() => goStep(3)}
+                    >
+                      Continue →
+                    </button>
                   </div>
                 </div>
               )}
@@ -389,11 +387,11 @@ export default function Donate() {
                   <div className="don-order">
                     <div className="don-order-title">Order Summary</div>
                     <div className="don-order-row"><span>Campaign</span><span>General Fund</span></div>
-                    <div className="don-order-row"><span>Amount</span><span>{formatINR(effectiveAmount)}</span></div>
+                    <div className="don-order-row"><span>Amount</span><span>{formatAmount(effectiveAmount)}</span></div>
                     <div className="don-order-row"><span>Name</span><span>{form.fullName}</span></div>
                     <div className="don-order-row"><span>Email</span><span>{form.email}</span></div>
                     <div className="don-order-divider" />
-                    <div className="don-order-row don-order-total"><span>Total</span><span>{formatINR(effectiveAmount)}</span></div>
+                    <div className="don-order-row don-order-total"><span>Total</span><span>{formatAmount(effectiveAmount)}</span></div>
                   </div>
 
                   <div className="don-btn-row">
@@ -404,7 +402,7 @@ export default function Donate() {
                       disabled={!paymentMethod || processing}
                       onClick={handlePay}
                     >
-                      {processing ? <span className="don-spinner" /> : `Pay ${formatINR(effectiveAmount)} →`}
+                      {processing ? <span className="don-spinner" /> : `Pay ${formatAmount(effectiveAmount)} →`}
                     </button>
                   </div>
                 </div>

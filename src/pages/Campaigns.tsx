@@ -28,6 +28,7 @@ interface Campaign {
   urgent?: boolean
   closingSoon?: boolean
   emoji: string
+  image: string
   description: string[]
   contributors: Contributor[]
   updates: CampaignUpdate[]
@@ -45,6 +46,7 @@ const CAMPAIGNS: Campaign[] = [
     donors: 1240,
     daysLeft: 23,
     emoji: '🏥',
+    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80',
     description: [
       'Guntur Blood Bank urgently needs a modern platelet separator to meet growing demand for platelet transfusions. The current equipment is over 15 years old and frequently breaks down, causing delays in critical care for dengue and cancer patients across the district.',
       'A new automated platelet separator will allow the blood bank to process 20+ platelet units daily — triple the current capacity. This directly translates to faster treatment for patients battling leukaemia, dengue haemorrhagic fever, and post-surgical complications.',
@@ -73,6 +75,7 @@ const CAMPAIGNS: Campaign[] = [
     donors: 418,
     daysLeft: 45,
     emoji: '❤️',
+    image: 'https://images.unsplash.com/photo-1519494080410-f9aa8f52f2c1?auto=format&fit=crop&w=1200&q=80',
     description: [
       'Fifty thalassemia patients at NIMS Hyderabad depend on regular blood transfusions every 2-3 weeks to survive. Many families travel from rural AP and Telangana, spending what little they have on transport and accommodation.',
       'This campaign covers transfusion costs, iron chelation therapy, and basic travel support for these families. Each month of funding means 50 children can continue their treatment without interruption.',
@@ -102,6 +105,7 @@ const CAMPAIGNS: Campaign[] = [
     daysLeft: 8,
     urgent: true,
     emoji: '🚨',
+    image: 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=1200&q=80',
     description: [
       'Tirupati Hospital\'s blood storage facility experienced a critical refrigeration failure last month, putting 200+ units of stored blood at risk. Emergency repairs prevented immediate loss, but the aging infrastructure needs a complete overhaul.',
       'This campaign funds a new walk-in cold storage unit with backup power, temperature monitoring sensors, and automated alerts. The system will safely store up to 500 units — essential during the pilgrimage season when Tirupati sees massive blood demand spikes.',
@@ -130,6 +134,7 @@ const CAMPAIGNS: Campaign[] = [
     donors: 340,
     daysLeft: 60,
     emoji: '🏥',
+    image: 'https://images.unsplash.com/photo-1580281657527-47f249e8f4df?auto=format&fit=crop&w=1200&q=80',
     description: [
       'Kakinada Government Hospital serves over 2 lakh people across East Godavari district. Their blood bank refrigeration system, installed in 2008, is running on borrowed time with frequent temperature fluctuations that risk contaminating stored blood.',
       'The upgrade will replace all 4 blood storage refrigerators with modern units featuring digital temperature control, power-failure alarms, and IoT-based remote monitoring. This ensures 24/7 compliance with CDSCO storage standards.',
@@ -159,6 +164,7 @@ const CAMPAIGNS: Campaign[] = [
     daysLeft: 15,
     closingSoon: true,
     emoji: '🏗️',
+    image: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80',
     description: [
       'CCT\'s mobile blood collection van will bring donation camps directly to colleges, offices, and communities across Hyderabad and surrounding districts. No more asking donors to travel — we bring the camp to them.',
       'The fully equipped van includes 4 donation beds, a mini-lab for immediate testing, cold storage, and a registration kiosk. It can conduct camps in locations where permanent infrastructure doesn\'t exist.',
@@ -187,6 +193,7 @@ const CAMPAIGNS: Campaign[] = [
     donors: 89,
     daysLeft: 90,
     emoji: '🏗️',
+    image: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=80',
     description: [
       'The thalassemia ward at KGH Visakhapatnam treats 120+ patients but operates out of a cramped, poorly ventilated space with outdated beds and no play area for children who spend hours during transfusions.',
       'This renovation will transform the ward into a child-friendly, comfortable space with new beds, proper air conditioning, a small play corner, and a counselling room for families. Because healing is not just medical — it\'s emotional too.',
@@ -213,13 +220,6 @@ const CATEGORY_COLORS: Record<string, { bg: string; color: string; badge: string
   'Patient Support': { bg: 'var(--red-pale)', color: 'var(--red)', badge: '❤️' },
   Infrastructure: { bg: 'var(--gold-lt)', color: 'var(--gold)', badge: '🏗️' },
   Emergency: { bg: 'var(--red-pale)', color: 'var(--red)', badge: '🚨' },
-}
-
-const CATEGORY_GRADIENTS: Record<string, string> = {
-  Equipment: 'linear-gradient(180deg, #1a0a1e 0%, #0a0510 100%)',
-  'Patient Support': 'linear-gradient(180deg, #1a0610 0%, #080204 100%)',
-  Infrastructure: 'linear-gradient(180deg, #0a1428 0%, #050a18 100%)',
-  Emergency: 'linear-gradient(180deg, #2a0a0a 0%, #0a0204 100%)',
 }
 
 const PRESET_AMOUNTS = [100, 500, 1000, 2500, 5000]
@@ -284,7 +284,15 @@ export default function Campaigns() {
         <div className="camp-detail">
           <button className="camp-back-btn" onClick={() => setSelectedId(null)}>← All Campaigns</button>
 
-          <div className="camp-detail-cover" style={{ background: CATEGORY_GRADIENTS[selected.category] }}>
+          <div
+            className="camp-detail-cover"
+            style={{
+              backgroundImage: `linear-gradient(180deg, rgba(12, 8, 8, 0.2) 0%, rgba(12, 8, 8, 0.85) 100%), url(${selected.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
             <span className="camp-detail-emoji">{selected.emoji}</span>
             <div className="camp-detail-badges">
               <span className="camp-cat-badge" style={{ background: catColor.bg, color: catColor.color }}>
@@ -413,9 +421,8 @@ export default function Campaigns() {
     <div className="camp-page" style={{ paddingTop: 'var(--nav-h)' }}>
       <header className="camp-header">
         <Reveal>
-          <span className="camp-eyebrow">Fund a Cause</span>
           <h1 className="camp-heading">Active <span className="camp-heading-accent">Campaigns</span></h1>
-          <p className="camp-subtitle">Fund life-saving equipment and patient care across Andhra Pradesh & Telangana</p>
+          <p className="camp-subtitle">Empowering lives through essential medical support and impactful awareness initiatives</p>
           <div className="camp-stats-row">
             <div className="camp-hero-stat">
               <AnimatedCounter target={23000000} className="camp-hero-stat-n" />
@@ -454,7 +461,17 @@ export default function Campaigns() {
           {/* General Fund Card */}
           {filter === 'All' && (
             <Reveal className="camp-general-card">
-              <div className="camp-general-inner" onClick={() => { window.location.hash = '#/donate' }} style={{ cursor: 'pointer' }}>
+              <div
+                className="camp-general-inner"
+                onClick={() => { window.location.hash = '#/donate' }}
+                style={{
+                  cursor: 'pointer',
+                  backgroundImage: 'linear-gradient(180deg, rgba(12, 8, 8, 0.55) 0%, rgba(12, 8, 8, 0.86) 100%), url(https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1400&q=80)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                }}
+              >
                 <span className="camp-general-badge">General Fund</span>
                 <span className="camp-general-emoji">💛</span>
                 <h2 className="camp-general-title">Contribute to CCT's General Fund</h2>
@@ -466,19 +483,19 @@ export default function Campaigns() {
 
           {filtered.map((c, i) => {
             const pct = getPercent(c.raised, c.goal)
-            const catColor = CATEGORY_COLORS[c.category]
             return (
               <Reveal key={c.id} delayClass={i % 2 === 0 ? 'd1' : 'd2'}>
                 <div className="camp-card" onClick={() => openCampaign(c.id)}>
-                  <div className="camp-card-cover" style={{ background: CATEGORY_GRADIENTS[c.category] }}>
+                  <div
+                    className="camp-card-cover"
+                    style={{
+                      backgroundImage: `linear-gradient(180deg, rgba(12, 8, 8, 0.2) 0%, rgba(12, 8, 8, 0.82) 100%), url(${c.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  >
                     <span className="camp-card-emoji">{c.emoji}</span>
-                    <div className="camp-card-badges">
-                      <span className="camp-cat-badge" style={{ background: catColor.bg, color: catColor.color }}>
-                        {catColor.badge} {c.category}
-                      </span>
-                      {c.urgent && <span className="camp-urgency-badge camp-urgent">Urgent</span>}
-                      {c.closingSoon && <span className="camp-urgency-badge camp-closing">Closing Soon</span>}
-                    </div>
                   </div>
                   <div className="camp-card-body">
                     <h3 className="camp-card-title">{c.title}</h3>

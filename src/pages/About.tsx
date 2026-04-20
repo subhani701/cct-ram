@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion'
+import { useMemo } from 'react'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { AnimatedCounter } from '../components/AnimatedCounter'
 
 interface Trustee {
@@ -83,8 +83,6 @@ const formatIndian = (num: number) => {
 }
 
 export default function About() {
-  const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', message: '' })
-  const [contactSubmitted, setContactSubmitted] = useState(false)
   const reduceMotion = useReducedMotion()
 
   const heroVariants = useMemo(() => {
@@ -150,21 +148,6 @@ export default function About() {
         show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: easeSoft } },
       }
 
-  const handleContactSubmit = () => {
-    if (contactForm.name && contactForm.email && contactForm.message) {
-      setContactSubmitted(true)
-      setTimeout(() => {
-        setContactSubmitted(false)
-        setContactForm({ name: '', email: '', phone: '', message: '' })
-      }, 4000)
-    }
-  }
-
-  const scrollToContact = (e: React.MouseEvent) => {
-    e.preventDefault()
-    document.getElementById('abt-contact')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <div className="abt-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* HERO */}
@@ -202,15 +185,14 @@ export default function About() {
                 >
                   Our Impact
                 </motion.a>
-                <motion.button
-                  type="button"
-                  onClick={scrollToContact}
+                <motion.a
+                  href="#/contact"
                   className="abt-hero-btn abt-hero-btn-outline"
                   whileHover={reduceMotion ? undefined : { y: -2, scale: 1.02 }}
                   whileTap={reduceMotion ? undefined : { scale: 0.98 }}
                 >
                   Contact Us
-                </motion.button>
+                </motion.a>
               </motion.div>
             </motion.div>
             <motion.div
@@ -364,140 +346,48 @@ export default function About() {
           whileInView="show"
           viewport={{ once: true, amount: 0.12 }}
         >
-          {HOSPITALS.map(h => (
+          {HOSPITALS.map((h, index) => (
             <motion.div
               className="abt-partner-card"
               key={h}
               variants={statItem}
+              initial={reduceMotion ? undefined : { opacity: 0, y: 22, scale: 0.96 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={
+                reduceMotion
+                  ? { duration: 0.2 }
+                  : { duration: 0.45, delay: index * 0.05, ease: easeSoft }
+              }
               whileHover={
                 reduceMotion
                   ? undefined
-                  : { y: -3, borderColor: 'var(--red)', boxShadow: '0 10px 28px rgba(204,0,51,.08)' }
+                  : {
+                      y: -7,
+                      scale: 1.02,
+                      borderColor: 'rgba(204,0,51,.42)',
+                      boxShadow: '0 16px 36px rgba(204,0,51,.16)',
+                    }
               }
-              transition={{ type: 'spring', stiffness: 400, damping: 24 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.985 }}
             >
+              <motion.span
+                className="abt-partner-glow"
+                aria-hidden="true"
+                animate={reduceMotion ? undefined : { opacity: [0.18, 0.42, 0.2], scale: [1, 1.08, 1] }}
+                transition={{
+                  duration: 3.2,
+                  delay: index * 0.08,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
               <span className="abt-partner-name">{h}</span>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
-      {/* CONTACT */}
-      <section className="abt-contact" id="abt-contact">
-        <div className="abt-contact-grid">
-          <motion.div
-            className="abt-contact-info"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.35 }}
-          >
-            <h2 className="abt-section-heading" style={{ textAlign: 'left' }}>
-              Get in Touch
-            </h2>
-            <motion.div
-              className="abt-contact-details"
-              variants={statContainer}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.4 }}
-            >
-              <motion.p className="abt-contact-line" variants={statItem}>
-                &#128205; CCT Head Office, Film Nagar, Hyderabad, Telangana 500096
-              </motion.p>
-              <motion.p className="abt-contact-line" variants={statItem}>
-                &#128222; <a href="tel:+914023550000">+91 40 2355 0000</a>
-              </motion.p>
-              <motion.p className="abt-contact-line" variants={statItem}>
-                &#9993;&#65039; <a href="mailto:info@cct.org.in">info@cct.org.in</a>
-              </motion.p>
-            </motion.div>
-          </motion.div>
-          <motion.div
-            className="abt-contact-form-card"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ delay: reduceMotion ? 0 : 0.08 }}
-          >
-            <AnimatePresence mode="wait">
-              {contactSubmitted ? (
-                <motion.div
-                  key="success"
-                  className="abt-contact-success"
-                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 8 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: -6 }}
-                  transition={{ duration: reduceMotion ? 0.15 : 0.4, ease: easeSoft }}
-                >
-                  <motion.span
-                    className="abt-contact-check"
-                    initial={reduceMotion ? false : { scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 18, delay: reduceMotion ? 0 : 0.08 }}
-                  >
-                    &check;
-                  </motion.span>
-                  <h4>Message sent!</h4>
-                  <p>We&apos;ll get back to you within 24 hours</p>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="form"
-                  className="abt-contact-form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <motion.input
-                    className="abt-input"
-                    placeholder="Full Name"
-                    value={contactForm.name}
-                    onChange={e => setContactForm(f => ({ ...f, name: e.target.value }))}
-                    whileFocus={reduceMotion ? undefined : { y: -1, boxShadow: '0 0 0 3px rgba(204,0,51,.1)' }}
-                  />
-                  <motion.input
-                    className="abt-input"
-                    type="email"
-                    placeholder="Email"
-                    value={contactForm.email}
-                    onChange={e => setContactForm(f => ({ ...f, email: e.target.value }))}
-                    whileFocus={reduceMotion ? undefined : { y: -1, boxShadow: '0 0 0 3px rgba(204,0,51,.1)' }}
-                  />
-                  <motion.input
-                    className="abt-input"
-                    type="tel"
-                    placeholder="Phone (optional)"
-                    value={contactForm.phone}
-                    onChange={e => setContactForm(f => ({ ...f, phone: e.target.value }))}
-                    whileFocus={reduceMotion ? undefined : { y: -1, boxShadow: '0 0 0 3px rgba(204,0,51,.1)' }}
-                  />
-                  <motion.textarea
-                    className="abt-textarea"
-                    placeholder="Your message"
-                    rows={4}
-                    value={contactForm.message}
-                    onChange={e => setContactForm(f => ({ ...f, message: e.target.value }))}
-                    whileFocus={reduceMotion ? undefined : { y: -1, boxShadow: '0 0 0 3px rgba(204,0,51,.1)' }}
-                  />
-                  <motion.button
-                    type="button"
-                    className="abt-submit-btn"
-                    onClick={handleContactSubmit}
-                    disabled={!contactForm.name || !contactForm.email || !contactForm.message}
-                    whileHover={reduceMotion ? undefined : { y: -2, scale: 1.01 }}
-                    whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-                  >
-                    Send Message &rarr;
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
-      </section>
     </div>
   )
 }
