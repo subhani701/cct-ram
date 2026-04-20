@@ -171,13 +171,10 @@ export default function Contact() {
           >
             Get in Touch
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-          >
+          
+          <div className="gw-subtitle">
             Have questions or want to get involved? We would love to hear from you.
-          </motion.p>
+          </div>
         </motion.div>
 
         <div className="contact-grid">

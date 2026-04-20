@@ -171,7 +171,7 @@ export default function About() {
               <motion.h1 className="abt-hero-heading" variants={heroVariants.item}>
                 Turning the love of millions into a force for good
               </motion.h1>
-              <motion.p className="abt-hero-desc" variants={heroVariants.item}>
+              <motion.p className="gw-subtitle" variants={heroVariants.item}>
                 Chiranjeevi Charitable Trust has been at the forefront of humanitarian service in India since 1998,
                 mobilising fans, families and communities to ensure no life is lost for want of care, compassion or
                 resources.
@@ -212,7 +212,7 @@ export default function About() {
                   className="abt-hero-portrait"
                 />
               </motion.div>
-              <span className="abt-hero-name-tag">Megastar Chiranjeevi</span>
+              <span className="abt-hero-name-tag megastar-gold-shine">Megastar Chiranjeevi</span>
             </motion.div>
           </div>
           <motion.div

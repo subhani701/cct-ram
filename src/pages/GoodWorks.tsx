@@ -222,11 +222,6 @@ export default function GoodWorks() {
               <span className="gw-header-stat-value">50k+</span>
               <span className="gw-header-stat-label">community reactions</span>
             </div>
-            <div className="gw-header-stat-divider" />
-            <div className="gw-header-stat">
-              <span className="gw-header-stat-value">24h</span>
-              <span className="gw-header-stat-label">moderation cycle</span>
-            </div>
           </div>
           <button className="gw-share-btn" onClick={() => setShowModal(true)}>
             Share Your Story &rarr;

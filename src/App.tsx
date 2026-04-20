@@ -340,11 +340,11 @@ export default function App() {
               <div className="hs-l">Units</div>
             </div>
             <div className="hs-item">
-              <div className="hs-n">4.7K</div>
+              <div className="hs-n">4.7K+</div>
               <div className="hs-l">Lives</div>
             </div>
             <div className="hs-item">
-              <div className="hs-n">28K</div>
+              <div className="hs-n">28K+</div>
               <div className="hs-l">Donors</div>
             </div>
           </div>
@@ -706,7 +706,7 @@ export default function App() {
             <div className="mega-img-wrap">
               <img src="/chiranjeevi-portrait.png" alt="Megastar Chiranjeevi" className="mega-portrait" />
             </div>
-            <div className="mega-name-tag">Megastar Chiranjeevi</div>
+            <div className="mega-name-tag megastar-gold-shine">Megastar Chiranjeevi</div>
           </div>
         </div>
       </div>
@@ -817,9 +817,8 @@ export default function App() {
             <div>
               <div className="s-ey">Fund a Cause</div>
               <h2 className="s-h">
-                Every Rupee
+                Every Rupee Changes a Life
                 <br />
-                <span className="sr">Changes a Life</span>
               </h2>
             </div>
           </div>

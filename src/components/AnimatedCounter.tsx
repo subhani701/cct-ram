@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 
 function formatN(v: number) {
-  if (v >= 100000) return `${(v / 100000).toFixed(1)}L+`
+  if (v >= 100000) return `${(v / 100000).toFixed(1).replace(/\.0$/, '')}L+`
   if (v >= 1000) return `${(v / 1000).toFixed(0)}K+`
   return String(Math.round(v))
 }

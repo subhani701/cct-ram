@@ -421,8 +421,8 @@ export default function Campaigns() {
     <div className="camp-page" style={{ paddingTop: 'var(--nav-h)' }}>
       <header className="camp-header">
         <Reveal>
-          <h1 className="camp-heading">Active <span className="camp-heading-accent">Campaigns</span></h1>
-          <p className="camp-subtitle">Empowering lives through essential medical support and impactful awareness initiatives</p>
+          <h1 className="camp-heading">Active Campaigns</h1>
+          <p className="gw-subtitle">Empowering lives through essential medical support and impactful awareness initiatives</p>
           <div className="camp-stats-row">
             <div className="camp-hero-stat">
               <AnimatedCounter target={23000000} className="camp-hero-stat-n" />

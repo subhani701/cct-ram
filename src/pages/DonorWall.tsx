@@ -146,8 +146,8 @@ export default function DonorWall() {
       {/* ── HEADER ── */}
       <header className="dw2-hero">
         <span className="dw2-eyebrow">Community Recognition</span>
-        <h1 className="dw2-heading">Wall of <span className="dw2-heading-accent">Heroes</span></h1>
-        <p className="dw2-subtitle">Every donation writes a story of hope</p>
+        <h1 className="dw2-heading">Wall of Heroes</h1>
+        <p className="gw-subtitle">Every donation writes a story of hope</p>
       </header>
 
       {/* ── MAIN TWO-COLUMN LAYOUT ── */}
