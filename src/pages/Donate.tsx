@@ -96,10 +96,7 @@ export default function Donate() {
   /* ─── SUCCESS SCREEN ─── */
   if (success) {
     return (
-      <div className="don-page don-page-success">
-        <nav className="don-topbar">
-          <a href="#/" className="don-topbar-logo"><span className="ldot" /> CCT</a>
-        </nav>
+      <div className="don-page don-page-success" style={{ paddingTop: 'var(--nav-h)' }}>
         <div className="don-success-wrap">
           <div className="don-success-check">✓</div>
           <h1 className="don-success-title">Thank you, {form.fullName.split(' ')[0]}!</h1>
@@ -147,14 +144,7 @@ export default function Donate() {
 
   /* ─── MAIN DONATION FLOW ─── */
   return (
-    <div className="don-page">
-      {/* Minimal top bar */}
-      <nav className="don-topbar">
-        <a href="#/" className="don-topbar-logo"><span className="ldot" /> CCT</a>
-        <span className="don-topbar-secure">🔒 Secure Donation</span>
-        <a href="#/" className="don-topbar-close" title="Close">✕</a>
-      </nav>
-
+    <div className="don-page" style={{ paddingTop: 'var(--nav-h)' }}>
       {/* Split layout */}
       <div className="don-split">
 

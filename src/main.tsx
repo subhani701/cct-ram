@@ -18,7 +18,7 @@ import Impact from './pages/Impact.tsx'
 import Contact from './pages/Contact.tsx'
 import { normalizeHash, routesMatch } from './utils/hashRoute.ts'
 
-const NO_NAVBAR_ROUTES = ['#/donate']
+const NO_NAVBAR_ROUTES: string[] = []
 
 export function Router() {
   const [route, setRoute] = useState(() => normalizeHash(window.location.hash))

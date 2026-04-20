@@ -245,8 +245,6 @@ export default function App() {
   const [fedQuery, setFedQuery] = useState('')
   const [fedEmoji, setFedEmoji] = useState<FedEmojiFilter>('all')
   const [fedShow, setFedShow] = useState(12)
-  const [dpAmt, setDpAmt] = useState('100')
-  const [amtSel, setAmtSel] = useState<string>('100')
 
   const fedFiltered = (() => {
     let rows = [...FAN_EVENTS]
@@ -280,11 +278,6 @@ export default function App() {
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  const pickAmt = (val: string) => {
-    setAmtSel(val)
-    if (val !== 'other') setDpAmt(val)
-  }
 
   const setFedFilter = (emoji: FedEmojiFilter) => {
     setFedEmoji(emoji)
@@ -321,7 +314,7 @@ export default function App() {
             <span className="hero-est-badge">EST. 1997</span>
             <div className="hero-wordmark">
               <h1 className="hero-name">Chiranjeevi</h1>
-              <div className="hero-sub">Charitable Trust</div>
+              <div className="hero-sub">Charitable Trust · CCT</div>
             </div>
             <div className="hero-divider" />
           </div>
@@ -472,6 +465,7 @@ export default function App() {
         <div className="urgency-grid" id="urgGrid">
           {BLOOD_TYPES.map((b) => (
             <div key={b.type} className="ub rev up">
+              <span className="ub-deco" aria-hidden="true" />
               <div className="ub-type">{b.type}</div>
               <div className="ub-note">{b.note}</div>
             </div>
@@ -879,82 +873,6 @@ export default function App() {
                 <a href="#/donate" className="cc-cta" style={{ textDecoration: 'none' }}>
                   Donate Now
                 </a>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-        <Reveal>
-          <div className="dp">
-            <div className="dp-l">
-              <div className="s-ey" style={{ marginBottom: 12 }}>
-                General Fund
-              </div>
-              <h3>
-                Let CCT put your
-                <br />
-                money where it
-                <br />
-                <em>matters most</em>
-              </h3>
-              <p>Every rupee directed to blood drives, patient support, and community health. 80G cert issued automatically</p>
-              <div className="dpc-list">
-                <div className="dpc">
-                  <div className="dpc-i">
-                    <div className="dpc-n">Thalassemia Fund</div>
-                    <div className="dpc-bg">
-                      <div className="dpc-f" style={{ width: '70%' }} />
-                    </div>
-                  </div>
-                  <div className="dpc-pct">70%</div>
-                </div>
-                <div className="dpc">
-                  <div className="dpc-i">
-                    <div className="dpc-n">Platelet Separator — Guntur</div>
-                    <div className="dpc-bg">
-                      <div className="dpc-f" style={{ width: '30%' }} />
-                    </div>
-                  </div>
-                  <div className="dpc-pct">30%</div>
-                </div>
-                <div className="dpc">
-                  <div className="dpc-i">
-                    <div className="dpc-n">Mobile Blood Bank — Rural AP</div>
-                    <div className="dpc-bg">
-                      <div className="dpc-f" style={{ width: '80%' }} />
-                    </div>
-                  </div>
-                  <div className="dpc-pct">80%</div>
-                </div>
-              </div>
-            </div>
-            <div className="dp-r">
-              <h4>Make a Donation</h4>
-              <div className="dsub">Choose or enter your amount</div>
-              <div className="amts">
-                {(['100', '500', '1000', '2500', '5000', 'other'] as const).map((v) => (
-                  <button key={v} type="button" className={`abt${amtSel === v ? ' sel' : ''}`} onClick={() => pickAmt(v)}>
-                    {v === '100' ? '₹100' : v === '500' ? '₹500' : v === '1000' ? '₹1K' : v === '2500' ? '₹2.5K' : v === '5000' ? '₹5K' : 'Custom'}
-                  </button>
-                ))}
-              </div>
-              <div className="inp-w">
-                <span>₹</span>
-                <input
-                  type="number"
-                  id="dpAmt"
-                  value={dpAmt}
-                  placeholder="100"
-                  onChange={(e) => setDpAmt(e.target.value)}
-                />
-              </div>
-              <a href="#/donate" className="dp-btn" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
-                Donate Securely →
-              </a>
-              <div className="trust-r">
-                <span className="trb">🔒 SSL Secured</span>
-                <span className="trb">📄 80G Cert</span>
-                <span className="trb">🔓 No Account</span>
-                <span className="trb">💳 UPI / Card</span>
               </div>
             </div>
           </div>

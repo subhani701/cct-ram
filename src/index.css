@@ -64,9 +64,9 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
 /* Top zone — brand lockup */
 .hero-brand{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;position:relative;z-index:1;width:100%}
 .hero-est-badge{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--white);border:1px solid rgba(254,252,248,.75);border-radius:999px;padding:6px 14px;display:inline-block;line-height:1}
-.hero-wordmark{margin-top:28px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;width:100%}
-.hero-name{font-family:'Playfair Display','DM Serif Display',serif;font-weight:900;font-size:clamp(42px,5.4vw,88px);line-height:.9;letter-spacing:-.005em;color:#F4D35E;margin:0;white-space:nowrap;text-transform:uppercase}
-.hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:clamp(22px,2.5vw,40px);line-height:1;color:rgba(254,252,248,.95);letter-spacing:.42em;text-transform:uppercase;margin:0;padding-right:.42em}
+.hero-wordmark{margin-top:28px;display:inline-flex;flex-direction:column;gap:10px;align-items:flex-start}
+.hero-name{font-family:'Playfair Display','DM Serif Display',serif;font-weight:900;font-size:clamp(42px,5.4vw,88px);line-height:.9;letter-spacing:-.005em;color:var(--white);margin:0;white-space:nowrap;text-transform:uppercase}
+.hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:clamp(22px,2.6vw,40px);line-height:1;color:var(--white);letter-spacing:.04em;text-transform:uppercase;margin:0;white-space:nowrap}
 .hero-divider{width:72px;height:1px;background:rgba(254,252,248,.55);margin-top:22px}
 
 /* Middle zone — campaign tagline, vertically centered */
@@ -152,11 +152,14 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
 
 /* BLOOD URGENCY BOARD */
 .urgency-section{padding:64px 52px;background:var(--bg)}
-.urgency-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:36px}
-.ub{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;position:relative;overflow:hidden;transition:all .25s;text-align:center}
-.ub:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.07)}
-.ub-type{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;letter-spacing:-.02em;color:var(--gold);margin-bottom:6px}
-.ub-note{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.urgency-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:36px}
+.ub{position:relative;border:1px solid #EADFCC;border-radius:32px;padding:32px 24px;text-align:center;overflow:hidden;background:linear-gradient(180deg,#FFFFFF 0%,#FFFCF7 100%);box-shadow:0 20px 50px rgba(0,0,0,.07);transition:border-color .3s,transform .3s,box-shadow .3s}
+.ub::before{content:'';position:absolute;inset-inline:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.ub::after{content:'';position:absolute;left:-40px;top:-40px;width:96px;height:96px;border-radius:50%;background:rgba(201,138,9,.06);pointer-events:none}
+.ub-deco{position:absolute;right:-32px;bottom:-40px;width:112px;height:112px;border-radius:50%;border:1px solid #F3E5CF;pointer-events:none}
+.ub:hover{border-color:rgba(201,138,9,.45);transform:translateY(-4px);box-shadow:0 24px 60px rgba(201,138,9,.12)}
+.ub-type{font-family:'Playfair Display','DM Serif Display',serif;font-weight:700;font-size:clamp(36px,3.2vw,48px);line-height:.95;letter-spacing:-.015em;color:var(--gold);margin-bottom:10px;position:relative;z-index:1}
+.ub-note{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);position:relative;z-index:1}
 
 /* EVENTS */
 .events-section{padding:72px 52px;background:var(--white)}
@@ -308,7 +311,12 @@ nav.nav-dark{background:rgba(26,10,16,.92);border-bottom:1px solid rgba(255,255,
 .no-trk::before{content:'🔓'}
 
 /* DONOR WALL */
-.donor-wall{padding:56px 0 0;background:var(--bg2);overflow:hidden}
+.donor-wall{padding:56px 0 0;background:#0D0905;overflow:hidden;position:relative}
+.donor-wall .s-h,.donor-wall .dw-name{color:#FEFCF8}
+.donor-wall .dw-card{background:rgba(255,252,248,.05);border:1px solid rgba(255,252,248,.1)}
+.donor-wall .dw-city{color:rgba(254,252,248,.7)}
+.donor-wall .dw-time{color:rgba(254,252,248,.6);background:rgba(255,252,248,.08)}
+.donor-wall p{color:rgba(254,252,248,.65) !important}
 .dw-header{padding:0 52px 28px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .dw-marquee-wrap{display:flex;flex-direction:column;gap:10px}
 .dw-marquee{display:flex;gap:10px;animation:marqL 35s linear infinite;width:max-content}
